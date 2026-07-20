@@ -252,8 +252,6 @@ C {cdac/transistors.sym} 70 -380 1 0 {name=x4}
 C {cdac/transistors.sym} 240 90 3 0 {name=x5}
 C {cdac/transistors.sym} 590 -380 1 0 {name=x6}
 C {cdac/transistors.sym} 840 -370 1 0 {name=x8}
-C {cdac/transistors.sym} 750 80 3 0 {name=x9}
-C {cdac/transistors.sym} 1000 80 3 0 {name=x10}
 C {ipin.sym} -390 -510 0 0 {name=p1 lab=Vin}
 C {ipin.sym} -390 -470 0 0 {name=p2 lab=GND}
 C {ipin.sym} -390 -430 0 0 {name=p3 lab=VREF}
@@ -373,7 +371,6 @@ C {ipin.sym} 1240 -240 0 0 {name=p124 lab=Dx<6>}
 C {ipin.sym} 1240 -220 0 0 {name=p125 lab=Dx<7>}
 C {ipin.sym} 1240 -200 0 0 {name=p126 lab=Dx<8>}
 C {ipin.sym} 1240 -180 0 0 {name=p127 lab=Dx<9>}
-C {cdac/transistors.sym} 1010 -370 1 0 {name=x11}
 C {lab_wire.sym} 950 -540 0 0 {name=p128 sig_type=std_logic lab=GND}
 C {lab_wire.sym} 970 -540 0 0 {name=p129 sig_type=std_logic lab=Vin}
 C {lab_wire.sym} 1070 -540 2 0 {name=p130 sig_type=std_logic lab=VDD}
@@ -383,3 +380,6 @@ C {lab_wire.sym} 1030 -560 0 0 {name=p133 sig_type=std_logic lab=Dx_b<9>}
 C {lab_wire.sym} 1050 -540 0 0 {name=p134 sig_type=std_logic lab=Dx<9>}
 C {lab_wire.sym} 420 -200 0 0 {name=p59 sig_type=std_logic lab=Vx_lsb}
 C {opin.sym} -400 -290 0 0 {name=p60 lab=Vx_lsb}
+C {proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym} 1000 80 3 0 {name=x7}
+C {proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym} 1010 -370 1 0 {name=x10}
+C {proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym} 750 80 3 0 {name=x9}
