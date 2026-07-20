@@ -1,36 +1,6 @@
-** sch_path: /foss/designs/cdac/caps.sch
-* ============================================================
-* CDAC ARRAY STRUCTURE / SAMPLE-AND-HOLD SIZING
-* ============================================================
-* Architecture: split-array CDAC, 10-bit, GF180MCU cap_mim_2f0fF (2fF/um^2).
-*   MSB array (node Vx):     C6..C10, weights 1:1:2:4:8  (16 unit caps)
-*   LSB array (node Vx_lsb): C1..C5,  weights 1:1:2:4:8  (16 unit caps)
-*   Bridge cap:               C11 (upsized unit, 4.13um x 4.13um vs the
-*                              4um x 4um unit elsewhere) sets the LSB-array
-*                              attenuation ratio seen from Vx.
-*   Unit cell: 4um x 4um -> Cu ~= 35.65 fF (per cap_mim_2f0fF model eqns:
-*              c_c0 = c_cox*area + c_capsw*peri, nominal corner/mismatch).
-*
-* THESE ARRAY CAPACITORS ARE THE SAMPLE-AND-HOLD CAPACITORS.
-*   There is no dedicated/separate S/H cap in this design. Each unit cap's
-*   bottom plate is switched by its "transistors" cell (see transistors.spice)
-*   between Vin (phi_s=1, SAMPLE phase) and VREF/GND per Dx/Dx_b (phi_s=0,
-*   HOLD/REDISTRIBUTE phase). See transistors.spice header for the full
-*   two-phase description.
-*
-* kT/C NOISE SIZING (see ktc_noise_budget.py for the full derivation/margin):
-*   Effective sampling cap at Vx (MSB array + LSB array/bridge series comb.)
-*     ~= 606 fF
-*   kT/C noise (T=300K)            ~= 82.7 uVrms
-*   10-bit quantization noise, VREF=1.8V, LSB/sqrt(12)  ~= 507.4 uVrms
-*   Margin: quantization noise is ~6.1x the kT/C noise floor, i.e. kT/C
-*   noise is comfortably NOT the dominant noise term (>3x margin target).
-*   Minimum effective cap for 3x margin would be ~145 fF -- current sizing
-*   has ~4.2x more capacitance than that floor, at the cost of settling
-*   time/switch sizing tradeoffs (see caps_tb.spice .meas for timing impact).
-* ============================================================
-**.subckt caps Vin GND VREF Vx phi_s VDD Dx_b<0> Dx<0> Dx_b<1> Dx_b<2> Dx_b<3> Dx_b<4> Dx_b<5> Dx_b<6> Dx_b<7> Dx_b<8> Dx_b<9>
-*+ Dx<1> Dx<2> Dx<3> Dx<4> Dx<5> Dx<6> Dx<7> Dx<8> Dx<9> Vx_lsb
+** sch_path: /foss/designs/ti-blocks/cdac/caps.sch
+**.subckt caps Dx_b<0> Dx_b<1> Dx_b<2> Dx_b<3> Vin Dx_b<4> Dx_b<5> GND Dx_b<6> Dx_b<7> VREF Dx<0> phi_s Dx<1> Dx<2> VDD Dx<3> Vx
+*+ Dx<4> Dx<5> Vx_lsb Dx<6> Dx<7>
 *.ipin Vin
 *.ipin GND
 *.ipin VREF
@@ -46,8 +16,6 @@
 *.ipin Dx_b<5>
 *.ipin Dx_b<6>
 *.ipin Dx_b<7>
-*.ipin Dx_b<8>
-*.ipin Dx_b<9>
 *.ipin Dx<1>
 *.ipin Dx<2>
 *.ipin Dx<3>
@@ -55,53 +23,47 @@
 *.ipin Dx<5>
 *.ipin Dx<6>
 *.ipin Dx<7>
-*.ipin Dx<8>
-*.ipin Dx<9>
 *.opin Vx_lsb
 XC1 net2 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
 XC2 net1 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
 XC3 net3 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=2
 XC4 net4 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=4
-XC5 net5 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=8
+XC5 net5 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
 XC6 net6 Vx cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
-XC7 net7 Vx cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
-XC8 net8 Vx cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=2
-XC9 net9 Vx cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=4
-XC10 net10 Vx cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=8
+XC7 net7 Vx cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=2
+XC8 net8 Vx cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=4
 XC11 Vx_lsb Vx cap_mim_2f0fF c_width=4.13e-6 c_length=4.13e-6 m=1
-x1 VDD Dx<0> Dx_b<0> phi_s VREF Vin net2 GND transistors
-x2 VDD Dx<1> Dx_b<1> phi_s VREF Vin net1 GND transistors
-x3 VDD Dx<4> Dx_b<4> phi_s VREF Vin net5 GND transistors
-x4 VDD Dx<2> Dx_b<2> phi_s VREF Vin net3 GND transistors
-x5 VDD Dx<3> Dx_b<3> phi_s VREF Vin net4 GND transistors
-x6 VDD Dx<5> Dx_b<5> phi_s VREF Vin net6 GND transistors
-x8 VDD Dx<7> Dx_b<7> phi_s VREF Vin net8 GND transistors
-x9 VDD Dx<6> Dx_b<6> phi_s VREF Vin net7 GND transistors
-x10 VDD Dx<8> Dx_b<8> phi_s VREF Vin net9 GND transistors
-x11 VDD Dx<9> Dx_b<9> phi_s VREF Vin net10 GND transistors
+x1 net2 VDD Dx<0> Dx_b<0> phi_s VREF Vin GND transistors
+x3 net3 VDD Dx<2> Dx_b<2> phi_s VREF Vin GND transistors
+x4 net5 VDD Dx<4> Dx_b<4> phi_s VREF Vin GND transistors
+x6 net6 VDD Dx<5> Dx_b<5> phi_s VREF Vin GND transistors
+x7 net8 VDD Dx<7> Dx_b<7> phi_s VREF Vin GND transistors
+x2 net1 VDD Dx<1> Dx_b<1> phi_s VREF Vin GND transistors
+x5 net4 VDD Dx<3> Dx_b<3> phi_s VREF Vin GND transistors
+x9 net7 VDD Dx<6> Dx_b<6> phi_s VREF Vin GND transistors
 **.ends
 
-* expanding   symbol:  cdac/transistors.sym # of pins=8
-** sym_path: /foss/designs/cdac/transistors.sym
-** sch_path: /foss/designs/cdac/transistors.sch
-.subckt transistors VDD Dx Dx_b phi_s VREF Vin sw_node GND
-*.ipin Vin
-*.ipin VREF
+* expanding   symbol:  transistors.sym # of pins=8
+** sym_path: /foss/designs/ti-blocks/cdac/transistors.sym
+** sch_path: /foss/designs/ti-blocks/cdac/transistors.sch
+.subckt transistors sw_node VREF VDD Vin GND phi_s Dx Dx_b
 *.opin sw_node
+*.ipin VDD
 *.ipin GND
 *.ipin Dx
 *.ipin Dx_b
 *.ipin phi_s
-*.ipin VDD
+*.ipin VREF
+*.ipin Vin
+XM6 net1 Dx_b sw_node GND nfet_03v3 L=0.28u W=0.22u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM7 sw_node VDD net1 VDD pfet_03v3 L=0.28u W=0.22u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM1 sw_node phi_s Vin VDD pfet_03v3 L=0.28u W=0.22u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM4 VREF Dx_b sw_node GND nfet_03v3 L=0.28u W=0.22u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
 XM3 sw_node Dx VREF GND nfet_03v3 L=0.28u W=0.22u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
-XM4 sw_node Dx_b VREF VDD pfet_03v3 L=0.28u W=0.22u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
-XM6 GND Dx_b sw_node GND nfet_03v3 L=0.28u W=0.22u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
-XM7 GND Dx sw_node VDD pfet_03v3 L=0.28u W=0.22u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
-XM1 Vin phi_s sw_node GND nfet_03v3 L=0.28u W=0.22u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
 + ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
 .ends
 
