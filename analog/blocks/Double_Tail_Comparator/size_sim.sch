@@ -5,9 +5,6 @@ V {}
 S {}
 F {}
 E {}
-N -300 -270 -300 -210 {lab=CLK}
-N -240 -270 -240 -210 {lab=VDD}
-N -180 -270 -180 -210 {lab=VSS}
 N 100 -660 100 -600 {lab=VDD}
 N 330 -660 330 -600 {lab=VDD}
 N 480 -660 480 -600 {lab=VDD}
@@ -55,12 +52,15 @@ N 410 -310 410 -270 {lab=VSS}
 N 410 -60 430 -60 {lab=VSS}
 N 430 -60 430 -30 {lab=VSS}
 N 410 -30 430 -30 {lab=VSS}
-C {ipin.sym} -300 -270 1 0 {name=p3 lab=CLK}
-C {lab_pin.sym} -300 -210 0 0 {name=p4 sig_type=std_logic lab=CLK}
-C {iopin.sym} -180 -270 3 0 {name=p6 lab=VSS}
-C {iopin.sym} -240 -270 3 0 {name=p14 lab=VDD}
-C {lab_pin.sym} -240 -210 0 0 {name=p15 sig_type=std_logic lab=VDD}
-C {lab_pin.sym} -180 -210 0 0 {name=p16 sig_type=std_logic lab=VSS}
+N -490 -500 -490 -460 {lab=0}
+N -430 -600 -430 -565 {lab=INP}
+N -430 -500 -430 -460 {lab=0}
+N -370 -600 -370 -560 {lab=INN}
+N -370 -500 -370 -460 {lab=0}
+N -430 -565 -430 -560 {lab=INP}
+N -315 -500 -315 -460 {lab=0}
+N -315 -600 -315 -560 {lab=CLK}
+N -490 -600 -490 -560 {lab=VDD}
 C {symbols/nfet_03v3.sym} 200 -210 0 0 {name=M1
 L=0.28u
 W=2.852u
@@ -105,7 +105,7 @@ spiceprefix=X
 }
 C {symbols/nfet_03v3.sym} 580 -370 0 0 {name=M4
 L=0.28u
-W=0.713u
+W=0.713
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
@@ -119,7 +119,7 @@ spiceprefix=X
 }
 C {symbols/nfet_03v3.sym} 240 -370 0 1 {name=M5
 L=0.28u
-W=0.713u
+W=0.713
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
@@ -214,9 +214,43 @@ C {lab_pin.sym} 550 -570 2 0 {name=p13 sig_type=std_logic lab=VDD}
 C {lab_pin.sym} 650 -570 0 0 {name=p17 sig_type=std_logic lab=VDD}
 C {lab_pin.sym} 60 -570 0 0 {name=p18 sig_type=std_logic lab=CLK}
 C {lab_pin.sym} 760 -570 2 0 {name=p19 sig_type=std_logic lab=CLK}
-C {opin.sym} 180 -440 2 0 {name=p20 lab=OUTP}
-C {opin.sym} 640 -440 0 0 {name=p21 lab=OUTN}
 C {ipin.sym} 130 -210 0 0 {name=p22 lab=INN}
 C {ipin.sym} 710 -210 2 0 {name=p23 lab=INP}
 C {lab_pin.sym} 410 -270 3 0 {name=p24 sig_type=std_logic lab=VSS}
 C {lab_pin.sym} 370 -60 0 0 {name=p25 sig_type=std_logic lab=CLK}
+C {vsource.sym} -490 -530 0 0 {name=V1 
+value=3.3
+savecurrent=false}
+C {vsource.sym} -430 -530 0 0 {name=V2 
+value="sin(2 1 25MEG)"
+savecurrent=false}
+C {vsource.sym} -370 -530 0 0 {name=V3 
+value="sin(2 1 25MEG 5n)"
+savecurrent=false}
+C {lab_pin.sym} -430 -600 1 0 {name=p26 sig_type=std_logic lab=INP}
+C {lab_pin.sym} -370 -600 1 0 {name=p27 sig_type=std_logic lab=INN}
+C {gnd.sym} -490 -460 0 0 {name=l1 lab=0}
+C {gnd.sym} -430 -460 0 0 {name=l2 lab=0}
+C {gnd.sym} -370 -460 0 0 {name=l3 lab=0}
+C {lab_pin.sym} -315 -600 1 0 {name=p28 sig_type=std_logic lab=CLK}
+C {vsource.sym} -315 -530 0 0 {name=V5 
+value= "PULSE(0 3.3 2.5n 50p 50p 2.5n 5n)"
+savecurrent=false}
+C {gnd.sym} -315 -460 0 0 {name=l4 lab=0}
+C {lab_pin.sym} -490 -600 1 0 {name=p29 sig_type=std_logic lab=VDD}
+C {code_shown.sym} -950 -870 0 0 {name=MODELS only_toplevel=true
+format="tcleval( @value )"
+value="
+.include $::180MCU_MODELS/design.ngspice
+.lib $::180MCU_MODELS/sm141064.ngspice typical
+.lib $::180MCU_MODELS/smbb000149.ngspice typical
+"}
+C {lab_pin.sym} 180 -440 0 0 {name=p3 sig_type=std_logic lab=OUTP}
+C {lab_pin.sym} 640 -440 2 0 {name=p4 sig_type=std_logic lab=OUTN}
+C {code_shown.sym} -1130 -700 0 0 {name=s1 only_toplevel=true 
+value="
+.control
+tran 2n 30n
+plot v(OUTP) v(OUTN) v(INP) v(INN) v(CLK)
+.endc
+"}
