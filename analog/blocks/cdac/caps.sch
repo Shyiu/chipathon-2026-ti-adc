@@ -304,11 +304,11 @@ C {ipin.sym} 1240 -280 0 0 {name=p124 lab=Dx<6>}
 C {ipin.sym} 1240 -260 0 0 {name=p125 lab=Dx<7>}
 C {lab_wire.sym} 280 -200 0 0 {name=p59 sig_type=std_logic lab=Vx_lsb}
 C {opin.sym} -400 -290 0 0 {name=p60 lab=Vx_lsb}
-C {proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym} 750 80 3 0 {name=x1}
-C {proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym} 240 90 3 0 {name=x2}
-C {proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym} 60 90 3 0 {name=x3}
-C {proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym} -170 -380 1 0 {name=x4}
-C {proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym} 70 -380 1 0 {name=x5}
-C {proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym} 430 -380 1 0 {name=x6}
-C {proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym} 590 -380 1 0 {name=x7}
-C {proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym} 840 -370 1 0 {name=x8}
+C {/foss/designs/proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym} 70 -380 1 0 {name=x9}
+C {/foss/designs/proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym} -170 -380 1 0 {name=x4}
+C {/foss/designs/proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym} 430 -380 1 0 {name=x5}
+C {/foss/designs/proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym} 590 -380 1 0 {name=x6}
+C {/foss/designs/proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym} 840 -370 1 0 {name=x7}
+C {/foss/designs/proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym} 60 90 3 0 {name=x1}
+C {/foss/designs/proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym} 240 90 3 0 {name=x2}
+C {/foss/designs/proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym} 750 80 3 0 {name=x3}
