@@ -1,16 +1,21 @@
 ** sch_path: /foss/designs/proj_branch/chipathon-2026-ti-adc/analog/top/top.sch
 **.subckt top
-V8 CLK 0 PULSE(0 3.3 0 50p 50p 20n 40n)
+V8 CLK 0 PULSE(0 3.3 0 50p 50p 120n 250n)
 V3 VDD 0 3.3
-V1 RST 0 PULSE(3.3 0 0 1n 1n 15n 4000n)
-V6 VIN 0 sin(2 1 5MEG 5n)
+V1 RST 0 PULSE(3.3 0 0 1n 1n 15n 100000n)
+V6 VIN 0 sin(0.825 0.75 100k 0)
 V2 VRef 0 1.65
-x6 net9 net10 net11 net12 VSAMPLE net13 net17 0 net14 net15 VRef net2 CLK net3 net4 VDD net5 VX net6 net7 VX_LSB net8 net16 caps
-x1 0 VDD net4 net3 net2 net5 net11 net12 net9 net10 net7 net16 net6 net8 net13 net17 net14 net15 inverter_block
-x5 net18 OUTP net1 0 VDD VX VX_LSB realcomp
+x6 net9 net10 net11 net12 VSAMPLE net13 net18 0 net14 net15 VRef net2 CLK net3 net4 VDD net5 VX net6 net7 VX_LSB net8 net16 caps
+x1 0 VDD net4 net3 net2 net5 net11 net12 net9 net10 net7 net16 net6 net8 net13 net18 net14 net15 inverter_block
+x5 net19 OUTP net1 0 VDD VX net17 realcomp
 x3 VDD VSAMPLE CLK VIN 0 transmission_gate
-X2 VDD 0 CLK net1 net2 net3 net4 net5 net6 net7 net8 net16 DOUT0 DOUT1 DOUT2 DOUT3 DOUT4 DOUT5 DOUT6 DOUT7 net18 OUTP RST
+X2 VDD 0 CLK_N net1 net2 net3 net4 net5 net6 net7 net8 net16 DOUT0 DOUT1 DOUT2 DOUT3 DOUT4 DOUT5 DOUT6 DOUT7 net19 OUTP RST
 + sar_adc_logic
+V9 CLK_N 0 PULSE(3.3 0 0 50p 50p 120n 250n)
+V10 net17 0 0.825
+* Top-plate reset switches: pin VX and VX_LSB to VCM during sampling phase
+XMrst1 VX CLK net17 0 nfet_03v3 L=0.28u W=2u nf=1
+XMrst2 VX_LSB CLK net17 0 nfet_03v3 L=0.28u W=2u nf=1
 **** begin user architecture code
 
 
@@ -751,7 +756,7 @@ XFILLER_0_240 VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__fill_1
 
 
 
-.tran 5n 4000n uic
+.tran 1n 20000n uic
 .ic v(VX)=1.65 v(VX_LSB)=1.65
 
 .control
@@ -761,6 +766,7 @@ plot v(net1) v(outp) v(outn)
 plot v(net2) v(net3) v(net4) v(net5) v(net6) v(net7) v(net8) v(net16)
 plot v(dout0) v(dout1) v(dout2) v(dout3) v(dout4) v(dout5) v(dout6) v(dout7)
 plot v(clk)
+plot v(x2._108_/q)
 .endc
 
 
@@ -795,11 +801,11 @@ plot v(clk)
 *.ipin Dx<6>
 *.ipin Dx<7>
 *.opin Vx_lsb
-XC1 net2 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
-XC2 net1 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
-XC3 net3 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=2
-XC4 net4 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=4
-XC5 net5 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
+XC1 net2 Vx_lsb cap_mim_2f0fF c_width=2e-6 c_length=2e-6 m=1
+XC2 net1 Vx_lsb cap_mim_2f0fF c_width=2.83e-6 c_length=2.83e-6 m=1
+XC3 net3 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
+XC4 net4 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=2
+XC5 net5 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=4
 XC6 net6 Vx cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
 XC7 net7 Vx cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=2
 XC8 net8 Vx cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=4
@@ -812,6 +818,7 @@ x7 net8 VDD Dx<7> Dx_b<7> phi_s VREF Vin GND transistors
 x1 net1 VDD Dx<1> Dx_b<1> phi_s VREF Vin GND transistors
 x2 net4 VDD Dx<3> Dx_b<3> phi_s VREF Vin GND transistors
 x3 net7 VDD Dx<6> Dx_b<6> phi_s VREF Vin GND transistors
+XC9 Vx VREF cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
 .ends
 
 
@@ -894,11 +901,11 @@ XM4 OUTN OUTP net2 VSS nfet_03v3 L=0.28u W=0.713u nf=1 ad='int((nf+1)/2) * W/nf 
 + ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
 XM5 OUTP OUTN net1 VSS nfet_03v3 L=0.28u W=0.713u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
 + ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
-XM6 OUTP CLK VDD VDD pfet_03v3 L=0.28u W=0.22u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
+XM6 OUTP CLK VDD VDD pfet_03v3 L=0.28u W=2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
 + ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
 XM7 OUTN OUTP VDD VDD pfet_03v3 L=0.28u W=1.426u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
 + ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
-XM8 OUTN CLK VDD VDD pfet_03v3 L=0.28u W=0.22u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
+XM8 OUTN CLK VDD VDD pfet_03v3 L=0.28u W=2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
 + ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
 XM10 OUTP OUTN VDD VDD pfet_03v3 L=0.28u W=1.426u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
 + ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1

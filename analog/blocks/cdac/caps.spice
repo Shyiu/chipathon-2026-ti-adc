@@ -24,11 +24,11 @@
 *.ipin Dx<6>
 *.ipin Dx<7>
 *.opin Vx_lsb
-XC1 net2 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
-XC2 net1 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
-XC3 net3 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=2
-XC4 net4 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=4
-XC5 net5 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
+XC1 net2 Vx_lsb cap_mim_2f0fF c_width=2e-6 c_length=2e-6 m=1
+XC2 net1 Vx_lsb cap_mim_2f0fF c_width=2.83e-6 c_length=2.83e-6 m=1
+XC3 net3 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
+XC4 net4 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=2
+XC5 net5 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=4
 XC6 net6 Vx cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
 XC7 net7 Vx cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=2
 XC8 net8 Vx cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=4
@@ -41,6 +41,7 @@ x7 net8 VDD Dx<7> Dx_b<7> phi_s VREF Vin GND transistors
 x1 net1 VDD Dx<1> Dx_b<1> phi_s VREF Vin GND transistors
 x2 net4 VDD Dx<3> Dx_b<3> phi_s VREF Vin GND transistors
 x3 net7 VDD Dx<6> Dx_b<6> phi_s VREF Vin GND transistors
+XC9 Vx VREF cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
 **.ends
 
 * expanding   symbol:  /foss/designs/proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym # of pins=8

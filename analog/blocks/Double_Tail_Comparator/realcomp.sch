@@ -133,7 +133,7 @@ spiceprefix=X
 }
 C {symbols/pfet_03v3.sym} 80 -570 0 0 {name=M6
 L=0.28u
-W=0.22u
+W=2u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
@@ -161,7 +161,7 @@ spiceprefix=X
 }
 C {symbols/pfet_03v3.sym} 740 -570 0 1 {name=M8
 L=0.28u
-W=0.22u
+W=2u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"

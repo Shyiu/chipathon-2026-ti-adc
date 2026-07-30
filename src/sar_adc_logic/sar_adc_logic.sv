@@ -37,7 +37,7 @@ module sar_adc_logic #(
     logic seq_at_msb;
     assign seq_at_msb = seq[RESOLUTION];
 
-    always_ff @(posedge clk_i or negedge rst_n_tree) begin
+    always_ff @(negedge clk_i or negedge rst_n_tree) begin
         if (!rst_n_tree) start_req <= 1'b0;
         else if (seq_at_msb) start_req <= 1'b0;
         else start_req <= 1'b1;
