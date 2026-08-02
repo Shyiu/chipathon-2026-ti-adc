@@ -18,7 +18,6 @@ N 590 -120 710 -120 {lab=GND}
 N 690 0 710 -0 {lab=#net4}
 N 590 -0 620 -0 {lab=GND}
 N 680 -0 690 -0 {lab=#net4}
-C {cdac/caps.sym} 860 0 0 0 {name=x1}
 C {vsource.sym} 650 60 1 0 {name=V1 value=3.3 savecurrent=false}
 C {vsource.sym} 650 -160 1 0 {name=V2 value=0.9 savecurrent=false}
 C {vsource.sym} 650 0 1 0 {name=V3 value="PULSE(0 3.3 0 1n 1n 50n 500n)" savecurrent=false}
@@ -31,3 +30,4 @@ run
 plot Vx
 .endc
 "}
+C {proj_branch/analog/blocks/cdac/caps.sym} 860 -60 0 0 {name=x1}

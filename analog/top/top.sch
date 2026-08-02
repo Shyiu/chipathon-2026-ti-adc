@@ -925,17 +925,17 @@ C {lab_wire.sym} 110 -720 2 0 {name=p3 sig_type=std_logic lab=OUTP}
 C {lab_wire.sym} 1500 -1100 0 0 {name=p11 sig_type=std_logic lab=VX}
 C {lab_wire.sym} 1540 -1010 2 0 {name=p13 sig_type=std_logic lab=VX_LSB}
 C {lab_wire.sym} 1030 -1030 0 0 {name=p15 sig_type=std_logic lab=VSAMPLE}
-C {/foss/designs/proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/caps.sym} 1350 -830 0 0 {name=x6}
-C {inverter_block.sym} 750 -810 0 0 {name=x1}
-C {/foss/designs/proj_branch/chipathon-2026-ti-adc/analog/blocks/Double_Tail_Comparator/realcomp.sym} -20 -700 0 0 {name=x5}
-C {/foss/designs/proj_branch/chipathon-2026-ti-adc/analog/blocks/transmission_gate/transmission_gate.sym} 880 -1100 0 0 {name=x3}
-C {/foss/designs/proj_branch/chipathon-2026-ti-adc/analog/digital/SAR_ADC_LOGIC/sar_logic.sym} 340 -730 0 0 {name=X2 model=sar_adc_logic}
 C {lab_pin.sym} -1005 -780 1 0 {name=p5 sig_type=std_logic lab=CLK_N}
 C {vsource.sym} -1005 -710 0 0 {name=V9 
 value= "PULSE(3.3 0 0 50p 50p 120n 250n)"
 savecurrent=false}
 C {gnd.sym} -1005 -640 0 0 {name=l1 lab=0}
 C {vsource.sym} -180 -690 1 0 {name=V10
-value="net17 0 0.825"
+value=0.865
 savecurrent=false}
 C {gnd.sym} -230 -690 1 0 {name=l12 lab=0}
+C {proj_branch/analog/blocks/SAR_ADC_LOGIC/sar_logic.sym} 340 -730 0 0 {name=X4 model=sar_adc_logic}
+C {proj_branch/analog/blocks/Double_Tail_Comparator/realcomp.sym} -20 -700 0 0 {name=x2}
+C {proj_branch/analog/blocks/transmission_gate/transmission_gate.sym} 880 -1100 0 0 {name=x5}
+C {proj_branch/analog/blocks/cdac/caps.sym} 1350 -830 0 0 {name=x3}
+C {proj_branch/analog/top/inverter_block.sym} 750 -810 0 0 {name=x6}
