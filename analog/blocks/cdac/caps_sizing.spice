@@ -1,0 +1,71 @@
+** sch_path: /foss/designs/proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/caps.sch
+.subckt caps Dx_b<0> Dx_b<1> Dx_b<2> Dx_b<3> Vin Dx_b<4> Dx_b<5> GND Dx_b<6> Dx_b<7> VREF Dx<0> phi_s Dx<1> Dx<2> VDD Dx<3> Vx
+*+ Dx<4> Dx<5> Vx_lsb Dx<6> Dx<7>
+*.ipin Vin
+*.ipin GND
+*.ipin VREF
+*.opin Vx
+*.ipin phi_s
+*.ipin VDD
+*.ipin Dx_b<0>
+*.ipin Dx<0>
+*.ipin Dx_b<1>
+*.ipin Dx_b<2>
+*.ipin Dx_b<3>
+*.ipin Dx_b<4>
+*.ipin Dx_b<5>
+*.ipin Dx_b<6>
+*.ipin Dx_b<7>
+*.ipin Dx<1>
+*.ipin Dx<2>
+*.ipin Dx<3>
+*.ipin Dx<4>
+*.ipin Dx<5>
+*.ipin Dx<6>
+*.ipin Dx<7>
+*.opin Vx_lsb
+XC1 net2 Vx_lsb cap_mim_2f0fF c_width=2e-6 c_length=2e-6 m=1
+XC2 net1 Vx_lsb cap_mim_2f0fF c_width=2.83e-6 c_length=2.83e-6 m=1
+XC3 net3 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
+XC4 net4 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=2
+XC5 net5 Vx_lsb cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=4
+XC6 net6 Vx cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
+XC7 net7 Vx cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=2
+XC8 net8 Vx cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=4
+XC11 Vx_lsb Vx cap_mim_2f0fF c_width=4.13e-6 c_length=4.13e-6 m=1
+x9 net3 VDD Dx<2> Dx_b<2> phi_s VREF Vin GND transistors
+x4 net2 VDD Dx<0> Dx_b<0> phi_s VREF Vin GND transistors
+x5 net5 VDD Dx<4> Dx_b<4> phi_s VREF Vin GND transistors
+x6 net6 VDD Dx<5> Dx_b<5> phi_s VREF Vin GND transistors
+x7 net8 VDD Dx<7> Dx_b<7> phi_s VREF Vin GND transistors
+x1 net1 VDD Dx<1> Dx_b<1> phi_s VREF Vin GND transistors
+x2 net4 VDD Dx<3> Dx_b<3> phi_s VREF Vin GND transistors
+x3 net7 VDD Dx<6> Dx_b<6> phi_s VREF Vin GND transistors
+XC9 Vx VREF cap_mim_2f0fF c_width=4e-6 c_length=4e-6 m=1
+.ends
+
+* expanding   symbol:  /foss/designs/proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym # of pins=8
+** sym_path: /foss/designs/proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sym
+** sch_path: /foss/designs/proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/transistors.sch
+.subckt transistors sw_node VREF VDD Vin GND phi_s Dx Dx_b
+*.opin sw_node
+*.ipin VDD
+*.ipin GND
+*.ipin Dx
+*.ipin Dx_b
+*.ipin phi_s
+*.ipin VREF
+*.ipin Vin
+XM6 net1 Dx_b sw_node GND nfet_03v3 L=0.28u W=0.22u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM7 sw_node VDD net1 VDD pfet_03v3 L=0.28u W=0.22u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM1 sw_node phi_s Vin VDD pfet_03v3 L=0.28u W=0.22u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM4 VREF Dx_b sw_node GND nfet_03v3 L=0.28u W=0.22u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM3 sw_node Dx VREF GND nfet_03v3 L=0.28u W=0.22u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+.ends
+
+.end

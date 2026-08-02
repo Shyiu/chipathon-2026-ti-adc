@@ -1,0 +1,83 @@
+* CDAC 0.5 LSB Settling Time Testbench
+
+* ============================================================
+* GF180MCU device models (Paths corrected from your working TB)
+* ============================================================
+.include "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice"
+.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" typical
+.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" cap_mim
+
+* Required nominal values for cap_mim corner/mismatch scaling params
+.param mim_corner_2p0fF=1
+.param mc_c_cox_2p0fF=0
+
+* Include your extracted netlist containing the 'caps' and 'transistors' subckts
+.include "caps.spice" 
+
+* ==========================================
+* Power Supplies & References
+* ==========================================
+Vdd VDD 0 3.3
+Vgnd GND 0 0
+
+* Note: Using 1.8V for VREF as indicated in your previous TB notes
+Vref VREF 0 1.8
+
+* Input Voltage (Vin)
+* Setting Vin to 0V so the CDAC samples 0V, maximizing the voltage 
+* swing when the MSB switches to VREF.
+Vin Vin 0 0.0
+
+* ==========================================
+* Control Signals (Stimulus)
+* ==========================================
+* phi_s: Active-low PMOS sampling switch
+* Samples from 0ns to 10ns, transitions to Hold (3.3V) at 10ns.
+Vphi_s phi_s 0 PULSE(0 3.3 10n 100p 100p 40n 100n)
+
+* MSB Data Switch (Dx<7> and Dx_b<7>)
+* Switches from GND to VREF at 12ns (after sampling is complete)
+VDx7   Dx_7   0 PULSE(0 3.3 12n 100p 100p 40n 100n)
+VDxb7  Dx_b_7 0 PULSE(3.3 0 12n 100p 100p 40n 100n)
+
+* Static LSB Data Switches (Dx<0:6> tied low, Dx_b<0:6> tied high)
+Vdx_static   Dx_static   0 DC 0
+Vdx_b_static Dx_b_static 0 DC 3.3
+
+* ==========================================
+* Device Under Test (DUT) Instantiation
+* ==========================================
+* Pin order matches your 8-bit generated .subckt line:
+X1
++ Dx_b_static Dx_b_static Dx_b_static Dx_b_static Vin Dx_b_static Dx_b_static GND Dx_b_static Dx_b_7
++ VREF Dx_static phi_s Dx_static Dx_static VDD Dx_static Vx Dx_static Dx_static Vx_lsb Dx_static Dx_7
++ caps
+
+* ==========================================
+* Analysis and Automated Measurement
+* ==========================================
+.control
+    * Run a 30ns transient simulation with 10ps resolution
+    tran 10p 30n
+    
+    * Save raw data so you can view the waveforms in GTKWave/Gaw
+    write cdac_settling.raw
+    
+    * 1. Find the final settled voltage of the MSB array (Vx)
+    meas tran vfinal FIND V(Vx) AT=29n
+    
+    * 2. Calculate the 0.5 LSB threshold 
+    * Assuming 8-bit with 1.8V VREF: (1.8V / 256) / 2 = 3.515mV
+    let vthresh = vfinal - 0.003515
+    
+    * 3. Measure the exact time the MSB logic triggers (crosses VDD/2 = 1.65V)
+    meas tran t_start WHEN V(Dx_7)=1.65 RISE=1
+    
+    * 4. Measure the exact time Vx crosses into the 0.5 LSB settling window
+    meas tran t_settled WHEN V(Vx)=vthresh RISE=1
+    
+    * 5. Calculate and print the delta
+    let t_settling_time = t_settled - t_start
+    print t_settling_time
+.endc
+.end
