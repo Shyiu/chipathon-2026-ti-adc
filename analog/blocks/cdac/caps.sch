@@ -282,14 +282,6 @@ spiceprefix=X
 m=1}
 C {lab_wire.sym} 980 -80 2 0 {name=p10 sig_type=std_logic lab=VREF}
 C {lab_wire.sym} 980 -200 0 0 {name=p61 sig_type=std_logic lab=Vx}
-C {proj_branch/analog/blocks/cdac/transistors.sym} 840 -370 1 0 {name=x1}
-C {proj_branch/analog/blocks/cdac/transistors.sym} 590 -380 1 0 {name=x2}
-C {proj_branch/analog/blocks/cdac/transistors.sym} 430 -380 1 0 {name=x3}
-C {proj_branch/analog/blocks/cdac/transistors.sym} 70 -380 1 0 {name=x4}
-C {proj_branch/analog/blocks/cdac/transistors.sym} -170 -380 1 0 {name=x5}
-C {proj_branch/analog/blocks/cdac/transistors.sym} 60 90 3 0 {name=x6}
-C {proj_branch/analog/blocks/cdac/transistors.sym} 240 90 3 0 {name=x7}
-C {proj_branch/analog/blocks/cdac/transistors.sym} 750 80 3 0 {name=x8}
 C {lab_wire.sym} 70 -550 1 0 {name=p17 sig_type=std_logic lab=GND}
 C {lab_wire.sym} 90 -570 1 0 {name=p18 sig_type=std_logic lab=Vin}
 C {lab_wire.sym} 110 -550 1 0 {name=p19 sig_type=std_logic lab=VDD}
@@ -366,3 +358,11 @@ C {lab_wire.sym} -360 -10 2 0 {name=p71 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} -570 -10 2 0 {name=p72 sig_type=std_logic lab=GND}
 C {lab_wire.sym} -650 -10 0 0 {name=p73 sig_type=std_logic lab=phi_s}
 C {lab_wire.sym} -440 -10 0 0 {name=p74 sig_type=std_logic lab=phi_s_b}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/og_transistors.sym} -170 -380 1 0 {name=x9}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/og_transistors.sym} 70 -380 1 0 {name=x10}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/og_transistors.sym} 430 -380 1 0 {name=x11}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/og_transistors.sym} 590 -380 1 0 {name=x12}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/og_transistors.sym} 840 -370 1 0 {name=x13}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/og_transistors.sym} 60 90 3 0 {name=x1}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/og_transistors.sym} 750 80 3 0 {name=x2}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/og_transistors.sym} 240 90 3 0 {name=x3}

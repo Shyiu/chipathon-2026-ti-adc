@@ -85,7 +85,7 @@ N 520 -530 570 -500 {lab=CTRL7}
 N 570 -500 1000 -500 {lab=CTRL7}
 N -100 -1260 -100 -710 {lab=VX}
 N -100 -1260 1500 -1260 {lab=VX}
-N -150 -690 -100 -690 {lab=#net8}
+N -150 -690 -100 -690 {lab=VRef}
 N -850 -1000 -850 -960 {lab=VIN}
 N -850 -900 -850 -860 {lab=0}
 N -750 -670 -750 -630 {lab=0}
@@ -106,8 +106,8 @@ N 1000 -520 1090 -650 {lab=CTRL6}
 N 1090 -650 1200 -650 {lab=CTRL6}
 N 1000 -500 1090 -630 {lab=CTRL7}
 N 1090 -630 1200 -630 {lab=CTRL7}
-N 900 -780 1080 -910 {lab=#net9}
-N 1080 -910 1200 -910 {lab=#net9}
+N 900 -780 1080 -910 {lab=#net8}
+N 1080 -910 1200 -910 {lab=#net8}
 N 180 -780 180 -770 {lab=CLK_O}
 N 180 -770 210 -770 {lab=CLK_O}
 N 100 -680 150 -680 {lab=OUTN}
@@ -117,7 +117,6 @@ N 170 -720 170 -690 {lab=OUTP}
 N 170 -690 210 -690 {lab=OUTP}
 N -1005 -680 -1005 -640 {lab=0}
 N -1005 -780 -1005 -740 {lab=CLK_N}
-N -230 -690 -210 -690 {lab=0}
 N 490 -740 520 -740 {lab=CTRL7}
 C {lab_wire.sym} 880 -1180 0 0 {name=p1 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} 1160 -730 0 0 {name=p2 sig_type=std_logic lab=VDD}
@@ -1352,7 +1351,7 @@ Xdly_stage\\[183\\].delay_buf dly_stage\\[183\\].delay_buf/I dly_stage\\[184\\].
 + VDD VDD VSS VSS gf180mcu_fd_sc_mcu7t5v0__buf_1
 .ends
 "}
-C {lab_wire.sym} 210 -790 0 0 {name=p10 sig_type=std_logic lab=CLK_N}
+C {lab_wire.sym} 210 -790 0 0 {name=p10 sig_type=std_logic lab=CLK}
 C {lab_wire.sym} 1160 -830 0 0 {name=p12 sig_type=std_logic lab=VRef}
 C {lab_wire.sym} 700 -1120 0 0 {name=p7 sig_type=std_logic lab=CLK}
 C {lab_wire.sym} 350 -940 0 0 {name=p14 sig_type=std_logic lab=VDD}
@@ -1360,7 +1359,7 @@ C {lab_wire.sym} 700 -1100 0 0 {name=p4 sig_type=std_logic lab=VIN}
 C {lab_wire.sym} 210 -670 0 0 {name=p6 sig_type=std_logic lab=RST}
 C {lab_pin.sym} -665 -1000 1 0 {name=p28 sig_type=std_logic lab=CLK}
 C {vsource.sym} -665 -930 0 0 {name=V8 
-value= "PULSE(0 3.3 0 50p 50p 40n 80n)"
+value= "PULSE(0 3.3 0 50p 50p 1250n 2500n)"
 savecurrent=false}
 C {gnd.sym} -665 -860 0 0 {name=l9 lab=0}
 C {vsource.sym} -660 -700 0 0 {name=V3 
@@ -1399,7 +1398,7 @@ value="
 "}
 C {code_shown.sym} -1360 -1240 0 0 {name=s3 only_toplevel=true 
 value="
-.tran 10n 1000n uic
+.tran 10n 3000n uic
 .ic v(VX)=1.65 v(VX_LSB)=1.65
 
 .control
@@ -1411,7 +1410,7 @@ wrdata cdac.txt v(vref) v(vx) v(vx_lsb) v(vsample)
 .endc
 "}
 C {vsource.sym} -750 -700 0 0 {name=V2 
-value=1.65
+value=3.3
 savecurrent=false}
 C {gnd.sym} -750 -630 0 0 {name=l4 lab=0}
 C {lab_pin.sym} -750 -770 1 0 {name=p29 sig_type=std_logic lab=VRef}
@@ -1429,15 +1428,6 @@ C {vsource.sym} -1005 -710 0 0 {name=V9
 value= "PULSE(3.3 0 0 50p 50p 40n 80n)"
 savecurrent=false}
 C {gnd.sym} -1005 -640 0 0 {name=l1 lab=0}
-C {vsource.sym} -180 -690 1 0 {name=V10
-value=0.825
-savecurrent=false}
-C {gnd.sym} -230 -690 1 0 {name=l12 lab=0}
-C {proj_branch/analog/blocks/SAR_ADC_LOGIC/sar_logic.sym} 340 -730 0 0 {name=X4 model=sar_adc_logic}
-C {proj_branch/analog/blocks/Double_Tail_Comparator/realcomp.sym} -20 -700 0 0 {name=x2}
-C {proj_branch/analog/blocks/transmission_gate/transmission_gate.sym} 880 -1100 0 0 {name=x5}
-C {proj_branch/analog/top/inverter_block.sym} 750 -810 0 0 {name=x6}
-C {proj_branch/analog/blocks/cdac/og_caps.sym} 1350 -830 0 0 {name=x1}
 C {lab_wire.sym} 500 -880 2 0 {name=p18 sig_type=std_logic lab=CTRL0}
 C {lab_wire.sym} 500 -860 2 0 {name=p31 sig_type=std_logic lab=CTRL1}
 C {lab_wire.sym} 500 -840 2 0 {name=p32 sig_type=std_logic lab=CTRL2}
@@ -1448,3 +1438,9 @@ C {lab_wire.sym} 490 -760 2 0 {name=p36 sig_type=std_logic lab=CTRL6}
 C {lab_wire.sym} 500 -740 2 0 {name=p37 sig_type=std_logic lab=CTRL7}
 C {lab_wire.sym} 120 -780 0 0 {name=p38 sig_type=std_logic lab=CLK_O}
 C {lab_wire.sym} 110 -680 2 0 {name=p39 sig_type=std_logic lab=OUTN}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/Double_Tail_Comparator/realcomp.sym} -20 -700 0 0 {name=x3}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/SAR_ADC_LOGIC/sar_logic.sym} 340 -730 0 0 {name=X2 model=sar_adc_logic}
+C {/foss/designs/chipathon-2026-ti-adc/analog/top/inverter_block.sym} 750 -810 0 0 {name=x4}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/transmission_gate/transmission_gate.sym} 880 -1100 0 0 {name=x6}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/caps.sym} 1350 -830 0 0 {name=x1}
+C {lab_pin.sym} -150 -690 0 0 {name=p40 sig_type=std_logic lab=VRef}

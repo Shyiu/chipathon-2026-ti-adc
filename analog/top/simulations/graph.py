@@ -3,34 +3,32 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import os
 
-# The files you want to analyze
-FILES = ['dac.txt', 'logic.txt', 'comparator.txt']
+# Map your filenames to the EXACT order of the nets in your wrdata command
+FILES = {
+    '/headless/.xschem/simulations/cdac.txt': ['vref', 'vx', 'vx_lsb', 'vsample'], # Replace with your actual CDAC control signals
+    '/headless/.xschem/simulations/logic.txt': ['ctrl0', 'ctrl1', 'ctrl2', 'ctrl3', 'ctrl4', 'ctrl5', 'ctrl6', 'ctrl7', 'dout0', 'dout1', 'dout2', 'dout3', 'dout4', 'dout5', 'dout6', 'dout7', 'clk'], # Replace with your actual logic nets
+    '/headless/.xschem/simulations/trans_gate.txt': ['v(vin)', 'v(vsample)', 'v(clk)'],
+    '/headless/.xschem/simulations/comparator.txt': ['clk_o', 'outp', 'outn', 'clk'],
+}
 
 def read_ngspice_wrdata(filepath):
-    """
-    Parses Ngspice wrdata format.
-    wrdata outputs columns as: time1, val1, time2, val2, ...
-    Returns a list of tuples: [(time_array, val_array), ...]
-    """
+    # ... (Keep this function exactly the same as before) ...
     if not os.path.exists(filepath):
         print(f"Warning: {filepath} not found.")
         return []
 
     try:
-        # Load the raw text file
         data = np.loadtxt(filepath)
     except Exception as e:
         print(f"Error reading {filepath}: {e}")
         return []
 
-    # Handle single-row edge cases
     if data.ndim == 1:
         data = data.reshape(1, -1)
 
     num_cols = data.shape[1]
     signals = []
     
-    # Extract each (time, value) pair
     for i in range(0, num_cols, 2):
         if i + 1 < num_cols:
             time = data[:, i]
@@ -40,23 +38,30 @@ def read_ngspice_wrdata(filepath):
     return signals
 
 def main():
-    # 1. Create stacked subplots (one row per file) with linked X-axes
+    # 1. Create stacked subplots
+    file_list = list(FILES.keys())
     fig = make_subplots(
-        rows=len(FILES), 
+        rows=len(file_list), 
         cols=1, 
         shared_xaxes=True,
-        subplot_titles=FILES,
+        subplot_titles=file_list,
         vertical_spacing=0.05
     )
 
-    # 2. Parse and plot the data
-    for i, filename in enumerate(FILES):
+    # 2. Parse and plot the data using your custom labels
+    for i, filename in enumerate(file_list):
         row_num = i + 1
         signals = read_ngspice_wrdata(filename)
+        label_list = FILES[filename]
         
         for sig_idx, (t, v) in enumerate(signals):
-            # We use a step shape for logic, linear for analog DAC/Comparator
             shape = 'hv' if 'logic' in filename else 'linear'
+            
+            # Safely grab the label, or fallback to generic if you forgot one
+            if sig_idx < len(label_list):
+                sig_name = label_list[sig_idx]
+            else:
+                sig_name = f"Unknown Signal {sig_idx + 1}"
             
             fig.add_trace(
                 go.Scatter(
@@ -64,7 +69,7 @@ def main():
                     y=v, 
                     mode='lines',
                     line_shape=shape,
-                    name=f"Signal {sig_idx + 1}",
+                    name=sig_name,
                     legendgroup=filename,
                     legendgrouptitle_text=filename
                 ),
@@ -72,14 +77,14 @@ def main():
                 col=1
             )
 
-    # 3. Apply a beautiful dark theme and unify the hover tooltips
+    # 3. Apply theme and layout
     fig.update_layout(
         title="SAR ADC Mixed-Signal Waveform Viewer",
         template="plotly_dark",
         hovermode="x unified",
         height=900,
         legend=dict(
-            groupclick="toggleitem", # Allows clicking individual traces or the whole group
+            groupclick="toggleitem",
             yanchor="top",
             y=0.99,
             xanchor="left",
@@ -87,13 +92,11 @@ def main():
         )
     )
 
-    # Automatically set Y-axis titles
-    for i in range(len(FILES)):
+    for i in range(len(file_list)):
         fig.update_yaxes(title_text="Voltage (V)", row=i+1, col=1)
         
-    fig.update_xaxes(title_text="Time (s)", row=len(FILES), col=1)
+    fig.update_xaxes(title_text="Time (s)", row=len(file_list), col=1)
 
-    # 4. Render the graph in your default web browser
     fig.show()
 
 if __name__ == "__main__":
