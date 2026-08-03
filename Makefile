@@ -82,3 +82,12 @@ render-image: ## Render an image from the final layout (after copy-final)
 	mkdir -p img/
 	PDK_ROOT=${PDK_ROOT} PDK=${PDK} python3 scripts/lay2img.py final/gds/${TOP}.gds img/${TOP}.png --width 2048 --oversampling 4
 .PHONY: copy-final
+
+librelane-block: ## Run LibreLane on a standalone block (Usage: make librelane-block CONFIG=path/to/config.yaml)
+	@if [ -z "$(CONFIG)" ]; then \
+		echo "Error: CONFIG variable is required."; \
+		echo "Usage: make librelane-block CONFIG=path/to/block.yaml"; \
+		exit 1; \
+	fi
+	librelane $(CONFIG) --pdk ${PDK} --pdk-root ${PDK_ROOT} --manual-pdk
+.PHONY: librelane-block
