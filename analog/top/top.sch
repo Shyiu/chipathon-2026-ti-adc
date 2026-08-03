@@ -1438,10 +1438,10 @@ C {lab_wire.sym} 490 -760 2 0 {name=p36 sig_type=std_logic lab=CTRL6}
 C {lab_wire.sym} 500 -740 2 0 {name=p37 sig_type=std_logic lab=CTRL7}
 C {lab_wire.sym} 120 -780 0 0 {name=p38 sig_type=std_logic lab=CLK_O}
 C {lab_wire.sym} 110 -680 2 0 {name=p39 sig_type=std_logic lab=OUTN}
-C {chipathon-2026-ti-adc/analog/blocks/Double_Tail_Comparator/realcomp.sym} -20 -700 0 0 {name=x3}
-C {chipathon-2026-ti-adc/analog/blocks/SAR_ADC_LOGIC/sar_logic.sym} 340 -730 0 0 {name=X2 model=sar_adc_logic}
-C {chipathon-2026-ti-adc/analog/top/inverter_block.sym} 750 -810 0 0 {name=x4}
-C {chipathon-2026-ti-adc/analog/blocks/transmission_gate/transmission_gate.sym} 880 -1100 0 0 {name=x6}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/caps.sym} 1350 -820 0 0 {name=x1}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/Double_Tail_Comparator/realcomp.sym} -20 -700 0 0 {name=x3}
+C {/foss/designs/chipathon-2026-ti-adc/analog/digital/SAR_ADC_LOGIC/sar_logic.sym} 340 -730 0 0 {name=X2 model=sar_adc_logic}
+C {/foss/designs/chipathon-2026-ti-adc/analog/top/inverter_block.sym} 750 -810 0 0 {name=x4}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/transmission_gate/transmission_gate.sym} 880 -1100 0 0 {name=x6}
+C {caps.sym} 1350 -820 0 0 {name=x1}
 C {lab_pin.sym} -150 -690 0 0 {name=p40 sig_type=std_logic lab=VRef}
 C {lab_wire.sym} 1200 -610 0 0 {name=p41 sig_type=std_logic lab=CLK_N}
