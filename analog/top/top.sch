@@ -1374,7 +1374,7 @@ C {gnd.sym} -550 -630 0 0 {name=l2 lab=0}
 C {lab_pin.sym} -550 -770 1 0 {name=p16 sig_type=std_logic lab=RST}
 C {lab_wire.sym} 760 -960 0 0 {name=p17 sig_type=std_logic lab=VDD}
 C {vsource.sym} -850 -930 0 0 {name=V6 
-value=1.8
+value=0.2
 savecurrent=false}
 C {lab_pin.sym} -850 -1000 1 0 {name=p19 sig_type=std_logic lab=VIN}
 C {gnd.sym} -850 -860 0 0 {name=l6 lab=0}
@@ -1410,7 +1410,7 @@ wrdata cdac.txt v(vref) v(vx) v(vx_lsb) v(vsample)
 .endc
 "}
 C {vsource.sym} -750 -700 0 0 {name=V2 
-value=3.3
+value=1.8
 savecurrent=false}
 C {gnd.sym} -750 -630 0 0 {name=l4 lab=0}
 C {lab_pin.sym} -750 -770 1 0 {name=p29 sig_type=std_logic lab=VRef}
@@ -1442,6 +1442,6 @@ C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/Double_Tail_Comparator/real
 C {/foss/designs/chipathon-2026-ti-adc/analog/digital/SAR_ADC_LOGIC/sar_logic.sym} 340 -730 0 0 {name=X2 model=sar_adc_logic}
 C {/foss/designs/chipathon-2026-ti-adc/analog/top/inverter_block.sym} 750 -810 0 0 {name=x4}
 C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/transmission_gate/transmission_gate.sym} 880 -1100 0 0 {name=x6}
-C {caps.sym} 1350 -820 0 0 {name=x1}
+C {og_caps.sym} 1350 -830 0 0 {name=x1}
 C {lab_pin.sym} -150 -690 0 0 {name=p40 sig_type=std_logic lab=VRef}
 C {lab_wire.sym} 1200 -610 0 0 {name=p41 sig_type=std_logic lab=CLK_N}
