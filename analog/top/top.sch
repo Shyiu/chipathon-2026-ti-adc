@@ -6,7 +6,7 @@ S {}
 F {}
 E {}
 N 880 -1180 880 -1150 {lab=VDD}
-N 1160 -890 1200 -890 {lab=0}
+N 1160 -910 1200 -910 {lab=0}
 N 1160 -730 1200 -730 {lab=VDD}
 N 700 -1120 730 -1120 {lab=CLK}
 N 700 -1100 730 -1100 {lab=VIN}
@@ -27,20 +27,11 @@ N 560 -820 600 -820 {lab=CTRL3}
 N 550 -800 600 -800 {lab=CTRL4}
 N 540 -780 600 -780 {lab=CTRL5}
 N 530 -760 600 -760 {lab=CTRL6}
-N 900 -880 1070 -1030 {lab=#net1}
-N 1070 -1030 1200 -1030 {lab=#net1}
-N 900 -860 1070 -1010 {lab=#net2}
-N 1070 -1010 1200 -1010 {lab=#net2}
-N 900 -840 1070 -990 {lab=#net3}
-N 1070 -990 1200 -990 {lab=#net3}
-N 900 -820 1070 -970 {lab=#net4}
-N 1070 -970 1200 -970 {lab=#net4}
-N 900 -800 1070 -930 {lab=#net5}
-N 1070 -930 1200 -930 {lab=#net5}
-N 900 -760 1070 -870 {lab=#net6}
-N 1070 -870 1200 -870 {lab=#net6}
-N 900 -740 1070 -850 {lab=#net7}
-N 1070 -850 1200 -850 {lab=#net7}
+N 1070 -1010 1200 -1010 {lab=#net1}
+N 1070 -990 1200 -990 {lab=#net2}
+N 1070 -970 1200 -970 {lab=#net3}
+N 1070 -930 1200 -930 {lab=#net4}
+N 1070 -870 1200 -870 {lab=#net5}
 N 620 -640 1000 -640 {lab=CTRL0}
 N 620 -620 1000 -620 {lab=CTRL1}
 N 1500 -1260 1500 -1030 {lab=VX}
@@ -85,29 +76,11 @@ N 520 -530 570 -500 {lab=CTRL7}
 N 570 -500 1000 -500 {lab=CTRL7}
 N -100 -1260 -100 -710 {lab=VX}
 N -100 -1260 1500 -1260 {lab=VX}
-N -150 -690 -100 -690 {lab=VRef}
+N -150 -690 -100 -690 {lab=#net6}
 N -850 -1000 -850 -960 {lab=VIN}
 N -850 -900 -850 -860 {lab=0}
 N -750 -670 -750 -630 {lab=0}
 N -750 -770 -750 -730 {lab=VRef}
-N 1000 -640 1110 -810 {lab=CTRL0}
-N 1110 -810 1200 -810 {lab=CTRL0}
-N 1000 -620 1100 -770 {lab=CTRL1}
-N 1100 -770 1200 -770 {lab=CTRL1}
-N 1000 -600 1100 -750 {lab=CTRL2}
-N 1100 -750 1200 -750 {lab=CTRL2}
-N 1000 -580 1090 -710 {lab=CTRL3}
-N 1090 -710 1200 -710 {lab=CTRL3}
-N 1000 -560 1090 -690 {lab=CTRL4}
-N 1090 -690 1200 -690 {lab=CTRL4}
-N 1000 -540 1090 -670 {lab=CTRL5}
-N 1090 -670 1200 -670 {lab=CTRL5}
-N 1000 -520 1090 -650 {lab=CTRL6}
-N 1090 -650 1200 -650 {lab=CTRL6}
-N 1000 -500 1090 -630 {lab=CTRL7}
-N 1090 -630 1200 -630 {lab=CTRL7}
-N 900 -780 1080 -910 {lab=#net8}
-N 1080 -910 1200 -910 {lab=#net8}
 N 180 -780 180 -770 {lab=CLK_O}
 N 180 -770 210 -770 {lab=CLK_O}
 N 100 -680 150 -680 {lab=OUTN}
@@ -118,6 +91,36 @@ N 170 -690 210 -690 {lab=OUTP}
 N -1005 -680 -1005 -640 {lab=0}
 N -1005 -780 -1005 -740 {lab=CLK_N}
 N 490 -740 520 -740 {lab=CTRL7}
+N 1160 -1030 1200 -1030 {lab=VDD}
+N 900 -880 1070 -1010 {lab=#net1}
+N 900 -860 1070 -990 {lab=#net2}
+N 900 -840 1070 -970 {lab=#net3}
+N 900 -820 1070 -930 {lab=#net4}
+N 1070 -850 1200 -850 {lab=#net7}
+N 900 -800 1070 -870 {lab=#net5}
+N 900 -780 1070 -850 {lab=#net7}
+N 1160 -890 1200 -890 {lab=VDD}
+N 1000 -500 1200 -550 {lab=CTRL7}
+N 1000 -520 1200 -570 {lab=CTRL6}
+N 1000 -540 1200 -590 {lab=CTRL5}
+N 1000 -560 1200 -610 {lab=CTRL4}
+N 1160 -630 1200 -630 {lab=0}
+N 1160 -750 1200 -750 {lab=0}
+N 1000 -580 1140 -650 {lab=CTRL3}
+N 1140 -650 1200 -650 {lab=CTRL3}
+N 1000 -600 1130 -670 {lab=CTRL2}
+N 1130 -670 1200 -670 {lab=CTRL2}
+N 1000 -620 1130 -690 {lab=CTRL1}
+N 1130 -690 1200 -690 {lab=CTRL1}
+N 1000 -640 1130 -710 {lab=CTRL0}
+N 1130 -710 1200 -710 {lab=CTRL0}
+N 900 -740 1110 -770 {lab=#net8}
+N 1110 -770 1200 -770 {lab=#net8}
+N 900 -760 1120 -810 {lab=#net9}
+N 1120 -810 1200 -810 {lab=#net9}
+N -200 -620 -200 -580 {lab=0}
+N -200 -690 -200 -680 {lab=#net6}
+N -200 -690 -150 -690 {lab=#net6}
 C {lab_wire.sym} 880 -1180 0 0 {name=p1 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} 1160 -730 0 0 {name=p2 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} 1160 -790 0 0 {name=p8 sig_type=std_logic lab=CLK}
@@ -1398,7 +1401,7 @@ value="
 "}
 C {code_shown.sym} -1360 -1240 0 0 {name=s3 only_toplevel=true 
 value="
-.tran 10n 3000n uic
+.tran 10n 1000n uic
 .ic v(VX)=1.65 v(VX_LSB)=1.65
 
 .control
@@ -1417,7 +1420,7 @@ C {lab_pin.sym} -750 -770 1 0 {name=p29 sig_type=std_logic lab=VRef}
 C {gnd.sym} -20 -620 0 0 {name=l5 lab=0}
 C {gnd.sym} 350 -490 0 0 {name=l7 lab=0}
 C {gnd.sym} 770 -670 0 0 {name=l8 lab=0}
-C {gnd.sym} 1160 -890 1 0 {name=l10 lab=0}
+C {gnd.sym} 1160 -910 1 0 {name=l10 lab=0}
 C {gnd.sym} 880 -1020 0 0 {name=l11 lab=0}
 C {lab_wire.sym} 110 -720 2 0 {name=p3 sig_type=std_logic lab=OUTP}
 C {lab_wire.sym} 1500 -1100 0 0 {name=p11 sig_type=std_logic lab=VX}
@@ -1438,10 +1441,16 @@ C {lab_wire.sym} 490 -760 2 0 {name=p36 sig_type=std_logic lab=CTRL6}
 C {lab_wire.sym} 500 -740 2 0 {name=p37 sig_type=std_logic lab=CTRL7}
 C {lab_wire.sym} 120 -780 0 0 {name=p38 sig_type=std_logic lab=CLK_O}
 C {lab_wire.sym} 110 -680 2 0 {name=p39 sig_type=std_logic lab=OUTN}
-C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/Double_Tail_Comparator/realcomp.sym} -20 -700 0 0 {name=x3}
-C {/foss/designs/chipathon-2026-ti-adc/analog/digital/SAR_ADC_LOGIC/sar_logic.sym} 340 -730 0 0 {name=X2 model=sar_adc_logic}
-C {/foss/designs/chipathon-2026-ti-adc/analog/top/inverter_block.sym} 750 -810 0 0 {name=x4}
-C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/transmission_gate/transmission_gate.sym} 880 -1100 0 0 {name=x6}
-C {og_caps.sym} 1350 -830 0 0 {name=x1}
-C {lab_pin.sym} -150 -690 0 0 {name=p40 sig_type=std_logic lab=VRef}
-C {lab_wire.sym} 1200 -610 0 0 {name=p41 sig_type=std_logic lab=CLK_N}
+C {chipathon-2026-ti-adc/analog/blocks/Double_Tail_Comparator/realcomp.sym} -20 -700 0 0 {name=x3}
+C {chipathon-2026-ti-adc/analog/top/inverter_block.sym} 750 -810 0 0 {name=x4}
+C {chipathon-2026-ti-adc/analog/blocks/transmission_gate/transmission_gate.sym} 880 -1100 0 0 {name=x6}
+C {proj_branch/chipathon-2026-ti-adc/analog/digital/SAR_ADC_LOGIC/sar_logic.sym} 340 -730 0 0 {name=X1 model=sar_adc_logic}
+C {proj_branch/chipathon-2026-ti-adc/analog/blocks/cdac/caps2.sym} 1350 -790 0 0 {name=x2}
+C {lab_wire.sym} 1160 -1030 0 0 {name=p42 sig_type=std_logic lab=VDD}
+C {lab_wire.sym} 1160 -890 0 0 {name=p43 sig_type=std_logic lab=VDD}
+C {gnd.sym} 1160 -630 1 0 {name=l12 lab=0}
+C {gnd.sym} 1160 -750 1 0 {name=l13 lab=0}
+C {vsource.sym} -200 -650 0 0 {name=V4 
+value=0.9
+savecurrent=false}
+C {gnd.sym} -200 -580 0 0 {name=l14 lab=0}
