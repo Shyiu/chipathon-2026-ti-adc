@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 module sar_adc_logic #(
-    parameter int RESOLUTION       = 8
+    parameter int RESOLUTION = 8
 )(
     input  logic rst_n,
     input  logic clk_i,
@@ -9,10 +9,12 @@ module sar_adc_logic #(
     input  logic out_n,
 
     output logic [RESOLUTION-1:0] dac_ctrl,
+    output logic [RESOLUTION-1:0] dac_ctrl_b,
     output logic [RESOLUTION-1:0] dout,
     output logic clk_o
 );
 
+    assign dac_ctrl_b = ~dac_ctrl;
     logic rst_n_tree;
     gf180mcu_fd_sc_mcu7t5v0__buf_8 rst_root (
         .I(rst_n),
@@ -79,11 +81,11 @@ module sar_adc_logic #(
 
     logic comp_trigger;
 
-    (* keep = "true" *) logic [260:0] dly_chain;
+    (* keep = "true" *) logic [1:0] dly_chain;
     assign dly_chain[0] = comp_trigger_raw;
 
     generate
-        for (genvar g = 0; g < 260; g++) begin : dly_stage
+        for (genvar g = 0; g < 1; g++) begin : dly_stage
             gf180mcu_fd_sc_mcu7t5v0__buf_1 delay_buf (
                 .I(dly_chain[g]),
                 .Z(dly_chain[g+1])
@@ -91,7 +93,7 @@ module sar_adc_logic #(
         end
 
         gf180mcu_fd_sc_mcu7t5v0__buf_16 comp_trigger_driver (
-            .I(dly_chain[260]),
+            .I(dly_chain[1]),
             .Z(comp_trigger)
         );
     endgenerate
