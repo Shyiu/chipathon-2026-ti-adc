@@ -8,7 +8,7 @@ E {}
 N 880 -1180 880 -1150 {lab=VDD}
 N 1160 -910 1200 -910 {lab=0}
 N 1160 -730 1200 -730 {lab=VDD}
-N 700 -1120 730 -1120 {lab=CLK}
+N 700 -1120 730 -1120 {lab=CLK_N}
 N 700 -1100 730 -1100 {lab=VIN}
 N 1160 -830 1200 -830 {lab=VRef}
 N 1160 -790 1200 -790 {lab=CLK}
@@ -1362,13 +1362,13 @@ Xdly_stage\\[183\\].delay_buf dly_stage\\[183\\].delay_buf/I dly_stage\\[184\\].
 "}
 C {lab_wire.sym} 210 -790 0 0 {name=p10 sig_type=std_logic lab=CLK}
 C {lab_wire.sym} 1160 -830 0 0 {name=p12 sig_type=std_logic lab=VRef}
-C {lab_wire.sym} 700 -1120 0 0 {name=p7 sig_type=std_logic lab=CLK}
+C {lab_wire.sym} 700 -1120 0 0 {name=p7 sig_type=std_logic lab=CLK_N}
 C {lab_wire.sym} 350 -940 0 0 {name=p14 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} 700 -1100 0 0 {name=p4 sig_type=std_logic lab=VIN}
 C {lab_wire.sym} 210 -670 0 0 {name=p6 sig_type=std_logic lab=RST}
 C {lab_pin.sym} -665 -1000 1 0 {name=p28 sig_type=std_logic lab=CLK}
 C {vsource.sym} -665 -930 0 0 {name=V8 
-value= "PULSE(0 3.3 50n 50p 50p 1250n 2500n)"
+value= "PWL(0 3.3 100n 3.3 101n 0 200n 0 201n 3.3 1300n 3.3)"
 savecurrent=false}
 C {gnd.sym} -665 -860 0 0 {name=l9 lab=0}
 C {vsource.sym} -660 -700 0 0 {name=V3 
@@ -1434,7 +1434,7 @@ C {lab_wire.sym} 1540 -1010 2 0 {name=p13 sig_type=std_logic lab=VX_LSB}
 C {lab_wire.sym} 1030 -1030 0 0 {name=p15 sig_type=std_logic lab=VSAMPLE}
 C {lab_pin.sym} -1005 -780 1 0 {name=p5 sig_type=std_logic lab=CLK_N}
 C {vsource.sym} -1005 -710 0 0 {name=V9 
-value= "PULSE(3.3 0 50n 50p 50p 40n 80n)"
+value= "PWL(0 0 100n 0 101n 3.3 200n 3.3 201n 0 1300n 0)"
 savecurrent=false}
 C {gnd.sym} -1005 -640 0 0 {name=l1 lab=0}
 C {lab_wire.sym} 500 -880 2 0 {name=p18 sig_type=std_logic lab=CTRL0}
