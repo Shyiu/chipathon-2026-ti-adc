@@ -24,7 +24,7 @@ def convert_to_gds(
 ):
 
     ly = db.Layout()
-    ly.dbu = 0.001
+    ly.dbu = 0.005  # Set the database unit to 0.005 um (5 nm)
 
     top = ly.create_cell(cellname)
     to_um = db.CplxTrans(ly.dbu)
