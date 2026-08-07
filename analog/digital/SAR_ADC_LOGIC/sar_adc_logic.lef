@@ -38,7 +38,7 @@ MACRO sar_adc_logic
     ANTENNADIFFAREA 9.462399 ;
     PORT
       LAYER Metal3 ;
-        RECT 0.000 144.480 0.560 145.040 ;
+        RECT 149.440 144.480 150.000 145.040 ;
     END
   END clk_o
   PIN dac_ctrl[0]
@@ -47,7 +47,7 @@ MACRO sar_adc_logic
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal3 ;
-        RECT 0.000 19.040 0.560 19.600 ;
+        RECT 149.440 3.360 150.000 3.920 ;
     END
   END dac_ctrl[0]
   PIN dac_ctrl[1]
@@ -56,7 +56,7 @@ MACRO sar_adc_logic
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal3 ;
-        RECT 0.000 26.880 0.560 27.440 ;
+        RECT 149.440 11.200 150.000 11.760 ;
     END
   END dac_ctrl[1]
   PIN dac_ctrl[2]
@@ -65,7 +65,7 @@ MACRO sar_adc_logic
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal3 ;
-        RECT 0.000 34.720 0.560 35.280 ;
+        RECT 149.440 19.040 150.000 19.600 ;
     END
   END dac_ctrl[2]
   PIN dac_ctrl[3]
@@ -74,7 +74,7 @@ MACRO sar_adc_logic
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal3 ;
-        RECT 0.000 42.560 0.560 43.120 ;
+        RECT 149.440 26.880 150.000 27.440 ;
     END
   END dac_ctrl[3]
   PIN dac_ctrl[4]
@@ -83,7 +83,7 @@ MACRO sar_adc_logic
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal3 ;
-        RECT 0.000 50.400 0.560 50.960 ;
+        RECT 149.440 34.720 150.000 35.280 ;
     END
   END dac_ctrl[4]
   PIN dac_ctrl[5]
@@ -92,7 +92,7 @@ MACRO sar_adc_logic
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal3 ;
-        RECT 0.000 58.240 0.560 58.800 ;
+        RECT 149.440 42.560 150.000 43.120 ;
     END
   END dac_ctrl[5]
   PIN dac_ctrl[6]
@@ -101,7 +101,7 @@ MACRO sar_adc_logic
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal3 ;
-        RECT 0.000 66.080 0.560 66.640 ;
+        RECT 149.440 50.400 150.000 50.960 ;
     END
   END dac_ctrl[6]
   PIN dac_ctrl[7]
@@ -110,7 +110,7 @@ MACRO sar_adc_logic
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal3 ;
-        RECT 0.000 73.920 0.560 74.480 ;
+        RECT 149.440 58.240 150.000 58.800 ;
     END
   END dac_ctrl[7]
   PIN dac_ctrl_b[0]
@@ -119,7 +119,7 @@ MACRO sar_adc_logic
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal3 ;
-        RECT 0.000 81.760 0.560 82.320 ;
+        RECT 149.440 66.080 150.000 66.640 ;
     END
   END dac_ctrl_b[0]
   PIN dac_ctrl_b[1]
@@ -128,7 +128,7 @@ MACRO sar_adc_logic
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal3 ;
-        RECT 0.000 89.600 0.560 90.160 ;
+        RECT 149.440 73.920 150.000 74.480 ;
     END
   END dac_ctrl_b[1]
   PIN dac_ctrl_b[2]
@@ -137,7 +137,7 @@ MACRO sar_adc_logic
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal3 ;
-        RECT 0.000 97.440 0.560 98.000 ;
+        RECT 149.440 81.760 150.000 82.320 ;
     END
   END dac_ctrl_b[2]
   PIN dac_ctrl_b[3]
@@ -146,7 +146,7 @@ MACRO sar_adc_logic
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal3 ;
-        RECT 0.000 105.280 0.560 105.840 ;
+        RECT 149.440 89.600 150.000 90.160 ;
     END
   END dac_ctrl_b[3]
   PIN dac_ctrl_b[4]
@@ -155,7 +155,7 @@ MACRO sar_adc_logic
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal3 ;
-        RECT 0.000 113.120 0.560 113.680 ;
+        RECT 149.440 97.440 150.000 98.000 ;
     END
   END dac_ctrl_b[4]
   PIN dac_ctrl_b[5]
@@ -164,7 +164,7 @@ MACRO sar_adc_logic
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal3 ;
-        RECT 0.000 120.960 0.560 121.520 ;
+        RECT 149.440 105.280 150.000 105.840 ;
     END
   END dac_ctrl_b[5]
   PIN dac_ctrl_b[6]
@@ -173,7 +173,7 @@ MACRO sar_adc_logic
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal3 ;
-        RECT 0.000 128.800 0.560 129.360 ;
+        RECT 149.440 113.120 150.000 113.680 ;
     END
   END dac_ctrl_b[6]
   PIN dac_ctrl_b[7]
@@ -182,7 +182,7 @@ MACRO sar_adc_logic
     ANTENNADIFFAREA 0.897600 ;
     PORT
       LAYER Metal3 ;
-        RECT 0.000 136.640 0.560 137.200 ;
+        RECT 149.440 120.960 150.000 121.520 ;
     END
   END dac_ctrl_b[7]
   PIN dout[0]
@@ -190,8 +190,8 @@ MACRO sar_adc_logic
     USE SIGNAL ;
     ANTENNADIFFAREA 0.897600 ;
     PORT
-      LAYER Metal3 ;
-        RECT 149.440 11.200 150.000 11.760 ;
+      LAYER Metal2 ;
+        RECT 11.200 0.000 11.760 0.560 ;
     END
   END dout[0]
   PIN dout[1]
@@ -199,8 +199,8 @@ MACRO sar_adc_logic
     USE SIGNAL ;
     ANTENNADIFFAREA 0.897600 ;
     PORT
-      LAYER Metal3 ;
-        RECT 149.440 29.120 150.000 29.680 ;
+      LAYER Metal2 ;
+        RECT 29.120 0.000 29.680 0.560 ;
     END
   END dout[1]
   PIN dout[2]
@@ -208,8 +208,8 @@ MACRO sar_adc_logic
     USE SIGNAL ;
     ANTENNADIFFAREA 0.897600 ;
     PORT
-      LAYER Metal3 ;
-        RECT 149.440 47.040 150.000 47.600 ;
+      LAYER Metal2 ;
+        RECT 47.040 0.000 47.600 0.560 ;
     END
   END dout[2]
   PIN dout[3]
@@ -217,8 +217,8 @@ MACRO sar_adc_logic
     USE SIGNAL ;
     ANTENNADIFFAREA 0.897600 ;
     PORT
-      LAYER Metal3 ;
-        RECT 149.440 64.960 150.000 65.520 ;
+      LAYER Metal2 ;
+        RECT 64.960 0.000 65.520 0.560 ;
     END
   END dout[3]
   PIN dout[4]
@@ -226,8 +226,8 @@ MACRO sar_adc_logic
     USE SIGNAL ;
     ANTENNADIFFAREA 0.897600 ;
     PORT
-      LAYER Metal3 ;
-        RECT 149.440 82.880 150.000 83.440 ;
+      LAYER Metal2 ;
+        RECT 82.880 0.000 83.440 0.560 ;
     END
   END dout[4]
   PIN dout[5]
@@ -235,8 +235,8 @@ MACRO sar_adc_logic
     USE SIGNAL ;
     ANTENNADIFFAREA 0.897600 ;
     PORT
-      LAYER Metal3 ;
-        RECT 149.440 100.800 150.000 101.360 ;
+      LAYER Metal2 ;
+        RECT 100.800 0.000 101.360 0.560 ;
     END
   END dout[5]
   PIN dout[6]
@@ -244,8 +244,8 @@ MACRO sar_adc_logic
     USE SIGNAL ;
     ANTENNADIFFAREA 0.897600 ;
     PORT
-      LAYER Metal3 ;
-        RECT 149.440 118.720 150.000 119.280 ;
+      LAYER Metal2 ;
+        RECT 118.720 0.000 119.280 0.560 ;
     END
   END dout[6]
   PIN dout[7]
@@ -253,8 +253,8 @@ MACRO sar_adc_logic
     USE SIGNAL ;
     ANTENNADIFFAREA 0.897600 ;
     PORT
-      LAYER Metal3 ;
-        RECT 149.440 136.640 150.000 137.200 ;
+      LAYER Metal2 ;
+        RECT 136.640 0.000 137.200 0.560 ;
     END
   END dout[7]
   PIN out_n
@@ -263,7 +263,7 @@ MACRO sar_adc_logic
     ANTENNAGATEAREA 0.396000 ;
     PORT
       LAYER Metal3 ;
-        RECT 0.000 11.200 0.560 11.760 ;
+        RECT 149.440 136.640 150.000 137.200 ;
     END
   END out_n
   PIN out_p
@@ -272,7 +272,7 @@ MACRO sar_adc_logic
     ANTENNAGATEAREA 0.498500 ;
     PORT
       LAYER Metal3 ;
-        RECT 0.000 3.360 0.560 3.920 ;
+        RECT 149.440 128.800 150.000 129.360 ;
     END
   END out_p
   PIN rst_n
@@ -285,65 +285,125 @@ MACRO sar_adc_logic
     END
   END rst_n
   OBS
+      LAYER Pwell ;
+        RECT 6.290 131.520 143.230 133.710 ;
       LAYER Nwell ;
-        RECT 6.290 15.250 143.230 133.710 ;
+        RECT 6.290 127.200 143.230 131.520 ;
+      LAYER Pwell ;
+        RECT 6.290 123.680 143.230 127.200 ;
+      LAYER Nwell ;
+        RECT 6.290 119.360 143.230 123.680 ;
+      LAYER Pwell ;
+        RECT 6.290 115.840 143.230 119.360 ;
+      LAYER Nwell ;
+        RECT 6.290 111.520 143.230 115.840 ;
+      LAYER Pwell ;
+        RECT 6.290 108.000 143.230 111.520 ;
+      LAYER Nwell ;
+        RECT 6.290 103.680 143.230 108.000 ;
+      LAYER Pwell ;
+        RECT 6.290 100.160 143.230 103.680 ;
+      LAYER Nwell ;
+        RECT 6.290 95.840 143.230 100.160 ;
+      LAYER Pwell ;
+        RECT 6.290 92.320 143.230 95.840 ;
+      LAYER Nwell ;
+        RECT 6.290 88.000 143.230 92.320 ;
+      LAYER Pwell ;
+        RECT 6.290 84.480 143.230 88.000 ;
+      LAYER Nwell ;
+        RECT 6.290 80.160 143.230 84.480 ;
+      LAYER Pwell ;
+        RECT 6.290 76.640 143.230 80.160 ;
+      LAYER Nwell ;
+        RECT 6.290 72.320 143.230 76.640 ;
+      LAYER Pwell ;
+        RECT 6.290 68.800 143.230 72.320 ;
+      LAYER Nwell ;
+        RECT 6.290 64.480 143.230 68.800 ;
+      LAYER Pwell ;
+        RECT 6.290 60.960 143.230 64.480 ;
+      LAYER Nwell ;
+        RECT 6.290 56.640 143.230 60.960 ;
+      LAYER Pwell ;
+        RECT 6.290 53.120 143.230 56.640 ;
+      LAYER Nwell ;
+        RECT 6.290 48.800 143.230 53.120 ;
+      LAYER Pwell ;
+        RECT 6.290 45.280 143.230 48.800 ;
+      LAYER Nwell ;
+        RECT 6.290 40.960 143.230 45.280 ;
+      LAYER Pwell ;
+        RECT 6.290 37.440 143.230 40.960 ;
+      LAYER Nwell ;
+        RECT 6.290 33.120 143.230 37.440 ;
+      LAYER Pwell ;
+        RECT 6.290 29.600 143.230 33.120 ;
+      LAYER Nwell ;
+        RECT 6.290 25.280 143.230 29.600 ;
+      LAYER Pwell ;
+        RECT 6.290 21.760 143.230 25.280 ;
+      LAYER Nwell ;
+        RECT 6.290 17.440 143.230 21.760 ;
+      LAYER Pwell ;
+        RECT 6.290 15.250 143.230 17.440 ;
       LAYER Metal1 ;
         RECT 6.720 15.380 142.800 133.580 ;
       LAYER Metal2 ;
-        RECT 7.420 149.140 36.660 149.440 ;
+        RECT 7.980 149.140 36.660 149.440 ;
         RECT 37.820 149.140 111.700 149.440 ;
-        RECT 112.860 149.140 141.540 149.440 ;
-        RECT 7.420 3.450 141.540 149.140 ;
+        RECT 112.860 149.140 149.940 149.440 ;
+        RECT 7.980 0.860 149.940 149.140 ;
+        RECT 7.980 0.560 10.900 0.860 ;
+        RECT 12.060 0.560 28.820 0.860 ;
+        RECT 29.980 0.560 46.740 0.860 ;
+        RECT 47.900 0.560 64.660 0.860 ;
+        RECT 65.820 0.560 82.580 0.860 ;
+        RECT 83.740 0.560 100.500 0.860 ;
+        RECT 101.660 0.560 118.420 0.860 ;
+        RECT 119.580 0.560 136.340 0.860 ;
+        RECT 137.500 0.560 149.940 0.860 ;
       LAYER Metal3 ;
-        RECT 0.860 144.180 149.440 144.900 ;
-        RECT 0.560 137.500 149.440 144.180 ;
-        RECT 0.860 136.340 149.140 137.500 ;
-        RECT 0.560 129.660 149.440 136.340 ;
-        RECT 0.860 128.500 149.440 129.660 ;
-        RECT 0.560 121.820 149.440 128.500 ;
-        RECT 0.860 120.660 149.440 121.820 ;
-        RECT 0.560 119.580 149.440 120.660 ;
-        RECT 0.560 118.420 149.140 119.580 ;
-        RECT 0.560 113.980 149.440 118.420 ;
-        RECT 0.860 112.820 149.440 113.980 ;
-        RECT 0.560 106.140 149.440 112.820 ;
-        RECT 0.860 104.980 149.440 106.140 ;
-        RECT 0.560 101.660 149.440 104.980 ;
-        RECT 0.560 100.500 149.140 101.660 ;
-        RECT 0.560 98.300 149.440 100.500 ;
-        RECT 0.860 97.140 149.440 98.300 ;
-        RECT 0.560 90.460 149.440 97.140 ;
-        RECT 0.860 89.300 149.440 90.460 ;
-        RECT 0.560 83.740 149.440 89.300 ;
-        RECT 0.560 82.620 149.140 83.740 ;
-        RECT 0.860 82.580 149.140 82.620 ;
-        RECT 0.860 81.460 149.440 82.580 ;
-        RECT 0.560 74.780 149.440 81.460 ;
-        RECT 0.860 73.620 149.440 74.780 ;
-        RECT 0.560 66.940 149.440 73.620 ;
-        RECT 0.860 65.820 149.440 66.940 ;
-        RECT 0.860 65.780 149.140 65.820 ;
-        RECT 0.560 64.660 149.140 65.780 ;
-        RECT 0.560 59.100 149.440 64.660 ;
-        RECT 0.860 57.940 149.440 59.100 ;
-        RECT 0.560 51.260 149.440 57.940 ;
-        RECT 0.860 50.100 149.440 51.260 ;
-        RECT 0.560 47.900 149.440 50.100 ;
-        RECT 0.560 46.740 149.140 47.900 ;
-        RECT 0.560 43.420 149.440 46.740 ;
-        RECT 0.860 42.260 149.440 43.420 ;
-        RECT 0.560 35.580 149.440 42.260 ;
-        RECT 0.860 34.420 149.440 35.580 ;
-        RECT 0.560 29.980 149.440 34.420 ;
-        RECT 0.560 28.820 149.140 29.980 ;
-        RECT 0.560 27.740 149.440 28.820 ;
-        RECT 0.860 26.580 149.440 27.740 ;
-        RECT 0.560 19.900 149.440 26.580 ;
-        RECT 0.860 18.740 149.440 19.900 ;
-        RECT 0.560 12.060 149.440 18.740 ;
-        RECT 0.860 10.900 149.140 12.060 ;
-        RECT 0.560 4.220 149.440 10.900 ;
-        RECT 0.860 3.500 149.440 4.220 ;
+        RECT 7.930 144.180 149.140 144.900 ;
+        RECT 7.930 137.500 149.990 144.180 ;
+        RECT 7.930 136.340 149.140 137.500 ;
+        RECT 7.930 129.660 149.990 136.340 ;
+        RECT 7.930 128.500 149.140 129.660 ;
+        RECT 7.930 121.820 149.990 128.500 ;
+        RECT 7.930 120.660 149.140 121.820 ;
+        RECT 7.930 113.980 149.990 120.660 ;
+        RECT 7.930 112.820 149.140 113.980 ;
+        RECT 7.930 106.140 149.990 112.820 ;
+        RECT 7.930 104.980 149.140 106.140 ;
+        RECT 7.930 98.300 149.990 104.980 ;
+        RECT 7.930 97.140 149.140 98.300 ;
+        RECT 7.930 90.460 149.990 97.140 ;
+        RECT 7.930 89.300 149.140 90.460 ;
+        RECT 7.930 82.620 149.990 89.300 ;
+        RECT 7.930 81.460 149.140 82.620 ;
+        RECT 7.930 74.780 149.990 81.460 ;
+        RECT 7.930 73.620 149.140 74.780 ;
+        RECT 7.930 66.940 149.990 73.620 ;
+        RECT 7.930 65.780 149.140 66.940 ;
+        RECT 7.930 59.100 149.990 65.780 ;
+        RECT 7.930 57.940 149.140 59.100 ;
+        RECT 7.930 51.260 149.990 57.940 ;
+        RECT 7.930 50.100 149.140 51.260 ;
+        RECT 7.930 43.420 149.990 50.100 ;
+        RECT 7.930 42.260 149.140 43.420 ;
+        RECT 7.930 35.580 149.990 42.260 ;
+        RECT 7.930 34.420 149.140 35.580 ;
+        RECT 7.930 27.740 149.990 34.420 ;
+        RECT 7.930 26.580 149.140 27.740 ;
+        RECT 7.930 19.900 149.990 26.580 ;
+        RECT 7.930 18.740 149.140 19.900 ;
+        RECT 7.930 12.060 149.990 18.740 ;
+        RECT 7.930 10.900 149.140 12.060 ;
+        RECT 7.930 4.220 149.990 10.900 ;
+        RECT 7.930 3.060 149.140 4.220 ;
+        RECT 7.930 0.700 149.990 3.060 ;
+      LAYER Metal4 ;
+        RECT 126.140 38.170 129.780 61.510 ;
   END
 END sar_adc_logic
 END LIBRARY
