@@ -65,10 +65,7 @@ N -890 -530 -890 -490 {lab=VCM}
 N -890 -430 -890 -390 {lab=0}
 N -50 -830 -50 -770 {lab=CLK_O}
 N -50 -830 210 -830 {lab=CLK_O}
-N 150 -720 190 -690 {lab=OUTP}
-N 190 -690 210 -690 {lab=OUTP}
-N 150 -680 190 -670 {lab=OUTN}
-N 190 -670 210 -670 {lab=OUTN}
+N 190 -670 210 -670 {lab=OUTP}
 N 1030 -1100 1030 -950 {lab=VSAMPLE}
 N 1030 -950 1200 -950 {lab=VSAMPLE}
 N 900 -880 1090 -1010 {lab=#net1}
@@ -146,6 +143,8 @@ N 490 -580 510 -590 {lab=#net8}
 N 510 -590 750 -590 {lab=#net8}
 N 750 -740 750 -590 {lab=#net8}
 N 750 -740 900 -740 {lab=#net8}
+N 150 -680 210 -690 {lab=OUTN}
+N 150 -720 190 -670 {lab=OUTP}
 C {lab_wire.sym} 880 -1180 0 0 {name=p1 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} 1130 -710 0 0 {name=p2 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} -20 -760 1 0 {name=p9 sig_type=std_logic lab=VDD}
