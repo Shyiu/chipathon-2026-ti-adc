@@ -2,11 +2,10 @@
 * SPICE Wrapper for OpenLane Synthesized sar_adc_logic
 * -----------------------------------------------------------------------------
 
-* 1. Include the raw OpenLane netlist you provided 
-.include "/foss/designs/chipathon-2026-ti-adc/analog/digital/SAR_ADC_LOGIC/sar_adc_logic.spice
+* 1. Include the raw OpenLane netlist (fixed missing closing quote)
+.include "/foss/designs/chipathon-2026-ti-adc/analog/digital/SAR_ADC_LOGIC/sar_adc_logic.spice"
 
-* 2. Define the Wrapper Interface (This matches your Xschem Symbol's pins)
-*    Buses are expanded MSB [7] down to LSB [0].
+* 2. Define the Wrapper Interface (Matches your Xschem Symbol's pins)
 .subckt sar_adc_logic_wrapper 
 + rst_n clk_i out_p out_n 
 + phi_top phi_top_n phi_bottom phi_bottom_n 
@@ -15,7 +14,9 @@
 + d_out[7] d_out[6] d_out[5] d_out[4] d_out[3] d_out[2] d_out[1] d_out[0] 
 + clk_o VDD VSS
 
-    * 3. Instantiate the OpenLane netlist using ITS exact scrambled pin order
+    * 3. Instantiate OpenLane netlist matching its exact SPICE pin order:
+    *    VDD, VSS, clk_i, clk_o, d_ctrl[0..7], d_ctrl_n[0..7], d_out[0..7], 
+    *    out_n, out_p, phi_bottom, phi_bottom_n, phi_top, phi_top_n, rst_n
     Xdigital_core
     + VDD 
     + VSS 
