@@ -1,6 +1,6 @@
 # 1. Base Clocks
 create_clock -name clk_i -period 40.0 [get_ports clk_i]
-create_clock -name valid_clk -period 5.5 [get_pins valid_clk_xor/Z]
+create_clock -name valid_clk -period 10 [get_pins valid_clk_xor/Z]
 
 # 2. Generated Clock for the Output Register
 create_generated_clock -name eoc_clk -source [get_pins valid_clk_xor/Z] -divide_by 9 [get_nets eoc]

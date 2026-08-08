@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1786151185" />
+    <testcase name="simulate_sar_adc" classname="test_sar" file="/foss/designs/chipathon-2026-ti-adc/src/sar_adc_logic/tb/test_sar.py" lineno="91" time="8.797645568847656e-05" sim_time_ns="0.0" ratio_time="0.0" />
+  </testsuite>
+</testsuites>

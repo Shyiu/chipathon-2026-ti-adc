@@ -1,7 +1,7 @@
 `timescale 1ns / 1ps
 
 module sar_adc_logic #(
-    parameter int RESOLUTION      = 8,   // number of SAR bits
+    parameter int RESOLUTION      = 8,     // number of SAR bits
     parameter int NUM_DELAY_CELLS = 260    // buffer stages in the comparator-strobe delay chain
 )(
     input  logic rst_n,
@@ -11,7 +11,9 @@ module sar_adc_logic #(
     input  logic out_n,              // comparator: guess too low
 
     output logic phi_top,            // top-plate switch enable (opens first)
+    output logic phi_top_n,
     output logic phi_bottom,         // bottom-plate TG enable (opens second)
+    output logic phi_bottom_n,
 
     output logic [RESOLUTION-1:0] d_ctrl,    // live trial code driving the CDAC
     output logic [RESOLUTION-1:0] d_ctrl_n,  // complementary code (TG/PMOS legs)
@@ -19,8 +21,6 @@ module sar_adc_logic #(
 
     output logic clk_o               // strobes the external comparator
 );
-
-    localparam int CTR_W = $clog2(RESOLUTION);
 
     // ------------------------------------------------------------
     // Reset tree
@@ -47,6 +47,7 @@ module sar_adc_logic #(
         .ZN(phi_top_int)
     );
     assign phi_top = phi_top_int;
+    assign phi_top_n = ~phi_top_int;
 
     logic [2:0] dead_time_dly;
     assign dead_time_dly[0] = phi_top_int;
@@ -77,7 +78,7 @@ module sar_adc_logic #(
     );
 
     // ------------------------------------------------------------
-    // Bit sequencer.
+    // Bit sequencer (One-Hot Mask)
     // rst_cond is high any time the array is still tracking
     // (phi_bottom low) or global reset is asserted. While rst_cond
     // is high, sar_reg is continuously held at the initial trial
@@ -85,27 +86,25 @@ module sar_adc_logic #(
     // word is already sitting there, no extra delay stage required.
     // ------------------------------------------------------------
     logic rst_cond;
-    assign rst_cond = ~rst_n_tree | ~phi_bottom;
+    assign rst_cond = ~rst_n_tree | phi_bottom;
 
-    logic [CTR_W-1:0]       bit_idx;
+    logic [RESOLUTION-1:0]  mask;
     logic [RESOLUTION-1:0]  sar_reg;
     logic                   last_bit;
     logic                   eoc;
     logic                   done;
 
-    assign last_bit = (bit_idx == '0);
+    assign last_bit = mask[0];
     assign eoc      = last_bit & valid_clk;
 
     always_ff @(posedge valid_clk or posedge rst_cond) begin
         if (rst_cond) begin
-            bit_idx <= RESOLUTION - 1;
+            mask    <= {1'b1, {(RESOLUTION-1){1'b0}}};
             sar_reg <= {1'b1, {(RESOLUTION-1){1'b0}}};
         end else begin
-            if (out_p) sar_reg[bit_idx] <= 1'b0;   // guess too high, clear this bit
-            if (!last_bit) begin
-                bit_idx            <= bit_idx - 1'b1;
-                sar_reg[bit_idx-1] <= 1'b1;         // set next bit's trial
-            end
+            mask <= mask >> 1;
+            // Clear current bit if out_p is high, else keep it. Then set the next bit.
+            sar_reg <= (out_p ? (sar_reg & ~mask) : sar_reg) | (mask >> 1);
         end
     end
 
@@ -133,17 +132,18 @@ module sar_adc_logic #(
     // delay exceeds worst-case CDAC settling time -- before
     // strobing the comparator as clk_o.
     // ------------------------------------------------------------
-    logic phi_bottom_n;
+    logic phi_bottom_neg;
+    assign phi_bottom_n = phi_bottom_neg;
     gf180mcu_fd_sc_mcu7t5v0__inv_1 phi_bottom_inv (
         .I(phi_bottom),
-        .ZN(phi_bottom_n)
+        .ZN(phi_bottom_neg)
     );
 
     logic comp_trigger_raw;
     gf180mcu_fd_sc_mcu7t5v0__nor3_4 comp_trigger_nor (
         .A1(valid_clk),
         .A2(done),
-        .A3(phi_bottom_n),
+        .A3(phi_bottom_neg),
         .ZN(comp_trigger_raw)
     );
 
