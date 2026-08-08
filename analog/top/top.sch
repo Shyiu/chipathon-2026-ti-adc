@@ -6,8 +6,8 @@ S {}
 F {}
 E {}
 N 880 -1180 880 -1150 {lab=VDD}
-N 700 -1120 730 -1120 {lab=phi_bottom}
-N 700 -1100 730 -1100 {lab=VIN}
+N 700 -1100 730 -1100 {lab=phi_bottom}
+N 700 -1080 730 -1080 {lab=VIN}
 N -20 -640 -20 -620 {lab=0}
 N 100 -720 150 -720 {lab=OUTP}
 N 880 -1050 880 -1020 {lab=0}
@@ -145,6 +145,7 @@ N 750 -740 750 -590 {lab=#net8}
 N 750 -740 900 -740 {lab=#net8}
 N 150 -680 210 -690 {lab=OUTN}
 N 150 -720 190 -670 {lab=OUTP}
+N 700 -1120 730 -1120 {lab=phi_bottom}
 C {lab_wire.sym} 880 -1180 0 0 {name=p1 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} 1130 -710 0 0 {name=p2 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} -20 -760 1 0 {name=p9 sig_type=std_logic lab=VDD}
@@ -152,9 +153,9 @@ C {code_shown.sym} 10 -1390 0 0 {name=s2 only_toplevel=false
 value=".include /foss/designs/chipathon-2026-ti-adc/analog/digital/SAR_ADC_LOGIC/sar_adc_logic.spice"}
 C {lab_wire.sym} 150 -910 0 0 {name=p10 sig_type=std_logic lab=CLK}
 C {lab_wire.sym} 1160 -830 0 0 {name=p12 sig_type=std_logic lab=VRef}
-C {lab_wire.sym} 700 -1120 0 0 {name=p7 sig_type=std_logic lab=phi_bottom}
+C {lab_wire.sym} 700 -1100 0 0 {name=p7 sig_type=std_logic lab=phi_bottom}
 C {lab_wire.sym} 350 -940 0 0 {name=p14 sig_type=std_logic lab=VDD}
-C {lab_wire.sym} 700 -1100 0 0 {name=p4 sig_type=std_logic lab=VIN}
+C {lab_wire.sym} 700 -1080 0 0 {name=p4 sig_type=std_logic lab=VIN}
 C {lab_wire.sym} 210 -650 0 0 {name=p6 sig_type=std_logic lab=RST}
 C {lab_pin.sym} -665 -1000 1 0 {name=p28 sig_type=std_logic lab=CLK}
 C {vsource.sym} -665 -930 0 0 {name=V8 
@@ -256,7 +257,8 @@ C {lab_wire.sym} 1200 -590 0 0 {name=p40 sig_type=std_logic lab=phi_bottom}
 C {lab_wire.sym} 1200 -570 0 0 {name=p50 sig_type=std_logic lab=phi_bottom_n}
 C {lab_wire.sym} 1200 -770 0 0 {name=p51 sig_type=std_logic lab=phi_top}
 C {lab_wire.sym} 1160 -790 0 0 {name=p8 sig_type=std_logic lab=phi_top_n}
-C {proj_branch/chipathon-2026-ti-adc/analog/blocks/transmission_gate/transmission_gate.sym} 880 -1100 0 0 {name=x2}
 C {chipathon-2026-ti-adc/analog/blocks/cdac/caps2.sym} 1350 -750 0 0 {name=x3}
 C {chipathon-2026-ti-adc/analog/digital/SAR_ADC_LOGIC/sar_logic.sym} 340 -730 0 0 {name=X1}
 C {chipathon-2026-ti-adc/analog/blocks/Double_Tail_Comparator/realcomp.sym} -20 -700 0 0 {name=x4}
+C {chipathon-2026-ti-adc/analog/blocks/transmission_gate/transmission_gate.sym} 880 -1100 0 0 {name=x2}
+C {lab_wire.sym} 700 -1120 0 0 {name=p17 sig_type=std_logic lab=phi_bottom_n}
