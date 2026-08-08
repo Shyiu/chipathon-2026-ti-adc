@@ -167,12 +167,12 @@ savecurrent=false}
 C {gnd.sym} -660 -630 0 0 {name=l3 lab=0}
 C {lab_pin.sym} -660 -770 1 0 {name=p30 sig_type=std_logic lab=VDD}
 C {vsource.sym} -550 -700 0 0 {name=V1 
-value="PULSE(0 3.3 10 1n 1n 1G 2G)"
+value="PULSE(0 3.3 50n 1n 1n 1G 2G)"
 savecurrent=false}
 C {gnd.sym} -550 -630 0 0 {name=l2 lab=0}
 C {lab_pin.sym} -550 -770 1 0 {name=p16 sig_type=std_logic lab=RST}
 C {vsource.sym} -850 -930 0 0 {name=V6 
-value=1.5
+value=0.45
 savecurrent=false}
 C {lab_pin.sym} -850 -1000 1 0 {name=p19 sig_type=std_logic lab=VIN}
 C {gnd.sym} -850 -860 0 0 {name=l6 lab=0}
@@ -203,7 +203,7 @@ value="
 run
 wrdata trans_gate.txt v(vin) v(vsample) v(clk) v(phi_bottom)
 wrdata comparator.txt v(clk_o) v(outp) v(outn) v(clk)
-wrdata logic.txt v(ctrl0) v(ctrl1) v(ctrl2) v(ctrl3) v(ctrl4) v(ctrl5) v(ctrl6) v(ctrl7) v(dout0) v(dout1) v(dout2) v(dout3) v(dout4) v(dout5) v(dout6) v(dout7) v(clk) v(phi_top) v(phi_bottom)
+wrdata logic.txt v(ctrl0) v(ctrl1) v(ctrl2) v(ctrl3) v(ctrl4) v(ctrl5) v(ctrl6) v(ctrl7) v(dout0) v(dout1) v(dout2) v(dout3) v(dout4) v(dout5) v(dout6) v(dout7) v(clk) v(phi_top) v(phi_bottom) v(rst)
 wrdata cdac.txt v(vref) v(vx) v(vcm) v(vsample) v(phi_top) v(phi_bottom)
 .endc
 "}
@@ -242,7 +242,7 @@ C {lab_wire.sym} 1160 -910 0 0 {name=p43 sig_type=std_logic lab=VDD}
 C {gnd.sym} 1200 -610 1 0 {name=l12 lab=0}
 C {gnd.sym} 1160 -730 1 0 {name=l13 lab=0}
 C {vsource.sym} -890 -460 0 0 {name=V4 
-value=1.65
+value=0.9
 savecurrent=false}
 C {gnd.sym} -890 -390 0 0 {name=l14 lab=0}
 C {lab_pin.sym} -890 -530 1 0 {name=p41 sig_type=std_logic lab=VCM}

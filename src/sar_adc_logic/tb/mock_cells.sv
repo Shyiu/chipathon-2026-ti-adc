@@ -13,3 +13,7 @@ module gf180mcu_fd_sc_mcu7t5v0__nor3_4 (input A1, input A2, input A3, output ZN)
 module gf180mcu_fd_sc_mcu7t5v0__buf_1 (input I, output Z); 
     assign #1 Z = I; 
 endmodule
+
+module gf180mcu_fd_sc_mcu7t5v0__dlyd_1 (input I, output Z); 
+    assign #1 Z = I; 
+endmodule

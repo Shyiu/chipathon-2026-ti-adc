@@ -2,7 +2,7 @@
 
 module sar_adc_logic #(
     parameter int RESOLUTION      = 8,     // number of SAR bits
-    parameter int NUM_DELAY_CELLS = 260    // buffer stages in the comparator-strobe delay chain
+    parameter int NUM_DELAY_CELLS = 145    // buffer stages in the comparator-strobe delay chain
 )(
     input  logic rst_n,
     input  logic clk_i,              // 25MHz phi: high = convert, low = track
@@ -21,15 +21,6 @@ module sar_adc_logic #(
 
     output logic clk_o               // strobes the external comparator
 );
-
-    // ------------------------------------------------------------
-    // Reset tree
-    // ------------------------------------------------------------
-    logic rst_n_tree;
-    gf180mcu_fd_sc_mcu7t5v0__buf_8 rst_root (
-        .I(rst_n),
-        .Z(rst_n_tree)
-    );
 
     // ------------------------------------------------------------
     // Non-overlap generator.
@@ -67,8 +58,7 @@ module sar_adc_logic #(
     );
 
     // ------------------------------------------------------------
-    // Comparator decision detect: valid_clk goes high once the
-    // comparator has resolved (exactly one of out_p/out_n is set).
+    // Comparator decision detect
     // ------------------------------------------------------------
     logic valid_clk;
     gf180mcu_fd_sc_mcu7t5v0__xor2_4 valid_clk_xor (
@@ -77,11 +67,19 @@ module sar_adc_logic #(
         .Z(valid_clk)
     );
 
+    // DELAYED CLOCK FIX: Wait for SAR combinational logic to settle 
+    // before clocking the SAR register to prevent Setup/Hold violations
+    logic seq_clk;
+    gf180mcu_fd_sc_mcu7t5v0__dlyd_1 clock_delay_buffer (
+        .I(valid_clk),
+        .Z(seq_clk)
+    );
+
     // ------------------------------------------------------------
     // Bit sequencer (N+1 One-Hot Mask)
     // ------------------------------------------------------------
     logic rst_cond;
-    assign rst_cond = ~rst_n_tree | phi_bottom;
+    assign rst_cond = ~rst_n | phi_bottom;
 
     // Use a 9-bit mask for 8-bit resolution. 
     // The '1' drops into mask[0] to synchronously trigger EOC.
@@ -91,7 +89,8 @@ module sar_adc_logic #(
 
     assign eoc = mask[0];
 
-    always_ff @(posedge valid_clk or posedge rst_cond) begin
+    // UPDATED: Now driven by the delayed clock (seq_clk) instead of valid_clk
+    always_ff @(posedge seq_clk or posedge rst_cond) begin
         if (rst_cond) begin
             mask    <= {1'b1, {RESOLUTION{1'b0}}};     // e.g. 9'b1_0000_0000
             sar_reg <= {1'b1, {(RESOLUTION-1){1'b0}}}; // e.g. 8'b1000_0000
@@ -103,8 +102,8 @@ module sar_adc_logic #(
     end
 
     // d_out perfectly latches the moment mask[0] becomes 1
-    always_ff @(posedge eoc or negedge rst_n_tree) begin
-        if (!rst_n_tree) d_out <= '0;
+    always_ff @(posedge eoc or negedge rst_n) begin
+        if (!rst_n) d_out <= '0;
         else             d_out <= sar_reg;
     end
 
@@ -122,6 +121,8 @@ module sar_adc_logic #(
     );
 
     logic comp_trigger_raw;
+    // NOTE: Keep valid_clk here (not seq_clk) to avoid adding unwanted 
+    // delay to the strobe generator ring oscillator
     gf180mcu_fd_sc_mcu7t5v0__nor3_4 comp_trigger_nor (
         .A1(valid_clk),
         .A2(eoc),

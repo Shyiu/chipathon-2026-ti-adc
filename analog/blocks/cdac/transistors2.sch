@@ -44,7 +44,7 @@ N 140 220 180 220 {lab=phi_s}
 N 450 -30 700 -30 {lab=Vin}
 N 450 30 700 30 {lab=sw_node}
 N 630 0 700 -0 {lab=GND}
-N 740 0 800 0 {lab=phi_s}
+N 740 0 800 0 {lab=phi_s_b}
 C {symbols/pfet_03v3.sym} 0 -20 0 0 {name=M4
 L=0.28u
 W=0.22u
@@ -182,4 +182,4 @@ model=nfet_03v3
 spiceprefix=X
 }
 C {lab_wire.sym} 630 0 0 0 {name=p25 sig_type=std_logic lab=GND}
-C {lab_wire.sym} 800 0 2 0 {name=p26 sig_type=std_logic lab=phi_s}
+C {lab_wire.sym} 800 0 2 0 {name=p26 sig_type=std_logic lab=phi_s_b}
