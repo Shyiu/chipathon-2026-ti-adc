@@ -55,4 +55,4 @@ tran 2n 30n
 plot v(OUTP) v(OUTN) v(INP) v(INN) v(CLK)
 .endc
 "}
-C {proj_branch/chipathon-2026-ti-adc/analog/blocks/Double_Tail_Comparator/realcomp.sym} 0 -10 0 0 {name=x1}
+C {chipathon-2026-ti-adc/analog/blocks/Double_Tail_Comparator/realcomp.sym} 0 -10 0 0 {name=x1}

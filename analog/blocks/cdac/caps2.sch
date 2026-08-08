@@ -37,12 +37,11 @@ N 900 -220 900 -200 {lab=#net8}
 N 690 -200 690 -70 {lab=#net7}
 N -250 -550 -250 -530 {lab=GND}
 N -230 -550 -230 -530 {lab=Vin}
-N -190 -550 -190 -530 {lab=phi_s}
+N -190 -550 -190 -530 {lab=~phi_b}
 N -170 -550 -170 -530 {lab=Dx_b<0>}
 N -150 -550 -150 -530 {lab=Dx<0>}
 N -130 -550 -130 -530 {lab=VREF}
-N -110 -550 -110 -530 {lab=VDD}
-N -190 -570 -190 -550 {lab=phi_s}
+N -190 -570 -190 -550 {lab=~phi_b}
 N -150 -570 -150 -550 {lab=Dx<0>}
 N 990 -90 990 -70 {lab=Vx}
 N 860 -90 860 -70 {lab=Vx}
@@ -97,97 +96,87 @@ N 1070 -220 1070 -200 {lab=#net10}
 N 1050 -200 1070 -200 {lab=#net10}
 N 1050 -200 1050 -170 {lab=#net10}
 N 420 -200 420 -170 {lab=Vx_lsb}
-N -210 -550 -210 -530 {lab=phi_s_b}
-N -10 -550 -10 -530 {lab=GND}
-N 10 -550 10 -530 {lab=Vin}
-N 50 -550 50 -530 {lab=phi_s}
-N 70 -550 70 -530 {lab=Dx_b<2>}
-N 90 -550 90 -530 {lab=Dx<2>}
-N 110 -550 110 -530 {lab=VREF}
-N 130 -550 130 -530 {lab=VDD}
-N 50 -570 50 -550 {lab=phi_s}
-N 90 -570 90 -550 {lab=Dx<2>}
-N 30 -550 30 -530 {lab=phi_s_b}
+N -210 -550 -210 -530 {lab=phi_b}
 N 140 240 140 260 {lab=GND}
 N 120 240 120 260 {lab=Vin}
-N 80 240 80 260 {lab=phi_s}
+N 80 240 80 260 {lab=~phi_b}
 N 60 240 60 260 {lab=Dx_b<1>}
 N 40 240 40 260 {lab=Dx<1>}
 N 20 240 20 260 {lab=VREF}
 N 0 240 0 260 {lab=VDD}
-N 80 260 80 280 {lab=phi_s}
+N 80 260 80 280 {lab=~phi_b}
 N 40 260 40 280 {lab=Dx<1>}
-N 100 240 100 260 {lab=phi_s_b}
+N 100 240 100 260 {lab=phi_b}
 N 320 240 320 260 {lab=GND}
 N 300 240 300 260 {lab=Vin}
-N 260 240 260 260 {lab=phi_s}
+N 260 240 260 260 {lab=~phi_b}
 N 240 240 240 260 {lab=Dx_b<3>}
 N 220 240 220 260 {lab=Dx<3>}
 N 200 240 200 260 {lab=VREF}
 N 180 240 180 260 {lab=VDD}
-N 260 260 260 280 {lab=phi_s}
+N 260 260 260 280 {lab=~phi_b}
 N 220 260 220 280 {lab=Dx<3>}
-N 280 240 280 260 {lab=phi_s_b}
+N 280 240 280 260 {lab=phi_b}
 N 260 -550 260 -530 {lab=GND}
 N 280 -550 280 -530 {lab=Vin}
-N 320 -550 320 -530 {lab=phi_s}
+N 320 -550 320 -530 {lab=~phi_b}
 N 340 -550 340 -530 {lab=Dx_b<4>}
 N 360 -550 360 -530 {lab=Dx<4>}
 N 380 -550 380 -530 {lab=VREF}
 N 400 -550 400 -530 {lab=VDD}
-N 320 -570 320 -550 {lab=phi_s}
+N 320 -570 320 -550 {lab=~phi_b}
 N 360 -570 360 -550 {lab=Dx<4>}
-N 300 -550 300 -530 {lab=phi_s_b}
+N 300 -550 300 -530 {lab=phi_b}
 N 510 -550 510 -530 {lab=GND}
 N 530 -550 530 -530 {lab=Vin}
-N 570 -550 570 -530 {lab=phi_s}
+N 570 -550 570 -530 {lab=~phi_b}
 N 590 -550 590 -530 {lab=Dx_b<5>}
 N 610 -550 610 -530 {lab=Dx<5>}
 N 630 -550 630 -530 {lab=VREF}
 N 650 -550 650 -530 {lab=VDD}
-N 570 -570 570 -550 {lab=phi_s}
+N 570 -570 570 -550 {lab=~phi_b}
 N 610 -570 610 -550 {lab=Dx<5>}
-N 550 -550 550 -530 {lab=phi_s_b}
+N 550 -550 550 -530 {lab=phi_b}
 N 830 230 830 250 {lab=GND}
 N 810 230 810 250 {lab=Vin}
-N 770 230 770 250 {lab=phi_s}
+N 770 230 770 250 {lab=~phi_b}
 N 750 230 750 250 {lab=Dx_b<6>}
 N 730 230 730 250 {lab=Dx<6>}
 N 710 230 710 250 {lab=VREF}
 N 690 230 690 250 {lab=VDD}
-N 770 250 770 270 {lab=phi_s}
+N 770 250 770 270 {lab=~phi_b}
 N 730 250 730 270 {lab=Dx<6>}
-N 790 230 790 250 {lab=phi_s_b}
+N 790 230 790 250 {lab=phi_b}
 N 760 -540 760 -520 {lab=GND}
 N 780 -540 780 -520 {lab=Vin}
-N 820 -540 820 -520 {lab=phi_s}
+N 820 -540 820 -520 {lab=~phi_b}
 N 840 -540 840 -520 {lab=Dx_b<7>}
 N 860 -540 860 -520 {lab=Dx<7>}
 N 880 -540 880 -520 {lab=VREF}
 N 900 -540 900 -520 {lab=VDD}
-N 820 -560 820 -540 {lab=phi_s}
+N 820 -560 820 -540 {lab=~phi_b}
 N 860 -560 860 -540 {lab=Dx<7>}
-N 800 -540 800 -520 {lab=phi_s_b}
+N 800 -540 800 -520 {lab=phi_b}
 N 930 -540 930 -520 {lab=GND}
 N 950 -540 950 -520 {lab=Vin}
-N 990 -540 990 -520 {lab=phi_s}
+N 990 -540 990 -520 {lab=~phi_b}
 N 1010 -540 1010 -520 {lab=Dx_b<9>}
 N 1030 -540 1030 -520 {lab=Dx<9>}
 N 1050 -540 1050 -520 {lab=VREF}
 N 1070 -540 1070 -520 {lab=VDD}
-N 990 -560 990 -540 {lab=phi_s}
+N 990 -560 990 -540 {lab=~phi_b}
 N 1030 -560 1030 -540 {lab=Dx<9>}
-N 970 -540 970 -520 {lab=phi_s_b}
+N 970 -540 970 -520 {lab=phi_b}
 N 1080 230 1080 250 {lab=GND}
 N 1060 230 1060 250 {lab=Vin}
-N 1020 230 1020 250 {lab=phi_s}
+N 1020 230 1020 250 {lab=~phi_b}
 N 1000 230 1000 250 {lab=Dx_b<8>}
 N 980 230 980 250 {lab=Dx<8>}
 N 960 230 960 250 {lab=VREF}
 N 940 230 940 250 {lab=VDD}
-N 1020 250 1020 270 {lab=phi_s}
+N 1020 250 1020 270 {lab=~phi_b}
 N 980 250 980 270 {lab=Dx<8>}
-N 1040 230 1040 250 {lab=phi_s_b}
+N 1040 230 1040 250 {lab=phi_b}
 N -560 -110 -560 -90 {lab=Vx}
 N -560 -110 -390 -110 {lab=Vx}
 N -390 -110 -390 -90 {lab=Vx}
@@ -196,8 +185,8 @@ N -560 -30 -560 -10 {lab=VCM}
 N -390 -30 -390 -10 {lab=VCM}
 N -560 -60 -530 -60 {lab=VDD}
 N -420 -60 -390 -60 {lab=GND}
-N -620 -60 -600 -60 {lab=phi_s}
-N -350 -60 -330 -60 {lab=phi_s_b}
+N -620 -60 -600 -60 {lab=~phi_t}
+N -350 -60 -330 -60 {lab=phi_t}
 N -560 -10 -390 -10 {lab=VCM}
 N -470 -10 -470 10 {lab=VCM}
 N -560 130 -560 150 {lab=Vx_lsb}
@@ -208,8 +197,8 @@ N -560 210 -560 230 {lab=VCM}
 N -390 210 -390 230 {lab=VCM}
 N -560 180 -530 180 {lab=VDD}
 N -420 180 -390 180 {lab=GND}
-N -620 180 -600 180 {lab=phi_s}
-N -350 180 -330 180 {lab=phi_s_b}
+N -620 180 -600 180 {lab=~phi_t}
+N -350 180 -330 180 {lab=phi_t}
 N -560 230 -390 230 {lab=VCM}
 N -470 230 -470 250 {lab=VCM}
 C {symbols/cap_mim_2f0fF.sym} -220 -140 0 0 {name=C1
@@ -283,15 +272,14 @@ C {ipin.sym} -390 -510 0 0 {name=p1 lab=Vin}
 C {ipin.sym} -390 -470 0 0 {name=p2 lab=GND}
 C {ipin.sym} -390 -430 0 0 {name=p3 lab=VREF}
 C {opin.sym} -400 -320 0 0 {name=p4 lab=Vx}
-C {ipin.sym} -390 -390 0 0 {name=p5 lab=phi_s}
+C {ipin.sym} -550 -370 0 0 {name=p5 lab=phi_t}
 C {ipin.sym} -390 -350 0 0 {name=p6 lab=VDD}
 C {ipin.sym} 1220 -570 0 0 {name=p7 lab=Dx_b<0>}
 C {ipin.sym} 1220 -360 0 0 {name=p8 lab=Dx<0>}
 C {lab_wire.sym} -250 -550 1 0 {name=p9 sig_type=std_logic lab=GND}
 C {lab_wire.sym} -230 -550 1 0 {name=p11 sig_type=std_logic lab=Vin}
-C {lab_wire.sym} -110 -550 1 0 {name=p12 sig_type=std_logic lab=VDD}
+C {lab_wire.sym} -110 -530 1 0 {name=p12 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} -130 -550 1 0 {name=p13 sig_type=std_logic lab=VREF}
-C {lab_wire.sym} -190 -570 1 0 {name=p14 sig_type=std_logic lab=phi_s}
 C {lab_wire.sym} -170 -550 1 0 {name=p15 sig_type=std_logic lab=Dx_b<0>}
 C {lab_wire.sym} -150 -570 1 0 {name=p16 sig_type=std_logic lab=Dx<0>}
 C {lab_wire.sym} 860 -70 2 0 {name=p80 sig_type=std_logic lab=Vx}
@@ -344,90 +332,63 @@ C {ipin.sym} 1240 -200 0 0 {name=p126 lab=Dx<8>}
 C {ipin.sym} 1240 -180 0 0 {name=p127 lab=Dx<9>}
 C {lab_wire.sym} 420 -200 0 0 {name=p59 sig_type=std_logic lab=Vx_lsb}
 C {opin.sym} -400 -290 0 0 {name=p60 lab=Vx_lsb}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} -180 -380 1 0 {name=x7}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 60 -380 1 0 {name=x1}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 580 -380 1 0 {name=x3}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 830 -370 1 0 {name=x4}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 1000 -370 1 0 {name=x5}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 760 80 3 0 {name=x9}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 1010 80 3 0 {name=x10}
-C {ipin.sym} -400 -250 0 0 {name=p61 lab=phi_s_b}
-C {lab_wire.sym} -210 -550 1 0 {name=p62 sig_type=std_logic lab=phi_s_b}
-C {lab_wire.sym} -10 -550 1 0 {name=p17 sig_type=std_logic lab=GND}
-C {lab_wire.sym} 10 -550 1 0 {name=p18 sig_type=std_logic lab=Vin}
-C {lab_wire.sym} 130 -550 1 0 {name=p19 sig_type=std_logic lab=VDD}
-C {lab_wire.sym} 110 -550 1 0 {name=p20 sig_type=std_logic lab=VREF}
-C {lab_wire.sym} 50 -570 1 0 {name=p21 sig_type=std_logic lab=phi_s}
-C {lab_wire.sym} 70 -550 1 0 {name=p22 sig_type=std_logic lab=Dx_b<2>}
-C {lab_wire.sym} 90 -570 1 0 {name=p23 sig_type=std_logic lab=Dx<2>}
-C {lab_wire.sym} 30 -550 1 0 {name=p63 sig_type=std_logic lab=phi_s_b}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 70 90 3 0 {name=x11}
+C {ipin.sym} -410 -390 0 0 {name=p61 lab=~phi_t}
+C {lab_wire.sym} -10 -530 1 0 {name=p17 sig_type=std_logic lab=GND}
+C {lab_wire.sym} 10 -530 1 0 {name=p18 sig_type=std_logic lab=Vin}
+C {lab_wire.sym} 130 -530 1 0 {name=p19 sig_type=std_logic lab=VDD}
+C {lab_wire.sym} 110 -530 1 0 {name=p20 sig_type=std_logic lab=VREF}
+C {lab_wire.sym} 70 -530 1 0 {name=p22 sig_type=std_logic lab=Dx_b<2>}
+C {lab_wire.sym} 90 -530 1 0 {name=p23 sig_type=std_logic lab=Dx<2>}
 C {lab_wire.sym} 140 260 3 0 {name=p64 sig_type=std_logic lab=GND}
 C {lab_wire.sym} 120 260 3 0 {name=p65 sig_type=std_logic lab=Vin}
 C {lab_wire.sym} 0 260 3 0 {name=p135 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} 20 260 3 0 {name=p136 sig_type=std_logic lab=VREF}
-C {lab_wire.sym} 80 280 3 0 {name=p137 sig_type=std_logic lab=phi_s}
+C {lab_wire.sym} 80 280 3 0 {name=p137 sig_type=std_logic lab=~phi_b}
 C {lab_wire.sym} 60 260 3 0 {name=p138 sig_type=std_logic lab=Dx_b<1>}
 C {lab_wire.sym} 40 280 3 0 {name=p139 sig_type=std_logic lab=Dx<1>}
-C {lab_wire.sym} 100 260 3 0 {name=p140 sig_type=std_logic lab=phi_s_b}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 250 90 3 0 {name=x6}
+C {lab_wire.sym} 100 260 3 0 {name=p140 sig_type=std_logic lab=phi_b}
 C {lab_wire.sym} 320 260 3 0 {name=p45 sig_type=std_logic lab=GND}
 C {lab_wire.sym} 300 260 3 0 {name=p46 sig_type=std_logic lab=Vin}
 C {lab_wire.sym} 180 260 3 0 {name=p47 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} 200 260 3 0 {name=p48 sig_type=std_logic lab=VREF}
-C {lab_wire.sym} 260 280 3 0 {name=p49 sig_type=std_logic lab=phi_s}
 C {lab_wire.sym} 240 260 3 0 {name=p50 sig_type=std_logic lab=Dx_b<3>}
 C {lab_wire.sym} 220 280 3 0 {name=p51 sig_type=std_logic lab=Dx<3>}
-C {lab_wire.sym} 280 260 3 0 {name=p52 sig_type=std_logic lab=phi_s_b}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 330 -380 1 0 {name=x2}
 C {lab_wire.sym} 260 -550 1 0 {name=p24 sig_type=std_logic lab=GND}
 C {lab_wire.sym} 280 -550 1 0 {name=p25 sig_type=std_logic lab=Vin}
 C {lab_wire.sym} 400 -550 1 0 {name=p26 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} 380 -550 1 0 {name=p27 sig_type=std_logic lab=VREF}
-C {lab_wire.sym} 320 -570 1 0 {name=p28 sig_type=std_logic lab=phi_s}
 C {lab_wire.sym} 340 -550 1 0 {name=p29 sig_type=std_logic lab=Dx_b<4>}
 C {lab_wire.sym} 360 -570 1 0 {name=p30 sig_type=std_logic lab=Dx<4>}
-C {lab_wire.sym} 300 -550 1 0 {name=p53 sig_type=std_logic lab=phi_s_b}
 C {lab_wire.sym} 510 -550 1 0 {name=p31 sig_type=std_logic lab=GND}
 C {lab_wire.sym} 530 -550 1 0 {name=p32 sig_type=std_logic lab=Vin}
 C {lab_wire.sym} 650 -550 1 0 {name=p33 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} 630 -550 1 0 {name=p34 sig_type=std_logic lab=VREF}
-C {lab_wire.sym} 570 -570 1 0 {name=p35 sig_type=std_logic lab=phi_s}
 C {lab_wire.sym} 590 -550 1 0 {name=p36 sig_type=std_logic lab=Dx_b<5>}
 C {lab_wire.sym} 610 -570 1 0 {name=p37 sig_type=std_logic lab=Dx<5>}
-C {lab_wire.sym} 550 -550 1 0 {name=p54 sig_type=std_logic lab=phi_s_b}
 C {lab_wire.sym} 830 250 3 0 {name=p55 sig_type=std_logic lab=GND}
 C {lab_wire.sym} 810 250 3 0 {name=p56 sig_type=std_logic lab=Vin}
 C {lab_wire.sym} 690 250 3 0 {name=p57 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} 710 250 3 0 {name=p58 sig_type=std_logic lab=VREF}
-C {lab_wire.sym} 770 270 3 0 {name=p66 sig_type=std_logic lab=phi_s}
 C {lab_wire.sym} 750 250 3 0 {name=p67 sig_type=std_logic lab=Dx_b<6>}
 C {lab_wire.sym} 730 270 3 0 {name=p68 sig_type=std_logic lab=Dx<6>}
-C {lab_wire.sym} 790 250 3 0 {name=p69 sig_type=std_logic lab=phi_s_b}
 C {lab_wire.sym} 760 -540 1 0 {name=p38 sig_type=std_logic lab=GND}
 C {lab_wire.sym} 780 -540 1 0 {name=p39 sig_type=std_logic lab=Vin}
 C {lab_wire.sym} 900 -540 1 0 {name=p40 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} 880 -540 1 0 {name=p41 sig_type=std_logic lab=VREF}
-C {lab_wire.sym} 820 -560 1 0 {name=p42 sig_type=std_logic lab=phi_s}
 C {lab_wire.sym} 840 -540 1 0 {name=p43 sig_type=std_logic lab=Dx_b<7>}
 C {lab_wire.sym} 860 -560 1 0 {name=p44 sig_type=std_logic lab=Dx<7>}
-C {lab_wire.sym} 800 -540 1 0 {name=p70 sig_type=std_logic lab=phi_s_b}
 C {lab_wire.sym} 930 -540 1 0 {name=p71 sig_type=std_logic lab=GND}
 C {lab_wire.sym} 950 -540 1 0 {name=p72 sig_type=std_logic lab=Vin}
 C {lab_wire.sym} 1070 -540 1 0 {name=p128 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} 1050 -540 1 0 {name=p129 sig_type=std_logic lab=VREF}
-C {lab_wire.sym} 990 -560 1 0 {name=p130 sig_type=std_logic lab=phi_s}
 C {lab_wire.sym} 1010 -540 1 0 {name=p131 sig_type=std_logic lab=Dx_b<9>}
 C {lab_wire.sym} 1030 -560 1 0 {name=p132 sig_type=std_logic lab=Dx<9>}
-C {lab_wire.sym} 970 -540 1 0 {name=p133 sig_type=std_logic lab=phi_s_b}
 C {lab_wire.sym} 1080 250 3 0 {name=p73 sig_type=std_logic lab=GND}
 C {lab_wire.sym} 1060 250 3 0 {name=p74 sig_type=std_logic lab=Vin}
 C {lab_wire.sym} 940 250 3 0 {name=p75 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} 960 250 3 0 {name=p76 sig_type=std_logic lab=VREF}
-C {lab_wire.sym} 1020 270 3 0 {name=p77 sig_type=std_logic lab=phi_s}
 C {lab_wire.sym} 1000 250 3 0 {name=p78 sig_type=std_logic lab=Dx_b<8>}
 C {lab_wire.sym} 980 270 3 0 {name=p79 sig_type=std_logic lab=Dx<8>}
-C {lab_wire.sym} 1040 250 3 0 {name=p134 sig_type=std_logic lab=phi_s_b}
 C {symbols/pfet_03v3.sym} -580 -60 0 0 {name=M4
 L=0.28u
 W=0.22u
@@ -460,9 +421,9 @@ spiceprefix=X
 }
 C {lab_wire.sym} -480 -130 2 0 {name=p141 sig_type=std_logic lab=Vx}
 C {lab_wire.sym} -470 10 2 0 {name=p142 sig_type=std_logic lab=VCM}
-C {lab_wire.sym} -330 -60 2 0 {name=p145 sig_type=std_logic lab=phi_s_b}
+C {lab_wire.sym} -330 -60 2 0 {name=p145 sig_type=std_logic lab=phi_t}
 C {ipin.sym} -400 -220 0 0 {name=p146 lab=VCM}
-C {lab_wire.sym} -620 -60 0 0 {name=p147 sig_type=std_logic lab=phi_s}
+C {lab_wire.sym} -620 -60 0 0 {name=p147 sig_type=std_logic lab=~phi_t}
 C {symbols/pfet_03v3.sym} -580 180 0 0 {name=M2
 L=0.28u
 W=0.22u
@@ -495,5 +456,35 @@ spiceprefix=X
 }
 C {lab_wire.sym} -480 110 2 0 {name=p150 sig_type=std_logic lab=Vx_lsb}
 C {lab_wire.sym} -470 250 2 0 {name=p151 sig_type=std_logic lab=VCM}
-C {lab_wire.sym} -330 180 2 0 {name=p152 sig_type=std_logic lab=phi_s_b}
-C {lab_wire.sym} -620 180 0 0 {name=p153 sig_type=std_logic lab=phi_s}
+C {lab_wire.sym} -330 180 2 0 {name=p152 sig_type=std_logic lab=phi_t}
+C {lab_wire.sym} -620 180 0 0 {name=p153 sig_type=std_logic lab=~phi_t}
+C {ipin.sym} -580 -310 0 0 {name=p154 lab=phi_b}
+C {ipin.sym} -460 -270 0 0 {name=p155 lab=~phi_b}
+C {lab_wire.sym} 970 -540 1 0 {name=p14 sig_type=std_logic lab=phi_b}
+C {lab_wire.sym} 990 -560 1 0 {name=p21 sig_type=std_logic lab=~phi_b}
+C {lab_wire.sym} 820 -560 1 0 {name=p35 sig_type=std_logic lab=~phi_b}
+C {lab_wire.sym} 800 -540 1 0 {name=p42 sig_type=std_logic lab=phi_b}
+C {lab_wire.sym} 570 -570 1 0 {name=p53 sig_type=std_logic lab=~phi_b}
+C {lab_wire.sym} 550 -550 1 0 {name=p54 sig_type=std_logic lab=phi_b}
+C {lab_wire.sym} 320 -570 1 0 {name=p62 sig_type=std_logic lab=~phi_b}
+C {lab_wire.sym} 300 -550 1 0 {name=p63 sig_type=std_logic lab=phi_b}
+C {lab_wire.sym} 50 -530 1 0 {name=p70 sig_type=std_logic lab=~phi_b}
+C {lab_wire.sym} 30 -530 1 0 {name=p133 sig_type=std_logic lab=phi_b}
+C {lab_wire.sym} -190 -570 1 0 {name=p156 sig_type=std_logic lab=~phi_b}
+C {lab_wire.sym} -210 -550 1 0 {name=p157 sig_type=std_logic lab=phi_b}
+C {lab_wire.sym} 260 280 3 0 {name=p49 sig_type=std_logic lab=~phi_b}
+C {lab_wire.sym} 280 260 3 0 {name=p52 sig_type=std_logic lab=phi_b}
+C {lab_wire.sym} 770 270 3 0 {name=p66 sig_type=std_logic lab=~phi_b}
+C {lab_wire.sym} 790 250 3 0 {name=p69 sig_type=std_logic lab=phi_b}
+C {lab_wire.sym} 1020 270 3 0 {name=p77 sig_type=std_logic lab=~phi_b}
+C {lab_wire.sym} 1040 250 3 0 {name=p134 sig_type=std_logic lab=phi_b}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} -180 -380 1 0 {name=x1}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 60 -380 1 0 {name=x2}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 330 -380 1 0 {name=x3}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 580 -380 1 0 {name=x4}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 830 -370 1 0 {name=x5}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 1000 -370 1 0 {name=x6}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 1010 80 3 0 {name=x7}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 760 80 3 0 {name=x8}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 250 90 3 0 {name=x9}
+C {/foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 70 90 3 0 {name=x10}
