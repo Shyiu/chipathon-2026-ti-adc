@@ -15,7 +15,7 @@ GND_NETS:
 
 # 4. Floorplanning (Absolute sizing for pin-limited macro)
 FP_SIZING: absolute
-DIE_AREA: [0, 0, 150, 150] # Formatted as a strict YAML list
+DIE_AREA: [0, 0, 300, 300] # Formatted as a strict YAML list
 
 # 5. Power Distribution Network (PDN)
 PDN_MULTILAYER: false # Replaces DESIGN_IS_CORE. Uses strict boolean false.
