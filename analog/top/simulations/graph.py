@@ -5,9 +5,9 @@ import os
 
 # Map your filenames to the EXACT order of the nets in your wrdata command
 FILES = {
-    '/headless/.xschem/simulations/cdac.txt': ['vref', 'vx', 'vx_lsb', 'vsample'], # Replace with your actual CDAC control signals
-    '/headless/.xschem/simulations/logic.txt': ['ctrl0', 'ctrl1', 'ctrl2', 'ctrl3', 'ctrl4', 'ctrl5', 'ctrl6', 'ctrl7', 'dout0', 'dout1', 'dout2', 'dout3', 'dout4', 'dout5', 'dout6', 'dout7', 'clk'], # Replace with your actual logic nets
-    '/headless/.xschem/simulations/trans_gate.txt': ['v(vin)', 'v(vsample)', 'v(clk)'],
+    '/headless/.xschem/simulations/cdac.txt': ['vref', 'vx', 'vcm', 'vsample', 'phi_top', 'phi_bottom'],
+    '/headless/.xschem/simulations/logic.txt': ['ctrl0', 'ctrl1', 'ctrl2', 'ctrl3', 'ctrl4', 'ctrl5', 'ctrl6', 'ctrl7', 'dout0', 'dout1', 'dout2', 'dout3', 'dout4', 'dout5', 'dout6', 'dout7', 'clk', 'phi_top', 'phi_bottom'],
+    '/headless/.xschem/simulations/trans_gate.txt': ['v(vin)', 'v(vsample)', 'v(clk)', 'phi_bottom'],
     '/headless/.xschem/simulations/comparator.txt': ['clk_o', 'outp', 'outn', 'clk'],
 }
 

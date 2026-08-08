@@ -912,6 +912,7 @@ L 4 110 130 150 130 {}
 L 4 110 150 150 150 {}
 B 5 7.5 -212.5 12.5 -207.5 {name=VDD dir=inout}
 B 5 7.5 397.5 12.5 402.5 {name=VSS dir=inout}
+B 5 -132.5 -122.5 -127.5 -117.5 {name=clk_i dir=in}
 B 5 -132.5 -102.5 -127.5 -97.5 {name=clk_o dir=out}
 B 5 147.5 -152.5 152.5 -147.5 {name=d_ctrl[0] dir=out}
 B 5 147.5 -132.5 152.5 -127.5 {name=d_ctrl[1] dir=out}
@@ -921,22 +922,6 @@ B 5 147.5 -72.5 152.5 -67.5 {name=d_ctrl[4] dir=out}
 B 5 147.5 -52.5 152.5 -47.5 {name=d_ctrl[5] dir=out}
 B 5 147.5 -32.5 152.5 -27.5 {name=d_ctrl[6] dir=out}
 B 5 147.5 -12.5 152.5 -7.5 {name=d_ctrl[7] dir=out}
-B 5 147.5 177.5 152.5 182.5 {name=dout[0] dir=out}
-B 5 147.5 217.5 152.5 222.5 {name=dout[2] dir=out}
-B 5 147.5 237.5 152.5 242.5 {name=dout[3] dir=out}
-B 5 147.5 257.5 152.5 262.5 {name=dout[4] dir=out}
-B 5 147.5 277.5 152.5 282.5 {name=dout[5] dir=out}
-B 5 147.5 297.5 152.5 302.5 {name=dout[6] dir=out}
-B 5 147.5 317.5 152.5 322.5 {name=dout[7] dir=out}
-B 5 -132.5 37.5 -127.5 42.5 {name=out_n dir=out}
-B 5 -132.5 57.5 -127.5 62.5 {name=out_p dir=out}
-B 5 -132.5 77.5 -127.5 82.5 {name=rst_n dir=inout}
-B 5 -132.5 -82.5 -127.5 -77.5 {name=phi_top dir=out}
-B 5 -132.5 -62.5 -127.5 -57.5 {name=phi_top_n dir=out}
-B 5 -132.5 -42.5 -127.5 -37.5 {name=phi_bottom dir=out}
-B 5 -132.5 -22.5 -127.5 -17.5 {name=phi_bottom_n dir=out}
-B 5 -132.5 -122.5 -127.5 -117.5 {name=clk_i dir=in}
-B 5 147.5 197.5 152.5 202.5 {name=dout[1] dir=out}
 B 5 147.5 7.5 152.5 12.5 {name=d_ctrl_n[0] dir=out}
 B 5 147.5 27.5 152.5 32.5 {name=d_ctrl_n[1] dir=out}
 B 5 147.5 47.5 152.5 52.5 {name=d_ctrl_n[2] dir=out}
@@ -945,6 +930,21 @@ B 5 147.5 87.5 152.5 92.5 {name=d_ctrl_n[4] dir=out}
 B 5 147.5 107.5 152.5 112.5 {name=d_ctrl_n[5] dir=out}
 B 5 147.5 127.5 152.5 132.5 {name=d_ctrl_n[6] dir=out}
 B 5 147.5 147.5 152.5 152.5 {name=d_ctrl_n[7] dir=out}
+B 5 147.5 177.5 152.5 182.5 {name=d_out[0] dir=out}
+B 5 147.5 197.5 152.5 202.5 {name=d_out[1] dir=out}
+B 5 147.5 217.5 152.5 222.5 {name=d_out[2] dir=out}
+B 5 147.5 237.5 152.5 242.5 {name=d_out[3] dir=out}
+B 5 147.5 257.5 152.5 262.5 {name=d_out[4] dir=out}
+B 5 147.5 277.5 152.5 282.5 {name=d_out[5] dir=out}
+B 5 147.5 297.5 152.5 302.5 {name=d_out[6] dir=out}
+B 5 147.5 317.5 152.5 322.5 {name=d_out[7] dir=out}
+B 5 -132.5 37.5 -127.5 42.5 {name=out_n dir=out}
+B 5 -132.5 57.5 -127.5 62.5 {name=out_p dir=out}
+B 5 -132.5 -42.5 -127.5 -37.5 {name=phi_bottom dir=out}
+B 5 -132.5 -22.5 -127.5 -17.5 {name=phi_bottom_n dir=out}
+B 5 -132.5 -82.5 -127.5 -77.5 {name=phi_top dir=out}
+B 5 -132.5 -62.5 -127.5 -57.5 {name=phi_top_n dir=out}
+B 5 -132.5 77.5 -127.5 82.5 {name=rst_n dir=inout}
 P 4 5 -90 -170 110 -170 110 360 -90 360 -90 -170 {}
 T {VDD} 14 -165 1 0 0.2 0.2 {}
 T {VSS} 6 355 3 0 0.2 0.2 {}
@@ -958,14 +958,14 @@ T {d_ctrl[4]} 105 -74 0 1 0.2 0.2 {}
 T {d_ctrl[5]} 105 -54 0 1 0.2 0.2 {}
 T {d_ctrl[6]} 105 -34 0 1 0.2 0.2 {}
 T {d_ctrl[7]} 105 -14 0 1 0.2 0.2 {}
-T {dout[0]} 105 176 0 1 0.2 0.2 {}
-T {dout[1]} 105 196 0 1 0.2 0.2 {}
-T {dout[2]} 105 216 0 1 0.2 0.2 {}
-T {dout[3]} 105 236 0 1 0.2 0.2 {}
-T {dout[4]} 105 256 0 1 0.2 0.2 {}
-T {dout[5]} 105 276 0 1 0.2 0.2 {}
-T {dout[6]} 105 296 0 1 0.2 0.2 {}
-T {dout[7]} 105 316 0 1 0.2 0.2 {}
+T {d_out[0]} 105 176 0 1 0.2 0.2 {}
+T {d_out[1]} 105 196 0 1 0.2 0.2 {}
+T {d_out[2]} 105 216 0 1 0.2 0.2 {}
+T {d_out[3]} 105 236 0 1 0.2 0.2 {}
+T {d_out[4]} 105 256 0 1 0.2 0.2 {}
+T {d_out[5]} 105 276 0 1 0.2 0.2 {}
+T {d_out[6]} 105 296 0 1 0.2 0.2 {}
+T {d_out[7]} 105 316 0 1 0.2 0.2 {}
 T {out_n} -85 36 0 0 0.2 0.2 {}
 T {out_p} -85 56 0 0 0.2 0.2 {}
 T {rst_n} -85 76 0 0 0.2 0.2 {}
