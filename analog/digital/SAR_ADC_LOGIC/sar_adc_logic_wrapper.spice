@@ -2,21 +2,18 @@
 * SPICE Wrapper for OpenLane Synthesized sar_adc_logic
 * -----------------------------------------------------------------------------
 
-* 1. Include the raw OpenLane netlist (fixed missing closing quote)
+* 1. Include the raw OpenLane netlist
 .include "/foss/designs/chipathon-2026-ti-adc/analog/digital/SAR_ADC_LOGIC/sar_adc_logic.spice"
 
-* 2. Define the Wrapper Interface (Matches your Xschem Symbol's pins)
+* 2. Define the Wrapper Interface matching your Xschem Symbol's pin order
 .subckt sar_adc_logic_wrapper 
-+ rst_n clk_i out_p out_n 
-+ phi_top phi_top_n phi_bottom phi_bottom_n 
-+ d_ctrl[7] d_ctrl[6] d_ctrl[5] d_ctrl[4] d_ctrl[3] d_ctrl[2] d_ctrl[1] d_ctrl[0] 
-+ d_ctrl_n[7] d_ctrl_n[6] d_ctrl_n[5] d_ctrl_n[4] d_ctrl_n[3] d_ctrl_n[2] d_ctrl_n[1] d_ctrl_n[0] 
-+ d_out[7] d_out[6] d_out[5] d_out[4] d_out[3] d_out[2] d_out[1] d_out[0] 
-+ clk_o VDD VSS
++ VDD VSS clk_i clk_o 
++ d_ctrl[0] d_ctrl[1] d_ctrl[2] d_ctrl[3] d_ctrl[4] d_ctrl[5] d_ctrl[6] d_ctrl[7] 
++ d_ctrl_n[0] d_ctrl_n[1] d_ctrl_n[2] d_ctrl_n[3] d_ctrl_n[4] d_ctrl_n[5] d_ctrl_n[6] d_ctrl_n[7] 
++ d_out[0] d_out[1] d_out[2] d_out[3] d_out[4] d_out[5] d_out[6] d_out[7] 
++ out_n out_p phi_bottom phi_bottom_n phi_top phi_top_n rst_n
 
-    * 3. Instantiate OpenLane netlist matching its exact SPICE pin order:
-    *    VDD, VSS, clk_i, clk_o, d_ctrl[0..7], d_ctrl_n[0..7], d_out[0..7], 
-    *    out_n, out_p, phi_bottom, phi_bottom_n, phi_top, phi_top_n, rst_n
+    * 3. Instantiate the OpenLane subcircuit using its exact native pin order
     Xdigital_core
     + VDD 
     + VSS 
