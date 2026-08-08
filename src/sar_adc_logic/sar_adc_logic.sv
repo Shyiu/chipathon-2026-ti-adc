@@ -2,7 +2,7 @@
 
 module sar_adc_logic #(
     parameter int RESOLUTION      = 8,     // number of SAR bits
-    parameter int NUM_DELAY_CELLS = 145    // buffer stages in the comparator-strobe delay chain
+    parameter int NUM_DELAY_CELLS = 260    // buffer stages in the comparator-strobe delay chain
 )(
     input  logic rst_n,
     input  logic clk_i,              // 25MHz phi: high = convert, low = track

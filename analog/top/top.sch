@@ -172,7 +172,7 @@ savecurrent=false}
 C {gnd.sym} -550 -630 0 0 {name=l2 lab=0}
 C {lab_pin.sym} -550 -770 1 0 {name=p16 sig_type=std_logic lab=RST}
 C {vsource.sym} -850 -930 0 0 {name=V6 
-value=0.45
+value=0.1
 savecurrent=false}
 C {lab_pin.sym} -850 -1000 1 0 {name=p19 sig_type=std_logic lab=VIN}
 C {gnd.sym} -850 -860 0 0 {name=l6 lab=0}
@@ -196,7 +196,7 @@ value="
 "}
 C {code_shown.sym} -1360 -1240 0 0 {name=s3 only_toplevel=true 
 value="
-.tran 10n 1000n uic
+.tran 10n 1100n uic
 .ic v(VX)=1.65 v(VX_LSB)=1.65
 
 .control

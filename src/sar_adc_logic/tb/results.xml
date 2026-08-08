@@ -1,6 +1,6 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
-    <property name="random_seed" value="1786209559" />
-    <testcase name="simulate_sar_adc_back_to_back" classname="test_sar" file="/foss/designs/chipathon-2026-ti-adc/src/sar_adc_logic/tb/test_sar.py" lineno="4" time="0.291642427444458" sim_time_ns="5172.0" ratio_time="17734.045232444736" />
+    <property name="random_seed" value="1786212713" />
+    <testcase name="simulate_sar_adc_back_to_back" classname="test_sar" file="/foss/designs/chipathon-2026-ti-adc/src/sar_adc_logic/tb/test_sar.py" lineno="4" time="1.5126900672912598" sim_time_ns="8852.0" ratio_time="5851.826617630324" />
   </testsuite>
 </testsuites>
