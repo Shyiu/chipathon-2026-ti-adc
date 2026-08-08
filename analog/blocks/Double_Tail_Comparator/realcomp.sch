@@ -63,7 +63,7 @@ C {lab_pin.sym} -240 -210 0 0 {name=p15 sig_type=std_logic lab=VDD}
 C {lab_pin.sym} -180 -210 0 0 {name=p16 sig_type=std_logic lab=VSS}
 C {symbols/nfet_03v3.sym} 200 -210 0 0 {name=M1
 L=0.28u
-W=2.852u
+W=15u
 nf=2
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
@@ -77,7 +77,7 @@ spiceprefix=X
 }
 C {symbols/nfet_03v3.sym} 620 -210 0 1 {name=M2
 L=0.28u
-W=2.852u
+W=15u
 nf=2
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"

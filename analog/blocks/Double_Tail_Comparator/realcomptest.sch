@@ -18,10 +18,10 @@ C {vsource.sym} -700 -20 0 0 {name=V1
 value=3.3
 savecurrent=false}
 C {vsource.sym} -640 -20 0 0 {name=V2 
-value="sin(2 1 25MEG)"
+value="sin(2 0.01 25MEG)"
 savecurrent=false}
 C {vsource.sym} -580 -20 0 0 {name=V3 
-value="sin(2 1 25MEG 5n)"
+value="sin(2 0.01 25MEG 20n)"
 savecurrent=false}
 C {lab_pin.sym} -640 -90 1 0 {name=p2 sig_type=std_logic lab=INP}
 C {lab_pin.sym} -580 -90 1 0 {name=p3 sig_type=std_logic lab=INN}
@@ -51,7 +51,7 @@ value="
 C {code_shown.sym} -430 -330 0 0 {name=s1 only_toplevel=true 
 value="
 .control
-tran 2n 30n
+tran 2n 100n
 plot v(OUTP) v(OUTN) v(INP) v(INN) v(CLK)
 .endc
 "}

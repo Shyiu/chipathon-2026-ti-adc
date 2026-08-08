@@ -1,0 +1,224 @@
+*======================================================================
+* StrongARM Latch Comparator Testbench (simplified controls)
+* DUT: Double_Tail_Comparator / realcomp.sch  (GF180MCU 3.3V devices)
+*
+* TEST 1: Both inputs are static DC voltages. INN is held at a fixed
+*         "reference" voltage; INP is swept from a start value to an
+*         end value (e.g. INP: 0.4V -> 0.7V while INN stays at 0.5V).
+* TEST 2: Both inputs are sine waves sharing one DC offset (VCM).
+*         Their amplitude is swept from a start value down to an end
+*         value, and the phase difference between them ("difference")
+*         is swept from a start value to an end value.
+*
+* You only need to touch the blocks marked "USER-EDITABLE". All pulse
+* shaping / timing details are derived automatically from the two
+* frequency knobs you do care about (CLK frequency, sine frequency)
+* and are marked "AUTO-DERIVED - no need to edit".
+*======================================================================
+
+.title strongarm_latch_testbench
+
+*----------------------------------------------------------------------
+* PDK / MODELS  <-- EDIT THIS: point at your gf180mcu (or other) model
+* library that defines nfet_03v3 / pfet_03v3
+*----------------------------------------------------------------------
+.include /foss/pdks/gf180mcuD/libs.tech/ngspice/design.ngspice 
+.lib /foss/pdks/gf180mcuD/libs.tech/ngspice/sm141064.ngspice typical 
+.lib /foss/pdks/gf180mcuD/libs.tech/ngspice/smbb000149.ngspice typical
+
+*----------------------------------------------------------------------
+* USER-EDITABLE: SUPPLIES
+*----------------------------------------------------------------------
+.param VDD_VAL   = 3.3     ; <-- EDIT: supply voltage
+.param VSS_VAL   = 0       ; <-- EDIT: ground / negative supply
+.param TEMP_VAL  = 27      ; <-- EDIT: simulation temperature, deg C
+.temp {TEMP_VAL}
+
+VDD  VDD  0  DC {VDD_VAL}
+VSS  VSS  0  DC {VSS_VAL}
+
+*----------------------------------------------------------------------
+* DUT SUBCIRCUIT (from realcomp.sch netlist). Not meant to be edited.
+*----------------------------------------------------------------------
+.subckt realcomp OUTN OUTP CLK VSS VDD INP INN
+XM1 net1 INN net3 VSS nfet_03v3 L=0.28u W=2.852u nf=2 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM2 net2 INP net3 VSS nfet_03v3 L=0.28u W=2.852u nf=2 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM3 net3 CLK VSS VSS nfet_03v3 L=0.28u W=02.5757u nf=2 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM4 OUTN OUTP net2 VSS nfet_03v3 L=0.28u W=0.713u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM5 OUTP OUTN net1 VSS nfet_03v3 L=0.28u W=0.713u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM6 OUTP CLK VDD VDD pfet_03v3 L=0.28u W=2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM7 OUTN OUTP VDD VDD pfet_03v3 L=0.28u W=1.426u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM8 OUTN CLK VDD VDD pfet_03v3 L=0.28u W=2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM10 OUTP OUTN VDD VDD pfet_03v3 L=0.28u W=1.426u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM11 net2 CLK net1 VSS nfet_03v3 L=0.28u W=2.852u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+.ends realcomp
+
+
+*======================================================================
+* ################### TEST 1: STATIC DC SWEEP ##########################
+*======================================================================
+* INN is fixed at INN_FIXED. INP sweeps linearly from INP_START to
+* INP_END. If you'd rather sweep INN and hold INP fixed instead, just
+* swap which of VINP1/VINN1 gets alter'd in the control block below.
+*----------------------------------------------------------------------
+* USER-EDITABLE: TEST 1
+*----------------------------------------------------------------------
+.param INN_FIXED  = 0.5      ; <-- EDIT: fixed/reference voltage on INN
+.param INP_START  = 0.4      ; <-- EDIT: INP sweep start voltage
+.param INP_END    = 0.6      ; <-- EDIT: INP sweep end voltage
+.param N_STEPS1   = 20       ; <-- EDIT: number of sweep points
+.param CLK_FREQ1  = 50MEG    ; <-- EDIT: comparator clock frequency
+
+*----------------------------------------------------------------------
+* AUTO-DERIVED (test 1) - no need to edit
+*----------------------------------------------------------------------
+.param CLK_PERIOD1 = '1/CLK_FREQ1'
+.param CLK_PW1     = '0.4*CLK_PERIOD1'   ; evaluate window
+.param CLK_TR1     = '0.01*CLK_PERIOD1'
+.param CLK_TF1     = '0.01*CLK_PERIOD1'
+.param CLK_TD1     = '1*CLK_PERIOD1'     ; one idle period before evaluating
+.param T_STOP1     = '2.2*CLK_PERIOD1'
+.param T_MEAS1     = 'CLK_TD1+0.9*CLK_PW1'  ; sample near end of eval window
+
+X1 OUTN1 OUTP1 CLK1 VSS VDD INP1 INN1 realcomp
+
+VCLK1 CLK1 0 PULSE({VSS_VAL} {VDD_VAL} {CLK_TD1} {CLK_TR1} {CLK_TF1} {CLK_PW1} {CLK_PERIOD1})
+VINP1 INP1 0 DC {INP_START}
+VINN1 INN1 0 DC {INN_FIXED}
+
+*--- SPICE GOES HERE: TEST 1 SWEEP ENGINE -------------------------------
+.control
+  set filetype=ascii
+  echo "===== TEST 1: static DC sweep (INN fixed, INP swept) ====="
+
+  let n1 = 20
+let inp_start = 0.4
+let inp_end = 0.6
+let inn_fixed = 0.5
+
+  let npts1 = n1 + 1
+
+  * --- accumulator vectors, filled one entry per sweep step below ---
+  * (this is what makes the end-of-loop "OUTP/OUTN vs INP-INN" plot possible)
+  let outp_vec = 0*vector(npts1)
+  let outn_vec = 0*vector(npts1)
+  let diff_vec = 0*vector(npts1)
+
+  let i1 = 0
+  while i1 <= n1
+    let inp_val = inp_start + i1*(inp_end-inp_start)/n1
+    alter @vinp1[dc] = $&inp_val
+
+    tran 20p {T_STOP1}
+
+    meas tran outp_f find v(outp1) at={T_MEAS1}
+    meas tran outn_f find v(outn1) at={T_MEAS1}
+    let diff_in = inp_val - inn_fixed
+    let decision_correct = ((outp_f - outn_f) * diff_in) > 0
+
+    * stash this step's results into the accumulator vectors
+    let outp_vec[i1] = outp_f
+    let outn_vec[i1] = outn_f
+    let diff_vec[i1] = diff_in
+
+    echo "step=$&i1  INP=$&inp_val  INN=INN_FIXED  OUTP=$&outp_f  OUTN=$&outn_f  correct=$&decision_correct"
+    wrdata test1_step$&i1.txt v(inp1) v(inn1) v(clk1) v(outp1) v(outn1)
+
+    let i1 = i1 + 1
+  end
+
+  *--- PLOT: OUTP & OUTN (final/settled value) vs (INP - INN) ------------
+  * This is the "how does the comparator behave as the gap narrows" plot.
+  * Add any further post-sweep plots here.
+  plot outp_vec outn_vec vs diff_vec title 'OUTP/OUTN vs (INP-INN)'
+.endc
+
+
+*======================================================================
+* ############### TEST 2: SINE DIFFERENTIAL SWEEP ######################
+*======================================================================
+* INP2 = VCM2 + A*sin(2*pi*SIG_FREQ*t)
+* INN2 = VCM2 + A*sin(2*pi*SIG_FREQ*t + phi)
+* Amplitude A is swept from A_START down to A_END; phase difference
+* phi ("difference" between the two waves) is swept from PHI_START to
+* PHI_END. A small fixed start delay is assumed automatically so the
+* comparator's first clock edge doesn't land exactly at t=0.
+*----------------------------------------------------------------------
+* USER-EDITABLE: TEST 2
+*----------------------------------------------------------------------
+.param VCM2       = 1.65     ; <-- EDIT: DC offset shared by both sine waves
+.param SIG_FREQ   = 1MEG     ; <-- EDIT: frequency of INP2/INN2
+.param CLK_FREQ2  = 50MEG    ; <-- EDIT: comparator sampling clock frequency
+.param A_START    = 0.5      ; <-- EDIT: starting (largest) amplitude
+.param A_END      = 0.01     ; <-- EDIT: ending (smallest) amplitude
+.param PHI_START  = 30       ; <-- EDIT: starting phase difference, degrees
+.param PHI_END    = 1        ; <-- EDIT: ending phase difference, degrees
+.param N_STEPS2   = 4        ; <-- EDIT: number of sweep points (applies to
+                              ;     both the amplitude sweep and phase sweep)
+
+*----------------------------------------------------------------------
+* AUTO-DERIVED (test 2) - no need to edit
+*----------------------------------------------------------------------
+.param CLK_PERIOD2   = '1/CLK_FREQ2'
+.param CLK_PW2       = '0.4*CLK_PERIOD2'
+.param CLK_TR2       = '0.01*CLK_PERIOD2'
+.param CLK_TF2       = '0.01*CLK_PERIOD2'
+.param CLK_TD2       = '1*CLK_PERIOD2'     ; assumed start delay
+.param N_SIG_PERIODS = 5                   ; how many signal periods to simulate
+.param T_STOP2       = 'N_SIG_PERIODS/SIG_FREQ'
+
+X2 OUTN2 OUTP2 CLK2 VSS VDD INP2 INN2 realcomp
+
+VCLK2 CLK2 0 PULSE({VSS_VAL} {VDD_VAL} {CLK_TD2} {CLK_TR2} {CLK_TF2} {CLK_PW2} {CLK_PERIOD2})
+VINP2 INP2 0 DC {VCM2} SIN({VCM2} {A_START} {SIG_FREQ} 0 0 0)
+VINN2 INN2 0 DC {VCM2} SIN({VCM2} {A_START} {SIG_FREQ} 0 0 {PHI_START})
+
+*--- SPICE GOES HERE: TEST 2 SWEEP ENGINE -------------------------------
+.control
+  echo "===== TEST 2: sine differential sweep (amplitude x phase) ====="
+
+let n2 = 4
+let a_start = 0.5
+let a_end = 0.01
+let phi_start = 30
+let phi_end = 1
+
+  let ia = 0
+  while ia <= n2
+    let a_val = a_start + ia*(a_end-a_start)/n2
+
+    let iphi = 0
+    while iphi <= n2
+      let phi_val = phi_start + iphi*(phi_end-phi_start)/n2
+
+      alter @vinp2[sin] = [ {VCM2} $&a_val {SIG_FREQ} 0 0 0 ]
+      alter @vinn2[sin] = [ {VCM2} $&a_val {SIG_FREQ} 0 0 $&phi_val ]
+
+      tran 20p {T_STOP2}
+
+      *--- PLOT: one time-domain plot per sweep step -------------------
+      * Shows OUTP/OUTN settling against INP, INN, and CLK for this
+      * particular amplitude/phase combo. One plot window is opened
+      * per (ia, iphi) step.
+      plot v(inp2) v(inn2) v(clk2) v(outp2) v(outn2) title 'Test2 step ia=$&ia iphi=$&iphi'
+
+      echo "A=$&a_val  phi=$&phi_val deg  -> waveform saved"
+      wrdata test2_A$&ia\_phi$&iphi.txt v(inp2) v(inn2) v(clk2) v(outp2) v(outn2)
+
+      let iphi = iphi + 1
+    end
+    let ia = ia + 1
+  end
+.endc
+
+.end
