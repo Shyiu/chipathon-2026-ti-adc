@@ -3,7 +3,7 @@
 * -----------------------------------------------------------------------------
 
 * 1. Include the raw OpenLane netlist you provided 
-.include "/foss/designs/chipathon-2026-ti-adc/librelane/sar_adc_logic/runs/RUN_2026-08-08_03-17-11/final/spice/sar_adc_logic.spice"
+.include "/foss/designs/chipathon-2026-ti-adc/analog/digital/SAR_ADC_LOGIC/sar_adc_logic.spice
 
 * 2. Define the Wrapper Interface (This matches your Xschem Symbol's pins)
 *    Buses are expanded MSB [7] down to LSB [0].

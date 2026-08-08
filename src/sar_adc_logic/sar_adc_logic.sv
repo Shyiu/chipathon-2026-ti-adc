@@ -46,7 +46,7 @@ module sar_adc_logic #(
         .I(clk_i),
         .ZN(phi_top_int)
     );
-    assign phi_top = phi_top_int;
+    assign phi_top   = phi_top_int;
     assign phi_top_n = ~phi_top_int;
 
     logic [2:0] dead_time_dly;
@@ -78,44 +78,31 @@ module sar_adc_logic #(
     );
 
     // ------------------------------------------------------------
-    // Bit sequencer (One-Hot Mask)
-    // rst_cond is high any time the array is still tracking
-    // (phi_bottom low) or global reset is asserted. While rst_cond
-    // is high, sar_reg is continuously held at the initial trial
-    // word (MSB=1, rest=0) -- so the moment phi_bottom rises, that
-    // word is already sitting there, no extra delay stage required.
+    // Bit sequencer (N+1 One-Hot Mask)
     // ------------------------------------------------------------
     logic rst_cond;
     assign rst_cond = ~rst_n_tree | phi_bottom;
 
-    logic [RESOLUTION-1:0]  mask;
+    // Use a 9-bit mask for 8-bit resolution. 
+    // The '1' drops into mask[0] to synchronously trigger EOC.
+    logic [RESOLUTION:0]    mask;
     logic [RESOLUTION-1:0]  sar_reg;
-    logic                   last_bit;
     logic                   eoc;
-    logic                   done;
 
-    assign last_bit = mask[0];
-    assign eoc      = last_bit & valid_clk;
+    assign eoc = mask[0];
 
     always_ff @(posedge valid_clk or posedge rst_cond) begin
         if (rst_cond) begin
-            mask    <= {1'b1, {(RESOLUTION-1){1'b0}}};
-            sar_reg <= {1'b1, {(RESOLUTION-1){1'b0}}};
+            mask    <= {1'b1, {RESOLUTION{1'b0}}};     // e.g. 9'b1_0000_0000
+            sar_reg <= {1'b1, {(RESOLUTION-1){1'b0}}}; // e.g. 8'b1000_0000
         end else begin
             mask <= mask >> 1;
-            // Clear current bit if out_p is high, else keep it. Then set the next bit.
-            sar_reg <= (out_p ? (sar_reg & ~mask) : sar_reg) | (mask >> 1);
+            // Use mask[RESOLUTION:1] as the active 8-bit trial vector
+            sar_reg <= (out_p ? (sar_reg & ~mask[RESOLUTION:1]) : sar_reg) | (mask[RESOLUTION:1] >> 1);
         end
     end
 
-    // Sticky done flag: once EOC latches, the ring stays gated off
-    // until the next conversion cycle, instead of re-triggering on
-    // every subsequent valid_clk toggle of an already-decided LSB.
-    always_ff @(posedge eoc or posedge rst_cond) begin
-        if (rst_cond) done <= 1'b0;
-        else          done <= 1'b1;
-    end
-
+    // d_out perfectly latches the moment mask[0] becomes 1
     always_ff @(posedge eoc or negedge rst_n_tree) begin
         if (!rst_n_tree) d_out <= '0;
         else             d_out <= sar_reg;
@@ -125,12 +112,7 @@ module sar_adc_logic #(
     assign d_ctrl_n = ~sar_reg;
 
     // ------------------------------------------------------------
-    // Async clk_o ring. comp_trigger_raw is high whenever the
-    // comparator hasn't resolved yet, the sequence isn't done, and
-    // the array is actually isolated (phi_bottom high). It ripples
-    // through NUM_DELAY_CELLS of buffer delay -- sized so total
-    // delay exceeds worst-case CDAC settling time -- before
-    // strobing the comparator as clk_o.
+    // Async clk_o ring
     // ------------------------------------------------------------
     logic phi_bottom_neg;
     assign phi_bottom_n = phi_bottom_neg;
@@ -142,8 +124,8 @@ module sar_adc_logic #(
     logic comp_trigger_raw;
     gf180mcu_fd_sc_mcu7t5v0__nor3_4 comp_trigger_nor (
         .A1(valid_clk),
-        .A2(done),
-        .A3(phi_bottom_neg),
+        .A2(eoc),
+        .A3(phi_bottom),
         .ZN(comp_trigger_raw)
     );
 

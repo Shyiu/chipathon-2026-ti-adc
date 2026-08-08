@@ -1,8 +1,6 @@
 <testsuites name="results">
   <testsuite name="all" package="all">
-    <property name="random_seed" value="1786152957" />
-    <testcase name="simulate_sar_adc" classname="test_sar" file="/foss/designs/chipathon-2026-ti-adc/src/sar_adc_logic/tb/test_sar.py" lineno="24" time="0.03703165054321289" sim_time_ns="120.0" ratio_time="3240.4712790203575">
-      <failure error_type="AssertionError" error_msg="phi_top did not close immediately!&#10;assert Logic('1') == 0&#10; +  where Logic('1') = LogicObject(sar_adc_logic.phi_top).value&#10; +    where LogicObject(sar_adc_logic.phi_top) = HierarchyObject(sar_adc_logic).phi_top" />
-    </testcase>
+    <property name="random_seed" value="1786154063" />
+    <testcase name="simulate_sar_adc_back_to_back" classname="test_sar" file="/foss/designs/chipathon-2026-ti-adc/src/sar_adc_logic/tb/test_sar.py" lineno="4" time="1.5023770332336426" sim_time_ns="8852.0" ratio_time="5891.996352571624" />
   </testsuite>
 </testsuites>
