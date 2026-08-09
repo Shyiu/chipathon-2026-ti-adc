@@ -49,4 +49,4 @@ DEFAULT_CORNER: nom_tt_025C_3v30
 
 RSZ_DONT_TOUCH_RX: ".*delay_buf.*|.*comp_trigger_driver.*"
 
-# FP_PIN_ORDER_CFG: dir::pin_order.cfg
+FP_PIN_ORDER_CFG: dir::pin_order.cfg
