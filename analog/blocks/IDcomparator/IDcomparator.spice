@@ -1,41 +1,31 @@
-* Ideal Clocked Comparator with Native Metastability & Logarithmic Delay
-* Compatible with ngspice and Xschem
-*
-* Pin configuration: 
-* INP/INN = Analog Inputs, CLK = Clock Input, OUTP/OUTN = Digital Outputs
-* VDD/VSS = Supply Rails
-*
+* Ideal Double-Tail / StrongARM Comparator Subcircuit (7 Pins)
+* Precharge High (CLK Low -> OUTP=VDD, OUTN=VDD)
+* Pins: INP INN CLK VDD VSS OUTP OUTN
 .subckt IDcomparator INP INN CLK VDD VSS OUTP OUTN
-+ PARAMS: VTH=0.6 T0=50p TAU=30p VOS=0 VNOISE=0
++ PARAMS: VTH=1.65 VOS=0 VNOISE=0 GMIN=2m GMEFF=10m
 
-* Internal calculation helpers:
-* 1. Translates desired T0 delay into a clock RC filter network (using a 1pF cap baseline)
-.param R_T0={T0 / (1e-12 * 0.693147)}
-* 2. Translates regeneration constant (TAU) into an ideal transconductance scale
-.param GM_EFF={1e-12 / TAU}
-.param GM_IN={GM_EFF * 0.1}
+* Step 1: Smooth Clock Gate Factor (0 during reset, 1 during active evaluation)
+B_gate GATE 0 V = 0.5 * (1 + tanh((V(CLK) - {VTH}) * 50))
 
-* --- STEP 1: SENSING DELAY (t0) MODEL ---
-* Filters the incoming clock signal to model the tracking/discharge dead-time (t0)
-R_clk CLK CLK_del {R_T0}
-C_clk CLK_del 0 1pf
-
-* --- STEP 2: INPUT AND SPECIFICATIONS VECTOR ---
-* Integrates static offset and random noise parameters directly into the differential input
+* Step 2: Differential Input Evaluation (Includes Offset & Thermal Noise)
 B_in IN_DIFF 0 V = V(INP) - V(INN) - {VOS} + {VNOISE}
 
-* --- STEP 3: REGENERATIVE LATCH CORE ---
-* Node 'INT' holds the state of the internal latch.
-* When CLK_del is LOW: Node is shorted to ground through a 10-ohm path (Reset Phase).
-* When CLK_del is HIGH: Activates the Gm input stage and cross-coupled positive feedback.
+* Step 3: Bounded Regenerative Latch Core
 C_latch INT 0 1pf
-B_latch 0 INT I = (V(CLK_del) > {VTH}) ? ({GM_IN}*V(IN_DIFF) + {GM_EFF}*V(INT)) : (-V(INT)/10)
+B_latch 0 INT I = V(GATE) * ({GMIN}*V(IN_DIFF) + {GMEFF}*tanh(V(INT)*5)) - (1 - V(GATE)) * (V(INT) / 10)
 
-* --- STEP 4: RAIL-TO-RAIL DIGITAL DRIVERS ---
-* Converts internal state to digital outputs.
-* In the double-tail architecture, outputs are forced to 0V (VSS) during reset.
-* Tanh functions ensure smooth analog derivative transitions for SPICE stability.
-B_outp OUTP 0 V = (V(CLK) > {VTH}) ? (V(VDD)/2 * (1 + tanh(V(INT) * 1e2))) : 0
-B_outn OUTN 0 V = (V(CLK) > {VTH}) ? (V(VDD)/2 * (1 - tanh(V(INT) * 1e2))) : 0
+* Step 4: Rail-to-Rail Precharge-High Output Mapping
+* Reset Phase (GATE = 0): OUTP = VDD, OUTN = VDD
+* Evaluation Phase (GATE = 1): INP > INN -> OUTP = VDD, OUTN = 0V
+*                              INP < INN -> OUTP = 0V,  OUTN = VDD
+B_outp_int OUTP_int 0 V = V(VDD) * (1 - V(GATE) * 0.5 * (1 - tanh(V(INT) * 10)))
+B_outn_int OUTN_int 0 V = V(VDD) * (1 - V(GATE) * 0.5 * (1 + tanh(V(INT) * 10)))
 
-.ends
+* Step 5: Output Smoothing Filters (Prevents matrix timestep crashes)
+R_outp OUTP_int OUTP 50
+C_outp OUTP 0 5ff
+
+R_outn OUTN_int OUTN 50
+C_outn OUTN 0 5ff
+
+.ends IDcomparator

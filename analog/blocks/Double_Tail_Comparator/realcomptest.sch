@@ -18,10 +18,10 @@ C {vsource.sym} -700 -20 0 0 {name=V1
 value=3.3
 savecurrent=false}
 C {vsource.sym} -640 -20 0 0 {name=V2 
-value="sin(2 0.01 25MEG)"
+value="sin(2 0.001 25MEG)"
 savecurrent=false}
 C {vsource.sym} -580 -20 0 0 {name=V3 
-value="sin(2 0.01 25MEG 20n)"
+value="sin(2 0.001 25MEG 20n)"
 savecurrent=false}
 C {lab_pin.sym} -640 -90 1 0 {name=p2 sig_type=std_logic lab=INP}
 C {lab_pin.sym} -580 -90 1 0 {name=p3 sig_type=std_logic lab=INN}
@@ -34,19 +34,20 @@ value= "PULSE(0 3.3 2.5n 50p 50p 2.5n 5n)"
 savecurrent=false}
 C {gnd.sym} -525 50 0 0 {name=l4 lab=0}
 C {lab_pin.sym} -700 -90 1 0 {name=p11 sig_type=std_logic lab=VDD}
-C {lab_pin.sym} 0 -70 1 0 {name=p4 sig_type=std_logic lab=VDD}
-C {lab_pin.sym} -30 -80 1 0 {name=p6 sig_type=std_logic lab=CLK}
-C {gnd.sym} 0 50 0 0 {name=l6 lab=0}
-C {lab_pin.sym} -80 0 0 0 {name=p7 sig_type=std_logic lab=INN}
-C {lab_pin.sym} -80 -20 0 0 {name=p8 sig_type=std_logic lab=INP}
-C {lab_pin.sym} 120 -30 2 0 {name=p9 sig_type=std_logic lab=OUTP}
-C {lab_pin.sym} 120 10 2 0 {name=p10 sig_type=std_logic lab=OUTN}
-C {code_shown.sym} -1160 -360 0 0 {name=MODELS only_toplevel=true
+C {lab_pin.sym} 480 50 1 0 {name=p4 sig_type=std_logic lab=VDD}
+C {lab_pin.sym} 440 30 1 0 {name=p6 sig_type=std_logic lab=CLK}
+C {gnd.sym} 480 270 0 0 {name=l6 lab=0}
+C {lab_pin.sym} 320 200 0 0 {name=p7 sig_type=std_logic lab=INN}
+C {lab_pin.sym} 320 110 0 0 {name=p8 sig_type=std_logic lab=INP}
+C {lab_pin.sym} 610 140 2 0 {name=p9 sig_type=std_logic lab=OUTP}
+C {lab_pin.sym} 610 180 2 0 {name=p10 sig_type=std_logic lab=OUTN}
+C {code_shown.sym} -1040 -480 0 0 {name=MODELS only_toplevel=true
 format="tcleval( @value )"
 value="
 .include $::180MCU_MODELS/design.ngspice
 .lib $::180MCU_MODELS/sm141064.ngspice typical
 .lib $::180MCU_MODELS/smbb000149.ngspice typical
+.include /foss/designs/chipathon-2026-ti-adc/analog/blocks/IDcomparator/IDcomparator.spice
 "}
 C {code_shown.sym} -430 -330 0 0 {name=s1 only_toplevel=true 
 value="
@@ -55,4 +56,4 @@ tran 2n 100n
 plot v(OUTP) v(OUTN) v(INP) v(INN) v(CLK)
 .endc
 "}
-C {chipathon-2026-ti-adc/analog/blocks/Double_Tail_Comparator/realcomp.sym} 0 -10 0 0 {name=x1}
+C {chipathon-2026-ti-adc/analog/blocks/IDcomparator/IDcomparator.sym} 260 160 0 0 {name=X2 model=IDcomparator}

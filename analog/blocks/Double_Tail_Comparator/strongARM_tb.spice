@@ -1,224 +1,916 @@
-*======================================================================
-* StrongARM Latch Comparator Testbench (simplified controls)
-* DUT: Double_Tail_Comparator / realcomp.sch  (GF180MCU 3.3V devices)
+* ============================================================
+* SAR ADC Comparator Decision-Time + Differential-Kickback Sweep (V3)
+* Measures across +/-1, +/-2, +/-5, +/-10 mV input differentials:
+*   1) Comparator decision time
+*   2) Kickback accumulated before comparator resolution
+*   3) Kickback at the decision instant
+*   4) Peak and residual kickback
 *
-* TEST 1: Both inputs are static DC voltages. INN is held at a fixed
-*         "reference" voltage; INP is swept from a start value to an
-*         end value (e.g. INP: 0.4V -> 0.7V while INN stays at 0.5V).
-* TEST 2: Both inputs are sine waves sharing one DC offset (VCM).
-*         Their amplitude is swept from a start value down to an end
-*         value, and the phase difference between them ("difference")
-*         is swept from a start value to an end value.
+* DUTs:
+*   - XCDAC_U: unloaded reference CDAC
+*   - XCDAC_L: identical CDAC with comparator INP attached to Vx_loaded
 *
-* You only need to touch the blocks marked "USER-EDITABLE". All pulse
-* shaping / timing details are derived automatically from the two
-* frequency knobs you do care about (CLK frequency, sine frequency)
-* and are marked "AUTO-DERIVED - no need to edit".
-*======================================================================
+* Test condition:
+*   - 8-bit effective code = 128 (midscale)
+*   - Dx<0> and Dx<5> are dummy-unit controls and are held LOW
+*   - Sampling/top-plate reset ends at 20 ns
+*   - Comparator fires at 60 ns, after the CDAC has settled
+* ============================================================
 
-.title strongarm_latch_testbench
+.GLOBAL GND
 
-*----------------------------------------------------------------------
-* PDK / MODELS  <-- EDIT THIS: point at your gf180mcu (or other) model
-* library that defines nfet_03v3 / pfet_03v3
-*----------------------------------------------------------------------
-.include /foss/pdks/gf180mcuD/libs.tech/ngspice/design.ngspice 
-.lib /foss/pdks/gf180mcuD/libs.tech/ngspice/sm141064.ngspice typical 
-.lib /foss/pdks/gf180mcuD/libs.tech/ngspice/smbb000149.ngspice typical
+* ============================================================
+* GF180MCU models -- copied from the supplied working testbench
+* ============================================================
+.include "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/design.ngspice"
+.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" typical
+.lib "$PDK_ROOT/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" cap_mim
 
-*----------------------------------------------------------------------
-* USER-EDITABLE: SUPPLIES
-*----------------------------------------------------------------------
-.param VDD_VAL   = 3.3     ; <-- EDIT: supply voltage
-.param VSS_VAL   = 0       ; <-- EDIT: ground / negative supply
-.param TEMP_VAL  = 27      ; <-- EDIT: simulation temperature, deg C
-.temp {TEMP_VAL}
+.param mim_corner_2p0fF=1
+.param mc_c_cox_2p0fF=0
 
-VDD  VDD  0  DC {VDD_VAL}
-VSS  VSS  0  DC {VSS_VAL}
+* ============================================================
+* ADC parameters
+* ============================================================
+.param VDDVAL=3.3
+.param VREFVAL=1.8
+.param VCMVAL=0.9
+.param VINVAL=0.9
+.param NBITS=8
 
-*----------------------------------------------------------------------
-* DUT SUBCIRCUIT (from realcomp.sch netlist). Not meant to be edited.
-*----------------------------------------------------------------------
+* 1 LSB = VREF/256 = 7.03125 mV for VREF=1.8 V
+* 0.5 LSB = 3.515625 mV
+.param LSB='VREFVAL/(2^NBITS)'
+.param HALFLSB='LSB/2'
+
+* ============================================================
+* Rails / analog inputs
+* ============================================================
+VDD_SRC   VDD  GND {VDDVAL}
+VREF_SRC  VREF GND {VREFVAL}
+VIN_SRC   Vin  GND {VINVAL}
+VCM_SRC   VCM  GND {VCMVAL}
+
+* ============================================================
+* Sampling / conversion clocks
+*
+* 0..19 ns:
+*   phi_b = 1, ~phi_b = 0 -> capacitor bottom plates sample Vin
+*   phi_t = 1, ~phi_t = 0 -> Vx / Vx_lsb reset to VCM
+*
+* 19..20 ns:
+*   1 ns transition into conversion
+*
+* >=20 ns:
+*   phi_b = 0, ~phi_b = 1 -> CDAC bottom plates use Dx controls
+*   phi_t = 0, ~phi_t = 1 -> top plates released from VCM
+* ============================================================
+VPHIB    phi_b   GND PWL(0 {VDDVAL} 19n {VDDVAL} 20n 0 80n 0)
+VPHIB_B  phi_b_b GND PWL(0 0 19n 0 20n {VDDVAL} 80n {VDDVAL})
+
+VPHIT    phi_t   GND PWL(0 {VDDVAL} 19n {VDDVAL} 20n 0 80n 0)
+VPHIT_B  phi_t_b GND PWL(0 0 19n 0 20n {VDDVAL} 80n {VDDVAL})
+
+* ============================================================
+* Effective 8-bit code = 128
+*
+* Active 8-bit word:
+*   bit0 -> Dx<1>
+*   bit1 -> Dx<2>
+*   bit2 -> Dx<3>
+*   bit3 -> Dx<4>
+*   bit4 -> Dx<6>
+*   bit5 -> Dx<7>
+*   bit6 -> Dx<8>
+*   bit7 -> Dx<9>
+*
+* Dummy controls:
+*   Dx<0> and Dx<5> held LOW
+* ============================================================
+
+* Dummy unit controls
+VDX0    Dx0   GND 0
+VDXB0   Dxb0  GND {VDDVAL}
+VDX5    Dx5   GND 0
+VDXB5   Dxb5  GND {VDDVAL}
+
+* Code 128 = 1000_0000
+VDX1    Dx1   GND 0
+VDXB1   Dxb1  GND {VDDVAL}
+
+VDX2    Dx2   GND 0
+VDXB2   Dxb2  GND {VDDVAL}
+
+VDX3    Dx3   GND 0
+VDXB3   Dxb3  GND {VDDVAL}
+
+VDX4    Dx4   GND 0
+VDXB4   Dxb4  GND {VDDVAL}
+
+VDX6    Dx6   GND 0
+VDXB6   Dxb6  GND {VDDVAL}
+
+VDX7    Dx7   GND 0
+VDXB7   Dxb7  GND {VDDVAL}
+
+VDX8    Dx8   GND 0
+VDXB8   Dxb8  GND {VDDVAL}
+
+VDX9    Dx9   GND {VDDVAL}
+VDXB9   Dxb9  GND 0
+
+* ============================================================
+* Comparator clock
+*
+* Comparator is intentionally held in reset while CDAC settles.
+* It fires at 60 ns. The fast edge makes kickback easy to see.
+* Change rise/fall time here if your real comparator clock is slower.
+* ============================================================
+VCLK CLK GND PULSE(0 {VDDVAL} 60n 50p 50p 5n 40n)
+
+* ============================================================
+* CDAC instances
+*
+* Exact positional pin order from the supplied caps2 netlist:
+*
+* caps2 Dx_b<0> Dx_b<1> Dx_b<2> Dx_b<3> Vin Dx_b<4> Dx_b<5>
+*       GND Dx_b<6> Dx_b<7> VREF Dx_b<8> ~phi_t phi_t Dx_b<9>
+*       Dx<0> VDD Dx<1> Vx Dx<2> Dx<3> Vx_lsb Dx<4> Dx<5>
+*       phi_b ~phi_b Dx<6> VCM Dx<7> Dx<8> Dx<9>
+* ============================================================
+
+* Unloaded CDAC: reference for input-loading comparison
+XCDAC_U Dxb0 Dxb1 Dxb2 Dxb3 Vin Dxb4 Dxb5 GND Dxb6 Dxb7 VREF Dxb8 phi_t_b phi_t Dxb9 Dx0
++ VDD Dx1 Vx_unloaded Dx2 Dx3 Vx_lsb_u Dx4 Dx5 phi_b phi_b_b Dx6 VCM Dx7 Dx8 Dx9 caps2
+
+* Loaded CDAC: comparator input connected to Vx_loaded
+XCDAC_L Dxb0 Dxb1 Dxb2 Dxb3 Vin Dxb4 Dxb5 GND Dxb6 Dxb7 VREF Dxb8 phi_t_b phi_t Dxb9 Dx0
++ VDD Dx1 Vx_loaded Dx2 Dx3 Vx_lsb_l Dx4 Dx5 phi_b phi_b_b Dx6 VCM Dx7 Dx8 Dx9 caps2
+
+* ============================================================
+* Comparator
+*
+* Exact positional pin order from supplied comparator:
+* realcomp OUTN OUTP CLK VSS VDD INP INN
+*
+* INP = loaded CDAC Vx
+* INN = VCOMP, an independently swept reference.
+*
+* VCOMP is swept around the measured pre-comparison Vx so that
+* actual INP-INN is approximately:
+*   -10, -5, -2, -1, +1, +2, +5, +10 mV
+*
+* Keeping INP physically attached to Vx_loaded preserves the
+* comparator loading and kickback path that we are trying to test.
+* ============================================================
+VCOMPREF VCOMP GND {VCMVAL}
+XCOMP OUTN OUTP CLK GND VDD Vx_loaded VCOMP realcomp
+
+* ============================================================
+* Simulation settings
+* ============================================================
+.options method=gear maxord=2 reltol=1e-4 abstol=1p vntol=100n chgtol=1e-15
+.options gmin=1e-12 rshunt=1e12 itl1=500 itl4=300
+
+* Small max step is important for resolving the kickback spike.
+.tran 10p 80n
+
+.control
+set noaskquit
+
+* ============================================================
+* ROBUST COMPARATOR DECISION-TIME + KICKBACK SWEEP, V3
+*
+* Fixed from V1:
+*   1) No calibration vectors are destroyed.
+*   2) VCOMP is altered to eight EXPLICIT voltage values.
+*   3) Decision threshold is literal 1.65 V.
+*   4) LSB is literal 7.03125 mV.
+*   5) Differential output uses v(OUTN)-v(OUTP).
+*   6) Correctness uses a multiplication metric, not a boolean.
+*
+* decision_metric > 0 : comparator polarity is correct
+* decision_metric < 0 : comparator polarity is wrong
+*
+* Sweep center:
+*   measured Vx before CLK = 0.9031209 V
+* ============================================================
+
+* ============================================================
+* RUN 1: requested INP-INN = -10 mV
+* ============================================================
+alter VCOMPREF 0.9131209
+run
+
+let kb_raw = v(Vx_loaded)-v(Vx_unloaded)
+meas tran kb_pre_1 FIND kb_raw AT=59.9n
+let kb_dyn_1 = kb_raw-kb_pre_1
+let kb_abs_1 = abs(kb_dyn_1)
+
+let outdiff_1 = v(OUTN)-v(OUTP)
+let outdiff_abs_1 = abs(outdiff_1)
+
+meas tran vx_pre_1 FIND v(Vx_loaded) AT=59.9n
+meas tran vcomp_pre_1 FIND v(VCOMP) AT=59.9n
+let actual_diff_1 = vx_pre_1-vcomp_pre_1
+
+meas tran t_clk50_1 WHEN v(CLK)=1.65 RISE=1 FROM=59.9n TO=60.2n
+meas tran t_dec_abs_1 WHEN outdiff_abs_1=1.65 RISE=1 FROM=60n TO=64.9n
+let t_decision_1 = t_dec_abs_1-t_clk50_1
+
+meas tran kb_before_dec_1 MAX kb_abs_1 FROM=$&t_clk50_1 TO=$&t_dec_abs_1
+meas tran kb_at_dec_1 FIND kb_dyn_1 AT=$&t_dec_abs_1
+
+meas tran kb_peak_2ns_1 MAX kb_abs_1 FROM=60n TO=62n
+meas tran kb_residual_2ns_1 FIND kb_dyn_1 AT=62n
+meas tran kb_pos_1 MAX kb_dyn_1 FROM=60n TO=62n
+meas tran kb_neg_1 MIN kb_dyn_1 FROM=60n TO=62n
+
+meas tran outdiff_final_1 FIND outdiff_1 AT=64.5n
+let decision_metric_1 = actual_diff_1*outdiff_final_1
+
+let actual_diff_mv_1 = actual_diff_1*1e3
+let decision_time_ns_1 = t_decision_1*1e9
+let kb_before_dec_mv_1 = kb_before_dec_1*1e3
+let kb_before_dec_lsb_1 = kb_before_dec_1/0.00703125
+let kb_at_dec_mv_1 = kb_at_dec_1*1e3
+let kb_at_dec_lsb_1 = abs(kb_at_dec_1)/0.00703125
+let kb_peak_2ns_mv_1 = kb_peak_2ns_1*1e3
+let kb_peak_2ns_lsb_1 = kb_peak_2ns_1/0.00703125
+let kb_residual_2ns_mv_1 = kb_residual_2ns_1*1e3
+let kb_residual_2ns_lsb_1 = abs(kb_residual_2ns_1)/0.00703125
+
+echo
+echo ============================================================
+echo INTERMEDIATE_RUN_1_REQUESTED_DIFF_m10mV
+echo ============================================================
+print actual_diff_mv_1
+print decision_time_ns_1
+print kb_before_dec_mv_1 kb_before_dec_lsb_1
+print kb_at_dec_mv_1 kb_at_dec_lsb_1
+print kb_peak_2ns_mv_1 kb_peak_2ns_lsb_1
+print kb_residual_2ns_mv_1 kb_residual_2ns_lsb_1
+print outdiff_final_1 decision_metric_1
+
+wrdata comparator_sweep_run_1_m10mV.txt time kb_dyn_1 outdiff_abs_1 v(Vx_loaded) v(Vx_unloaded) v(CLK) v(OUTP) v(OUTN)
+
+* ============================================================
+* RUN 2: requested INP-INN = -5 mV
+* ============================================================
+alter VCOMPREF 0.9081209
+run
+
+let kb_raw = v(Vx_loaded)-v(Vx_unloaded)
+meas tran kb_pre_2 FIND kb_raw AT=59.9n
+let kb_dyn_2 = kb_raw-kb_pre_2
+let kb_abs_2 = abs(kb_dyn_2)
+
+let outdiff_2 = v(OUTN)-v(OUTP)
+let outdiff_abs_2 = abs(outdiff_2)
+
+meas tran vx_pre_2 FIND v(Vx_loaded) AT=59.9n
+meas tran vcomp_pre_2 FIND v(VCOMP) AT=59.9n
+let actual_diff_2 = vx_pre_2-vcomp_pre_2
+
+meas tran t_clk50_2 WHEN v(CLK)=1.65 RISE=1 FROM=59.9n TO=60.2n
+meas tran t_dec_abs_2 WHEN outdiff_abs_2=1.65 RISE=1 FROM=60n TO=64.9n
+let t_decision_2 = t_dec_abs_2-t_clk50_2
+
+meas tran kb_before_dec_2 MAX kb_abs_2 FROM=$&t_clk50_2 TO=$&t_dec_abs_2
+meas tran kb_at_dec_2 FIND kb_dyn_2 AT=$&t_dec_abs_2
+
+meas tran kb_peak_2ns_2 MAX kb_abs_2 FROM=60n TO=62n
+meas tran kb_residual_2ns_2 FIND kb_dyn_2 AT=62n
+meas tran kb_pos_2 MAX kb_dyn_2 FROM=60n TO=62n
+meas tran kb_neg_2 MIN kb_dyn_2 FROM=60n TO=62n
+
+meas tran outdiff_final_2 FIND outdiff_2 AT=64.5n
+let decision_metric_2 = actual_diff_2*outdiff_final_2
+
+let actual_diff_mv_2 = actual_diff_2*1e3
+let decision_time_ns_2 = t_decision_2*1e9
+let kb_before_dec_mv_2 = kb_before_dec_2*1e3
+let kb_before_dec_lsb_2 = kb_before_dec_2/0.00703125
+let kb_at_dec_mv_2 = kb_at_dec_2*1e3
+let kb_at_dec_lsb_2 = abs(kb_at_dec_2)/0.00703125
+let kb_peak_2ns_mv_2 = kb_peak_2ns_2*1e3
+let kb_peak_2ns_lsb_2 = kb_peak_2ns_2/0.00703125
+let kb_residual_2ns_mv_2 = kb_residual_2ns_2*1e3
+let kb_residual_2ns_lsb_2 = abs(kb_residual_2ns_2)/0.00703125
+
+echo
+echo ============================================================
+echo INTERMEDIATE_RUN_2_REQUESTED_DIFF_m5mV
+echo ============================================================
+print actual_diff_mv_2
+print decision_time_ns_2
+print kb_before_dec_mv_2 kb_before_dec_lsb_2
+print kb_at_dec_mv_2 kb_at_dec_lsb_2
+print kb_peak_2ns_mv_2 kb_peak_2ns_lsb_2
+print kb_residual_2ns_mv_2 kb_residual_2ns_lsb_2
+print outdiff_final_2 decision_metric_2
+
+wrdata comparator_sweep_run_2_m5mV.txt time kb_dyn_2 outdiff_abs_2 v(Vx_loaded) v(Vx_unloaded) v(CLK) v(OUTP) v(OUTN)
+
+* ============================================================
+* RUN 3: requested INP-INN = -2 mV
+* ============================================================
+alter VCOMPREF 0.9051209
+run
+
+let kb_raw = v(Vx_loaded)-v(Vx_unloaded)
+meas tran kb_pre_3 FIND kb_raw AT=59.9n
+let kb_dyn_3 = kb_raw-kb_pre_3
+let kb_abs_3 = abs(kb_dyn_3)
+
+let outdiff_3 = v(OUTN)-v(OUTP)
+let outdiff_abs_3 = abs(outdiff_3)
+
+meas tran vx_pre_3 FIND v(Vx_loaded) AT=59.9n
+meas tran vcomp_pre_3 FIND v(VCOMP) AT=59.9n
+let actual_diff_3 = vx_pre_3-vcomp_pre_3
+
+meas tran t_clk50_3 WHEN v(CLK)=1.65 RISE=1 FROM=59.9n TO=60.2n
+meas tran t_dec_abs_3 WHEN outdiff_abs_3=1.65 RISE=1 FROM=60n TO=64.9n
+let t_decision_3 = t_dec_abs_3-t_clk50_3
+
+meas tran kb_before_dec_3 MAX kb_abs_3 FROM=$&t_clk50_3 TO=$&t_dec_abs_3
+meas tran kb_at_dec_3 FIND kb_dyn_3 AT=$&t_dec_abs_3
+
+meas tran kb_peak_2ns_3 MAX kb_abs_3 FROM=60n TO=62n
+meas tran kb_residual_2ns_3 FIND kb_dyn_3 AT=62n
+meas tran kb_pos_3 MAX kb_dyn_3 FROM=60n TO=62n
+meas tran kb_neg_3 MIN kb_dyn_3 FROM=60n TO=62n
+
+meas tran outdiff_final_3 FIND outdiff_3 AT=64.5n
+let decision_metric_3 = actual_diff_3*outdiff_final_3
+
+let actual_diff_mv_3 = actual_diff_3*1e3
+let decision_time_ns_3 = t_decision_3*1e9
+let kb_before_dec_mv_3 = kb_before_dec_3*1e3
+let kb_before_dec_lsb_3 = kb_before_dec_3/0.00703125
+let kb_at_dec_mv_3 = kb_at_dec_3*1e3
+let kb_at_dec_lsb_3 = abs(kb_at_dec_3)/0.00703125
+let kb_peak_2ns_mv_3 = kb_peak_2ns_3*1e3
+let kb_peak_2ns_lsb_3 = kb_peak_2ns_3/0.00703125
+let kb_residual_2ns_mv_3 = kb_residual_2ns_3*1e3
+let kb_residual_2ns_lsb_3 = abs(kb_residual_2ns_3)/0.00703125
+
+echo
+echo ============================================================
+echo INTERMEDIATE_RUN_3_REQUESTED_DIFF_m2mV
+echo ============================================================
+print actual_diff_mv_3
+print decision_time_ns_3
+print kb_before_dec_mv_3 kb_before_dec_lsb_3
+print kb_at_dec_mv_3 kb_at_dec_lsb_3
+print kb_peak_2ns_mv_3 kb_peak_2ns_lsb_3
+print kb_residual_2ns_mv_3 kb_residual_2ns_lsb_3
+print outdiff_final_3 decision_metric_3
+
+wrdata comparator_sweep_run_3_m2mV.txt time kb_dyn_3 outdiff_abs_3 v(Vx_loaded) v(Vx_unloaded) v(CLK) v(OUTP) v(OUTN)
+
+* ============================================================
+* RUN 4: requested INP-INN = -1 mV
+* ============================================================
+alter VCOMPREF 0.9041209
+run
+
+let kb_raw = v(Vx_loaded)-v(Vx_unloaded)
+meas tran kb_pre_4 FIND kb_raw AT=59.9n
+let kb_dyn_4 = kb_raw-kb_pre_4
+let kb_abs_4 = abs(kb_dyn_4)
+
+let outdiff_4 = v(OUTN)-v(OUTP)
+let outdiff_abs_4 = abs(outdiff_4)
+
+meas tran vx_pre_4 FIND v(Vx_loaded) AT=59.9n
+meas tran vcomp_pre_4 FIND v(VCOMP) AT=59.9n
+let actual_diff_4 = vx_pre_4-vcomp_pre_4
+
+meas tran t_clk50_4 WHEN v(CLK)=1.65 RISE=1 FROM=59.9n TO=60.2n
+meas tran t_dec_abs_4 WHEN outdiff_abs_4=1.65 RISE=1 FROM=60n TO=64.9n
+let t_decision_4 = t_dec_abs_4-t_clk50_4
+
+meas tran kb_before_dec_4 MAX kb_abs_4 FROM=$&t_clk50_4 TO=$&t_dec_abs_4
+meas tran kb_at_dec_4 FIND kb_dyn_4 AT=$&t_dec_abs_4
+
+meas tran kb_peak_2ns_4 MAX kb_abs_4 FROM=60n TO=62n
+meas tran kb_residual_2ns_4 FIND kb_dyn_4 AT=62n
+meas tran kb_pos_4 MAX kb_dyn_4 FROM=60n TO=62n
+meas tran kb_neg_4 MIN kb_dyn_4 FROM=60n TO=62n
+
+meas tran outdiff_final_4 FIND outdiff_4 AT=64.5n
+let decision_metric_4 = actual_diff_4*outdiff_final_4
+
+let actual_diff_mv_4 = actual_diff_4*1e3
+let decision_time_ns_4 = t_decision_4*1e9
+let kb_before_dec_mv_4 = kb_before_dec_4*1e3
+let kb_before_dec_lsb_4 = kb_before_dec_4/0.00703125
+let kb_at_dec_mv_4 = kb_at_dec_4*1e3
+let kb_at_dec_lsb_4 = abs(kb_at_dec_4)/0.00703125
+let kb_peak_2ns_mv_4 = kb_peak_2ns_4*1e3
+let kb_peak_2ns_lsb_4 = kb_peak_2ns_4/0.00703125
+let kb_residual_2ns_mv_4 = kb_residual_2ns_4*1e3
+let kb_residual_2ns_lsb_4 = abs(kb_residual_2ns_4)/0.00703125
+
+echo
+echo ============================================================
+echo INTERMEDIATE_RUN_4_REQUESTED_DIFF_m1mV
+echo ============================================================
+print actual_diff_mv_4
+print decision_time_ns_4
+print kb_before_dec_mv_4 kb_before_dec_lsb_4
+print kb_at_dec_mv_4 kb_at_dec_lsb_4
+print kb_peak_2ns_mv_4 kb_peak_2ns_lsb_4
+print kb_residual_2ns_mv_4 kb_residual_2ns_lsb_4
+print outdiff_final_4 decision_metric_4
+
+wrdata comparator_sweep_run_4_m1mV.txt time kb_dyn_4 outdiff_abs_4 v(Vx_loaded) v(Vx_unloaded) v(CLK) v(OUTP) v(OUTN)
+
+* ============================================================
+* RUN 5: requested INP-INN = +1 mV
+* ============================================================
+alter VCOMPREF 0.9021209
+run
+
+let kb_raw = v(Vx_loaded)-v(Vx_unloaded)
+meas tran kb_pre_5 FIND kb_raw AT=59.9n
+let kb_dyn_5 = kb_raw-kb_pre_5
+let kb_abs_5 = abs(kb_dyn_5)
+
+let outdiff_5 = v(OUTN)-v(OUTP)
+let outdiff_abs_5 = abs(outdiff_5)
+
+meas tran vx_pre_5 FIND v(Vx_loaded) AT=59.9n
+meas tran vcomp_pre_5 FIND v(VCOMP) AT=59.9n
+let actual_diff_5 = vx_pre_5-vcomp_pre_5
+
+meas tran t_clk50_5 WHEN v(CLK)=1.65 RISE=1 FROM=59.9n TO=60.2n
+meas tran t_dec_abs_5 WHEN outdiff_abs_5=1.65 RISE=1 FROM=60n TO=64.9n
+let t_decision_5 = t_dec_abs_5-t_clk50_5
+
+meas tran kb_before_dec_5 MAX kb_abs_5 FROM=$&t_clk50_5 TO=$&t_dec_abs_5
+meas tran kb_at_dec_5 FIND kb_dyn_5 AT=$&t_dec_abs_5
+
+meas tran kb_peak_2ns_5 MAX kb_abs_5 FROM=60n TO=62n
+meas tran kb_residual_2ns_5 FIND kb_dyn_5 AT=62n
+meas tran kb_pos_5 MAX kb_dyn_5 FROM=60n TO=62n
+meas tran kb_neg_5 MIN kb_dyn_5 FROM=60n TO=62n
+
+meas tran outdiff_final_5 FIND outdiff_5 AT=64.5n
+let decision_metric_5 = actual_diff_5*outdiff_final_5
+
+let actual_diff_mv_5 = actual_diff_5*1e3
+let decision_time_ns_5 = t_decision_5*1e9
+let kb_before_dec_mv_5 = kb_before_dec_5*1e3
+let kb_before_dec_lsb_5 = kb_before_dec_5/0.00703125
+let kb_at_dec_mv_5 = kb_at_dec_5*1e3
+let kb_at_dec_lsb_5 = abs(kb_at_dec_5)/0.00703125
+let kb_peak_2ns_mv_5 = kb_peak_2ns_5*1e3
+let kb_peak_2ns_lsb_5 = kb_peak_2ns_5/0.00703125
+let kb_residual_2ns_mv_5 = kb_residual_2ns_5*1e3
+let kb_residual_2ns_lsb_5 = abs(kb_residual_2ns_5)/0.00703125
+
+echo
+echo ============================================================
+echo INTERMEDIATE_RUN_5_REQUESTED_DIFF_p1mV
+echo ============================================================
+print actual_diff_mv_5
+print decision_time_ns_5
+print kb_before_dec_mv_5 kb_before_dec_lsb_5
+print kb_at_dec_mv_5 kb_at_dec_lsb_5
+print kb_peak_2ns_mv_5 kb_peak_2ns_lsb_5
+print kb_residual_2ns_mv_5 kb_residual_2ns_lsb_5
+print outdiff_final_5 decision_metric_5
+
+wrdata comparator_sweep_run_5_p1mV.txt time kb_dyn_5 outdiff_abs_5 v(Vx_loaded) v(Vx_unloaded) v(CLK) v(OUTP) v(OUTN)
+
+* ============================================================
+* RUN 6: requested INP-INN = +2 mV
+* ============================================================
+alter VCOMPREF 0.9011209
+run
+
+let kb_raw = v(Vx_loaded)-v(Vx_unloaded)
+meas tran kb_pre_6 FIND kb_raw AT=59.9n
+let kb_dyn_6 = kb_raw-kb_pre_6
+let kb_abs_6 = abs(kb_dyn_6)
+
+let outdiff_6 = v(OUTN)-v(OUTP)
+let outdiff_abs_6 = abs(outdiff_6)
+
+meas tran vx_pre_6 FIND v(Vx_loaded) AT=59.9n
+meas tran vcomp_pre_6 FIND v(VCOMP) AT=59.9n
+let actual_diff_6 = vx_pre_6-vcomp_pre_6
+
+meas tran t_clk50_6 WHEN v(CLK)=1.65 RISE=1 FROM=59.9n TO=60.2n
+meas tran t_dec_abs_6 WHEN outdiff_abs_6=1.65 RISE=1 FROM=60n TO=64.9n
+let t_decision_6 = t_dec_abs_6-t_clk50_6
+
+meas tran kb_before_dec_6 MAX kb_abs_6 FROM=$&t_clk50_6 TO=$&t_dec_abs_6
+meas tran kb_at_dec_6 FIND kb_dyn_6 AT=$&t_dec_abs_6
+
+meas tran kb_peak_2ns_6 MAX kb_abs_6 FROM=60n TO=62n
+meas tran kb_residual_2ns_6 FIND kb_dyn_6 AT=62n
+meas tran kb_pos_6 MAX kb_dyn_6 FROM=60n TO=62n
+meas tran kb_neg_6 MIN kb_dyn_6 FROM=60n TO=62n
+
+meas tran outdiff_final_6 FIND outdiff_6 AT=64.5n
+let decision_metric_6 = actual_diff_6*outdiff_final_6
+
+let actual_diff_mv_6 = actual_diff_6*1e3
+let decision_time_ns_6 = t_decision_6*1e9
+let kb_before_dec_mv_6 = kb_before_dec_6*1e3
+let kb_before_dec_lsb_6 = kb_before_dec_6/0.00703125
+let kb_at_dec_mv_6 = kb_at_dec_6*1e3
+let kb_at_dec_lsb_6 = abs(kb_at_dec_6)/0.00703125
+let kb_peak_2ns_mv_6 = kb_peak_2ns_6*1e3
+let kb_peak_2ns_lsb_6 = kb_peak_2ns_6/0.00703125
+let kb_residual_2ns_mv_6 = kb_residual_2ns_6*1e3
+let kb_residual_2ns_lsb_6 = abs(kb_residual_2ns_6)/0.00703125
+
+echo
+echo ============================================================
+echo INTERMEDIATE_RUN_6_REQUESTED_DIFF_p2mV
+echo ============================================================
+print actual_diff_mv_6
+print decision_time_ns_6
+print kb_before_dec_mv_6 kb_before_dec_lsb_6
+print kb_at_dec_mv_6 kb_at_dec_lsb_6
+print kb_peak_2ns_mv_6 kb_peak_2ns_lsb_6
+print kb_residual_2ns_mv_6 kb_residual_2ns_lsb_6
+print outdiff_final_6 decision_metric_6
+
+wrdata comparator_sweep_run_6_p2mV.txt time kb_dyn_6 outdiff_abs_6 v(Vx_loaded) v(Vx_unloaded) v(CLK) v(OUTP) v(OUTN)
+
+* ============================================================
+* RUN 7: requested INP-INN = +5 mV
+* ============================================================
+alter VCOMPREF 0.8981209
+run
+
+let kb_raw = v(Vx_loaded)-v(Vx_unloaded)
+meas tran kb_pre_7 FIND kb_raw AT=59.9n
+let kb_dyn_7 = kb_raw-kb_pre_7
+let kb_abs_7 = abs(kb_dyn_7)
+
+let outdiff_7 = v(OUTN)-v(OUTP)
+let outdiff_abs_7 = abs(outdiff_7)
+
+meas tran vx_pre_7 FIND v(Vx_loaded) AT=59.9n
+meas tran vcomp_pre_7 FIND v(VCOMP) AT=59.9n
+let actual_diff_7 = vx_pre_7-vcomp_pre_7
+
+meas tran t_clk50_7 WHEN v(CLK)=1.65 RISE=1 FROM=59.9n TO=60.2n
+meas tran t_dec_abs_7 WHEN outdiff_abs_7=1.65 RISE=1 FROM=60n TO=64.9n
+let t_decision_7 = t_dec_abs_7-t_clk50_7
+
+meas tran kb_before_dec_7 MAX kb_abs_7 FROM=$&t_clk50_7 TO=$&t_dec_abs_7
+meas tran kb_at_dec_7 FIND kb_dyn_7 AT=$&t_dec_abs_7
+
+meas tran kb_peak_2ns_7 MAX kb_abs_7 FROM=60n TO=62n
+meas tran kb_residual_2ns_7 FIND kb_dyn_7 AT=62n
+meas tran kb_pos_7 MAX kb_dyn_7 FROM=60n TO=62n
+meas tran kb_neg_7 MIN kb_dyn_7 FROM=60n TO=62n
+
+meas tran outdiff_final_7 FIND outdiff_7 AT=64.5n
+let decision_metric_7 = actual_diff_7*outdiff_final_7
+
+let actual_diff_mv_7 = actual_diff_7*1e3
+let decision_time_ns_7 = t_decision_7*1e9
+let kb_before_dec_mv_7 = kb_before_dec_7*1e3
+let kb_before_dec_lsb_7 = kb_before_dec_7/0.00703125
+let kb_at_dec_mv_7 = kb_at_dec_7*1e3
+let kb_at_dec_lsb_7 = abs(kb_at_dec_7)/0.00703125
+let kb_peak_2ns_mv_7 = kb_peak_2ns_7*1e3
+let kb_peak_2ns_lsb_7 = kb_peak_2ns_7/0.00703125
+let kb_residual_2ns_mv_7 = kb_residual_2ns_7*1e3
+let kb_residual_2ns_lsb_7 = abs(kb_residual_2ns_7)/0.00703125
+
+echo
+echo ============================================================
+echo INTERMEDIATE_RUN_7_REQUESTED_DIFF_p5mV
+echo ============================================================
+print actual_diff_mv_7
+print decision_time_ns_7
+print kb_before_dec_mv_7 kb_before_dec_lsb_7
+print kb_at_dec_mv_7 kb_at_dec_lsb_7
+print kb_peak_2ns_mv_7 kb_peak_2ns_lsb_7
+print kb_residual_2ns_mv_7 kb_residual_2ns_lsb_7
+print outdiff_final_7 decision_metric_7
+
+wrdata comparator_sweep_run_7_p5mV.txt time kb_dyn_7 outdiff_abs_7 v(Vx_loaded) v(Vx_unloaded) v(CLK) v(OUTP) v(OUTN)
+
+* ============================================================
+* RUN 8: requested INP-INN = +10 mV
+* ============================================================
+alter VCOMPREF 0.8931209
+run
+
+let kb_raw = v(Vx_loaded)-v(Vx_unloaded)
+meas tran kb_pre_8 FIND kb_raw AT=59.9n
+let kb_dyn_8 = kb_raw-kb_pre_8
+let kb_abs_8 = abs(kb_dyn_8)
+
+let outdiff_8 = v(OUTN)-v(OUTP)
+let outdiff_abs_8 = abs(outdiff_8)
+
+meas tran vx_pre_8 FIND v(Vx_loaded) AT=59.9n
+meas tran vcomp_pre_8 FIND v(VCOMP) AT=59.9n
+let actual_diff_8 = vx_pre_8-vcomp_pre_8
+
+meas tran t_clk50_8 WHEN v(CLK)=1.65 RISE=1 FROM=59.9n TO=60.2n
+meas tran t_dec_abs_8 WHEN outdiff_abs_8=1.65 RISE=1 FROM=60n TO=64.9n
+let t_decision_8 = t_dec_abs_8-t_clk50_8
+
+meas tran kb_before_dec_8 MAX kb_abs_8 FROM=$&t_clk50_8 TO=$&t_dec_abs_8
+meas tran kb_at_dec_8 FIND kb_dyn_8 AT=$&t_dec_abs_8
+
+meas tran kb_peak_2ns_8 MAX kb_abs_8 FROM=60n TO=62n
+meas tran kb_residual_2ns_8 FIND kb_dyn_8 AT=62n
+meas tran kb_pos_8 MAX kb_dyn_8 FROM=60n TO=62n
+meas tran kb_neg_8 MIN kb_dyn_8 FROM=60n TO=62n
+
+meas tran outdiff_final_8 FIND outdiff_8 AT=64.5n
+let decision_metric_8 = actual_diff_8*outdiff_final_8
+
+let actual_diff_mv_8 = actual_diff_8*1e3
+let decision_time_ns_8 = t_decision_8*1e9
+let kb_before_dec_mv_8 = kb_before_dec_8*1e3
+let kb_before_dec_lsb_8 = kb_before_dec_8/0.00703125
+let kb_at_dec_mv_8 = kb_at_dec_8*1e3
+let kb_at_dec_lsb_8 = abs(kb_at_dec_8)/0.00703125
+let kb_peak_2ns_mv_8 = kb_peak_2ns_8*1e3
+let kb_peak_2ns_lsb_8 = kb_peak_2ns_8/0.00703125
+let kb_residual_2ns_mv_8 = kb_residual_2ns_8*1e3
+let kb_residual_2ns_lsb_8 = abs(kb_residual_2ns_8)/0.00703125
+
+echo
+echo ============================================================
+echo INTERMEDIATE_RUN_8_REQUESTED_DIFF_p10mV
+echo ============================================================
+print actual_diff_mv_8
+print decision_time_ns_8
+print kb_before_dec_mv_8 kb_before_dec_lsb_8
+print kb_at_dec_mv_8 kb_at_dec_lsb_8
+print kb_peak_2ns_mv_8 kb_peak_2ns_lsb_8
+print kb_residual_2ns_mv_8 kb_residual_2ns_lsb_8
+print outdiff_final_8 decision_metric_8
+
+wrdata comparator_sweep_run_8_p10mV.txt time kb_dyn_8 outdiff_abs_8 v(Vx_loaded) v(Vx_unloaded) v(CLK) v(OUTP) v(OUTN)
+
+
+echo
+echo ============================================================
+echo WHAT TO CHECK
+echo ============================================================
+echo actual_diff_mv values should be approximately:
+echo -10 -5 -2 -1 +1 +2 +5 +10 mV
+echo
+echo Most important outputs:
+echo decision_time_ns
+echo kb_before_dec_lsb
+echo kb_at_dec_lsb
+echo kb_peak_2ns_lsb
+echo kb_residual_2ns_lsb
+echo decision_metric
+echo
+
+
+* ============================================================
+* FINAL TERMINAL REPORT
+*
+* Explicitly revisit every transient plot after all 8 runs.
+* This guarantees all eight result blocks are printed together
+* at the END of the terminal output instead of being scattered
+* between the individual simulations.
+* ============================================================
+echo
+echo ########################################################################
+echo ################## FINAL 8-RUN COMPARATOR SUMMARY ######################
+echo ########################################################################
+
+setplot tran1
+echo
+echo ========================================================================
+echo FINAL_RUN_1_REQUESTED_DIFF_-10mV
+echo ========================================================================
+echo Requested input differential = -10 mV
+print actual_diff_mv_1
+print decision_time_ns_1
+print kb_before_dec_mv_1 kb_before_dec_lsb_1
+print kb_at_dec_mv_1 kb_at_dec_lsb_1
+print kb_peak_2ns_mv_1 kb_peak_2ns_lsb_1
+print kb_residual_2ns_mv_1 kb_residual_2ns_lsb_1
+print outdiff_final_1
+print decision_metric_1
+
+setplot tran2
+echo
+echo ========================================================================
+echo FINAL_RUN_2_REQUESTED_DIFF_-5mV
+echo ========================================================================
+echo Requested input differential = -5 mV
+print actual_diff_mv_2
+print decision_time_ns_2
+print kb_before_dec_mv_2 kb_before_dec_lsb_2
+print kb_at_dec_mv_2 kb_at_dec_lsb_2
+print kb_peak_2ns_mv_2 kb_peak_2ns_lsb_2
+print kb_residual_2ns_mv_2 kb_residual_2ns_lsb_2
+print outdiff_final_2
+print decision_metric_2
+
+setplot tran3
+echo
+echo ========================================================================
+echo FINAL_RUN_3_REQUESTED_DIFF_-2mV
+echo ========================================================================
+echo Requested input differential = -2 mV
+print actual_diff_mv_3
+print decision_time_ns_3
+print kb_before_dec_mv_3 kb_before_dec_lsb_3
+print kb_at_dec_mv_3 kb_at_dec_lsb_3
+print kb_peak_2ns_mv_3 kb_peak_2ns_lsb_3
+print kb_residual_2ns_mv_3 kb_residual_2ns_lsb_3
+print outdiff_final_3
+print decision_metric_3
+
+setplot tran4
+echo
+echo ========================================================================
+echo FINAL_RUN_4_REQUESTED_DIFF_-1mV
+echo ========================================================================
+echo Requested input differential = -1 mV
+print actual_diff_mv_4
+print decision_time_ns_4
+print kb_before_dec_mv_4 kb_before_dec_lsb_4
+print kb_at_dec_mv_4 kb_at_dec_lsb_4
+print kb_peak_2ns_mv_4 kb_peak_2ns_lsb_4
+print kb_residual_2ns_mv_4 kb_residual_2ns_lsb_4
+print outdiff_final_4
+print decision_metric_4
+
+setplot tran5
+echo
+echo ========================================================================
+echo FINAL_RUN_5_REQUESTED_DIFF_+1mV
+echo ========================================================================
+echo Requested input differential = +1 mV
+print actual_diff_mv_5
+print decision_time_ns_5
+print kb_before_dec_mv_5 kb_before_dec_lsb_5
+print kb_at_dec_mv_5 kb_at_dec_lsb_5
+print kb_peak_2ns_mv_5 kb_peak_2ns_lsb_5
+print kb_residual_2ns_mv_5 kb_residual_2ns_lsb_5
+print outdiff_final_5
+print decision_metric_5
+
+setplot tran6
+echo
+echo ========================================================================
+echo FINAL_RUN_6_REQUESTED_DIFF_+2mV
+echo ========================================================================
+echo Requested input differential = +2 mV
+print actual_diff_mv_6
+print decision_time_ns_6
+print kb_before_dec_mv_6 kb_before_dec_lsb_6
+print kb_at_dec_mv_6 kb_at_dec_lsb_6
+print kb_peak_2ns_mv_6 kb_peak_2ns_lsb_6
+print kb_residual_2ns_mv_6 kb_residual_2ns_lsb_6
+print outdiff_final_6
+print decision_metric_6
+
+setplot tran7
+echo
+echo ========================================================================
+echo FINAL_RUN_7_REQUESTED_DIFF_+5mV
+echo ========================================================================
+echo Requested input differential = +5 mV
+print actual_diff_mv_7
+print decision_time_ns_7
+print kb_before_dec_mv_7 kb_before_dec_lsb_7
+print kb_at_dec_mv_7 kb_at_dec_lsb_7
+print kb_peak_2ns_mv_7 kb_peak_2ns_lsb_7
+print kb_residual_2ns_mv_7 kb_residual_2ns_lsb_7
+print outdiff_final_7
+print decision_metric_7
+
+setplot tran8
+echo
+echo ========================================================================
+echo FINAL_RUN_8_REQUESTED_DIFF_+10mV
+echo ========================================================================
+echo Requested input differential = +10 mV
+print actual_diff_mv_8
+print decision_time_ns_8
+print kb_before_dec_mv_8 kb_before_dec_lsb_8
+print kb_at_dec_mv_8 kb_at_dec_lsb_8
+print kb_peak_2ns_mv_8 kb_peak_2ns_lsb_8
+print kb_residual_2ns_mv_8 kb_residual_2ns_lsb_8
+print outdiff_final_8
+print decision_metric_8
+
+echo
+echo ########################################################################
+echo HOW TO READ decision_metric
+echo decision_metric greater than 0 = correct comparator polarity
+echo decision_metric less than 0    = incorrect comparator polarity
+echo ########################################################################
+echo
+plot tran1.kb_dyn_1 tran2.kb_dyn_2 tran3.kb_dyn_3 tran4.kb_dyn_4 tran5.kb_dyn_5 tran6.kb_dyn_6 tran7.kb_dyn_7 tran8.kb_dyn_8 xlimit 59.8n 62n title 'Comparator differential kickback sweep'
+plot tran1.outdiff_abs_1 tran2.outdiff_abs_2 tran3.outdiff_abs_3 tran4.outdiff_abs_4 tran5.outdiff_abs_5 tran6.outdiff_abs_6 tran7.outdiff_abs_7 tran8.outdiff_abs_8 xlimit 59.8n 62n title 'Comparator regeneration magnitude sweep'
+
+.endc
+
+* ============================================================
+* CDAC subcircuit from supplied netlist
+* ============================================================
+.subckt caps2 Dx_b<0> Dx_b<1> Dx_b<2> Dx_b<3> Vin Dx_b<4> Dx_b<5> GND Dx_b<6> Dx_b<7> VREF Dx_b<8> ~phi_t phi_t Dx_b<9> Dx<0>
++ VDD Dx<1> Vx Dx<2> Dx<3> Vx_lsb Dx<4> Dx<5> phi_b ~phi_b Dx<6> VCM Dx<7> Dx<8> Dx<9>
+XC1 net2 Vx_lsb cap_mim_2f0fF c_width=5e-6 c_length=5e-6
+XC2 net1 Vx_lsb cap_mim_2f0fF c_width=5e-6 c_length=5e-6
+XC3 net3 Vx_lsb cap_mim_2f0fF c_width=5e-6 c_length=5e-6 m=2
+XC4 net4 Vx_lsb cap_mim_2f0fF c_width=5e-6 c_length=5e-6 m=4
+XC5 net5 Vx_lsb cap_mim_2f0fF c_width=5e-6 c_length=5e-6 m=8
+XC6 net6 Vx cap_mim_2f0fF c_width=5e-6 c_length=5e-6
+XC7 net7 Vx cap_mim_2f0fF c_width=5e-6 c_length=5e-6
+XC8 net8 Vx cap_mim_2f0fF c_width=5e-6 c_length=5e-6 m=2
+XC9 net9 Vx cap_mim_2f0fF c_width=5e-6 c_length=5e-6 m=4
+XC10 net10 Vx cap_mim_2f0fF c_width=5e-6 c_length=5e-6 m=8
+XC11 Vx_lsb Vx cap_mim_2f0fF c_width=5.16e-6 c_length=5.16e-6
+XM4 VCM ~phi_t Vx VDD pfet_03v3 L=0.28u W=2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM1 Vx phi_t VCM GND nfet_03v3 L=0.28u W=1u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM2 VCM ~phi_t Vx_lsb VDD pfet_03v3 L=0.28u W=2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM3 Vx_lsb phi_t VCM GND nfet_03v3 L=0.28u W=1u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+x1 VDD Dx<0> Dx_b<0> VREF ~phi_b phi_b Vin net2 GND transistors3
+x2 VDD Dx<2> Dx_b<2> VREF ~phi_b phi_b Vin net3 GND transistors3
+x3 VDD Dx<4> Dx_b<4> VREF ~phi_b phi_b Vin net5 GND transistors3
+x4 VDD Dx<5> Dx_b<5> VREF ~phi_b phi_b Vin net6 GND transistors3
+x5 VDD Dx<7> Dx_b<7> VREF ~phi_b phi_b Vin net8 GND transistors3
+x6 VDD Dx<9> Dx_b<9> VREF ~phi_b phi_b Vin net10 GND transistors3
+x7 VDD Dx<8> Dx_b<8> VREF ~phi_b phi_b Vin net9 GND transistors3
+x8 VDD Dx<6> Dx_b<6> VREF ~phi_b phi_b Vin net7 GND transistors3
+x9 VDD Dx<3> Dx_b<3> VREF ~phi_b phi_b Vin net4 GND transistors3
+x10 VDD Dx<1> Dx_b<1> VREF ~phi_b phi_b Vin net1 GND transistors3
+.ends caps2
+
+* ============================================================
+* Per-bit CDAC switch subcircuit from supplied netlist
+* ============================================================
+.subckt transistors3 VDD Dx Dx_b VREF phi_s phi_s_b Vin sw_node GND
+*.ipin Vin
+*.ipin VREF
+*.opin sw_node
+*.ipin GND
+*.ipin Dx
+*.ipin Dx_b
+*.ipin phi_s
+*.ipin VDD
+*.ipin phi_s_b
+XM4 sw_node Dx_b VREF VDD pfet_03v3 L=0.28u W=1u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM6 sw_node Dx_b GND GND nfet_03v3 L=0.28u W=0.5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM7 GND Dx sw_node VDD pfet_03v3 L=0.28u W=1u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM2 sw_node phi_s Vin VDD pfet_03v3 L=0.28u W=1u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM1 VREF Dx sw_node GND nfet_03v3 L=0.28u W=0.5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM8 Vin phi_s_b sw_node GND nfet_03v3 L=0.28u W=0.5u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+.ends
+
+
+* ============================================================
+* Double-tail comparator subcircuit from supplied netlist
+* ============================================================
 .subckt realcomp OUTN OUTP CLK VSS VDD INP INN
-XM1 net1 INN net3 VSS nfet_03v3 L=0.28u W=2.852u nf=2 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
-XM2 net2 INP net3 VSS nfet_03v3 L=0.28u W=2.852u nf=2 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
+XM1 net1 INN net3 VSS nfet_03v3 L=0.28u W=15u nf=2 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM2 net2 INP net3 VSS nfet_03v3 L=0.28u W=15u nf=2 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
 XM3 net3 CLK VSS VSS nfet_03v3 L=0.28u W=02.5757u nf=2 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
 XM4 OUTN OUTP net2 VSS nfet_03v3 L=0.28u W=0.713u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
 XM5 OUTP OUTN net1 VSS nfet_03v3 L=0.28u W=0.713u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
-XM6 OUTP CLK VDD VDD pfet_03v3 L=0.28u W=2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
-XM7 OUTN OUTP VDD VDD pfet_03v3 L=0.28u W=1.426u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
-XM8 OUTN CLK VDD VDD pfet_03v3 L=0.28u W=2u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
-XM10 OUTP OUTN VDD VDD pfet_03v3 L=0.28u W=1.426u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
-XM11 net2 CLK net1 VSS nfet_03v3 L=0.28u W=2.852u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM6 OUTP CLK VDD VDD pfet_03v3 L=0.28u W=2.139u nf=3 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM7 OUTN OUTP VDD VDD pfet_03v3 L=0.28u W=1.426u nf=2 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM8 OUTN CLK VDD VDD pfet_03v3 L=0.28u W=2.139u nf=3 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM10 OUTP OUTN VDD VDD pfet_03v3 L=0.28u W=1.426u nf=2 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
+XM9 net2 CLK net1 VDD pfet_03v3 L=0.28u W=2.852u nf=2 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
++ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0
 .ends realcomp
-
-
-*======================================================================
-* ################### TEST 1: STATIC DC SWEEP ##########################
-*======================================================================
-* INN is fixed at INN_FIXED. INP sweeps linearly from INP_START to
-* INP_END. If you'd rather sweep INN and hold INP fixed instead, just
-* swap which of VINP1/VINN1 gets alter'd in the control block below.
-*----------------------------------------------------------------------
-* USER-EDITABLE: TEST 1
-*----------------------------------------------------------------------
-.param INN_FIXED  = 0.5      ; <-- EDIT: fixed/reference voltage on INN
-.param INP_START  = 0.4      ; <-- EDIT: INP sweep start voltage
-.param INP_END    = 0.6      ; <-- EDIT: INP sweep end voltage
-.param N_STEPS1   = 20       ; <-- EDIT: number of sweep points
-.param CLK_FREQ1  = 50MEG    ; <-- EDIT: comparator clock frequency
-
-*----------------------------------------------------------------------
-* AUTO-DERIVED (test 1) - no need to edit
-*----------------------------------------------------------------------
-.param CLK_PERIOD1 = '1/CLK_FREQ1'
-.param CLK_PW1     = '0.4*CLK_PERIOD1'   ; evaluate window
-.param CLK_TR1     = '0.01*CLK_PERIOD1'
-.param CLK_TF1     = '0.01*CLK_PERIOD1'
-.param CLK_TD1     = '1*CLK_PERIOD1'     ; one idle period before evaluating
-.param T_STOP1     = '2.2*CLK_PERIOD1'
-.param T_MEAS1     = 'CLK_TD1+0.9*CLK_PW1'  ; sample near end of eval window
-
-X1 OUTN1 OUTP1 CLK1 VSS VDD INP1 INN1 realcomp
-
-VCLK1 CLK1 0 PULSE({VSS_VAL} {VDD_VAL} {CLK_TD1} {CLK_TR1} {CLK_TF1} {CLK_PW1} {CLK_PERIOD1})
-VINP1 INP1 0 DC {INP_START}
-VINN1 INN1 0 DC {INN_FIXED}
-
-*--- SPICE GOES HERE: TEST 1 SWEEP ENGINE -------------------------------
-.control
-  set filetype=ascii
-  echo "===== TEST 1: static DC sweep (INN fixed, INP swept) ====="
-
-  let n1 = 20
-let inp_start = 0.4
-let inp_end = 0.6
-let inn_fixed = 0.5
-
-  let npts1 = n1 + 1
-
-  * --- accumulator vectors, filled one entry per sweep step below ---
-  * (this is what makes the end-of-loop "OUTP/OUTN vs INP-INN" plot possible)
-  let outp_vec = 0*vector(npts1)
-  let outn_vec = 0*vector(npts1)
-  let diff_vec = 0*vector(npts1)
-
-  let i1 = 0
-  while i1 <= n1
-    let inp_val = inp_start + i1*(inp_end-inp_start)/n1
-    alter @vinp1[dc] = $&inp_val
-
-    tran 20p {T_STOP1}
-
-    meas tran outp_f find v(outp1) at={T_MEAS1}
-    meas tran outn_f find v(outn1) at={T_MEAS1}
-    let diff_in = inp_val - inn_fixed
-    let decision_correct = ((outp_f - outn_f) * diff_in) > 0
-
-    * stash this step's results into the accumulator vectors
-    let outp_vec[i1] = outp_f
-    let outn_vec[i1] = outn_f
-    let diff_vec[i1] = diff_in
-
-    echo "step=$&i1  INP=$&inp_val  INN=INN_FIXED  OUTP=$&outp_f  OUTN=$&outn_f  correct=$&decision_correct"
-    wrdata test1_step$&i1.txt v(inp1) v(inn1) v(clk1) v(outp1) v(outn1)
-
-    let i1 = i1 + 1
-  end
-
-  *--- PLOT: OUTP & OUTN (final/settled value) vs (INP - INN) ------------
-  * This is the "how does the comparator behave as the gap narrows" plot.
-  * Add any further post-sweep plots here.
-  plot outp_vec outn_vec vs diff_vec title 'OUTP/OUTN vs (INP-INN)'
-.endc
-
-
-*======================================================================
-* ############### TEST 2: SINE DIFFERENTIAL SWEEP ######################
-*======================================================================
-* INP2 = VCM2 + A*sin(2*pi*SIG_FREQ*t)
-* INN2 = VCM2 + A*sin(2*pi*SIG_FREQ*t + phi)
-* Amplitude A is swept from A_START down to A_END; phase difference
-* phi ("difference" between the two waves) is swept from PHI_START to
-* PHI_END. A small fixed start delay is assumed automatically so the
-* comparator's first clock edge doesn't land exactly at t=0.
-*----------------------------------------------------------------------
-* USER-EDITABLE: TEST 2
-*----------------------------------------------------------------------
-.param VCM2       = 1.65     ; <-- EDIT: DC offset shared by both sine waves
-.param SIG_FREQ   = 1MEG     ; <-- EDIT: frequency of INP2/INN2
-.param CLK_FREQ2  = 50MEG    ; <-- EDIT: comparator sampling clock frequency
-.param A_START    = 0.5      ; <-- EDIT: starting (largest) amplitude
-.param A_END      = 0.01     ; <-- EDIT: ending (smallest) amplitude
-.param PHI_START  = 30       ; <-- EDIT: starting phase difference, degrees
-.param PHI_END    = 1        ; <-- EDIT: ending phase difference, degrees
-.param N_STEPS2   = 4        ; <-- EDIT: number of sweep points (applies to
-                              ;     both the amplitude sweep and phase sweep)
-
-*----------------------------------------------------------------------
-* AUTO-DERIVED (test 2) - no need to edit
-*----------------------------------------------------------------------
-.param CLK_PERIOD2   = '1/CLK_FREQ2'
-.param CLK_PW2       = '0.4*CLK_PERIOD2'
-.param CLK_TR2       = '0.01*CLK_PERIOD2'
-.param CLK_TF2       = '0.01*CLK_PERIOD2'
-.param CLK_TD2       = '1*CLK_PERIOD2'     ; assumed start delay
-.param N_SIG_PERIODS = 5                   ; how many signal periods to simulate
-.param T_STOP2       = 'N_SIG_PERIODS/SIG_FREQ'
-
-X2 OUTN2 OUTP2 CLK2 VSS VDD INP2 INN2 realcomp
-
-VCLK2 CLK2 0 PULSE({VSS_VAL} {VDD_VAL} {CLK_TD2} {CLK_TR2} {CLK_TF2} {CLK_PW2} {CLK_PERIOD2})
-VINP2 INP2 0 DC {VCM2} SIN({VCM2} {A_START} {SIG_FREQ} 0 0 0)
-VINN2 INN2 0 DC {VCM2} SIN({VCM2} {A_START} {SIG_FREQ} 0 0 {PHI_START})
-
-*--- SPICE GOES HERE: TEST 2 SWEEP ENGINE -------------------------------
-.control
-  echo "===== TEST 2: sine differential sweep (amplitude x phase) ====="
-
-let n2 = 4
-let a_start = 0.5
-let a_end = 0.01
-let phi_start = 30
-let phi_end = 1
-
-  let ia = 0
-  while ia <= n2
-    let a_val = a_start + ia*(a_end-a_start)/n2
-
-    let iphi = 0
-    while iphi <= n2
-      let phi_val = phi_start + iphi*(phi_end-phi_start)/n2
-
-      alter @vinp2[sin] = [ {VCM2} $&a_val {SIG_FREQ} 0 0 0 ]
-      alter @vinn2[sin] = [ {VCM2} $&a_val {SIG_FREQ} 0 0 $&phi_val ]
-
-      tran 20p {T_STOP2}
-
-      *--- PLOT: one time-domain plot per sweep step -------------------
-      * Shows OUTP/OUTN settling against INP, INN, and CLK for this
-      * particular amplitude/phase combo. One plot window is opened
-      * per (ia, iphi) step.
-      plot v(inp2) v(inn2) v(clk2) v(outp2) v(outn2) title 'Test2 step ia=$&ia iphi=$&iphi'
-
-      echo "A=$&a_val  phi=$&phi_val deg  -> waveform saved"
-      wrdata test2_A$&ia\_phi$&iphi.txt v(inp2) v(inn2) v(clk2) v(outp2) v(outn2)
-
-      let iphi = iphi + 1
-    end
-    let ia = ia + 1
-  end
-.endc
 
 .end
