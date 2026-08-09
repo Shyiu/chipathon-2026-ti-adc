@@ -391,7 +391,7 @@ C {lab_wire.sym} 1000 250 3 0 {name=p78 sig_type=std_logic lab=Dx_b<8>}
 C {lab_wire.sym} 980 270 3 0 {name=p79 sig_type=std_logic lab=Dx<8>}
 C {symbols/pfet_03v3.sym} -580 -60 0 0 {name=M4
 L=0.28u
-W=0.22u
+W=2u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
@@ -407,7 +407,7 @@ C {lab_wire.sym} -530 -60 2 0 {name=p143 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} -420 -60 0 0 {name=p144 sig_type=std_logic lab=GND}
 C {symbols/nfet_03v3.sym} -370 -60 0 1 {name=M1
 L=0.28u
-W=0.22u
+W=1u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
@@ -426,7 +426,7 @@ C {ipin.sym} -400 -220 0 0 {name=p146 lab=VCM}
 C {lab_wire.sym} -620 -60 0 0 {name=p147 sig_type=std_logic lab=~phi_t}
 C {symbols/pfet_03v3.sym} -580 180 0 0 {name=M2
 L=0.28u
-W=0.22u
+W=2u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
@@ -442,7 +442,7 @@ C {lab_wire.sym} -530 180 2 0 {name=p148 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} -420 180 0 0 {name=p149 sig_type=std_logic lab=GND}
 C {symbols/nfet_03v3.sym} -370 180 0 1 {name=M3
 L=0.28u
-W=0.22u
+W=1u
 nf=1
 m=1
 ad="'int((nf+1)/2) * W/nf * 0.18u'"
@@ -478,13 +478,13 @@ C {lab_wire.sym} 770 270 3 0 {name=p66 sig_type=std_logic lab=~phi_b}
 C {lab_wire.sym} 790 250 3 0 {name=p69 sig_type=std_logic lab=phi_b}
 C {lab_wire.sym} 1020 270 3 0 {name=p77 sig_type=std_logic lab=~phi_b}
 C {lab_wire.sym} 1040 250 3 0 {name=p134 sig_type=std_logic lab=phi_b}
-C {analog/blocks/cdac/transistors2.sym} -180 -380 1 0 {name=x1}
-C {analog/blocks/cdac/transistors2.sym} 60 -380 1 0 {name=x2}
-C {analog/blocks/cdac/transistors2.sym} 330 -380 1 0 {name=x3}
-C {analog/blocks/cdac/transistors2.sym} 580 -380 1 0 {name=x4}
-C {analog/blocks/cdac/transistors2.sym} 830 -370 1 0 {name=x5}
-C {analog/blocks/cdac/transistors2.sym} 1000 -370 1 0 {name=x6}
-C {analog/blocks/cdac/transistors2.sym} 70 90 3 0 {name=x7}
-C {analog/blocks/cdac/transistors2.sym} 250 90 3 0 {name=x8}
-C {analog/blocks/cdac/transistors2.sym} 760 80 3 0 {name=x9}
-C {analog/blocks/cdac/transistors2.sym} 1010 80 3 0 {name=x10}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} -180 -380 1 0 {name=x1}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 60 -380 1 0 {name=x2}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 330 -380 1 0 {name=x3}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 580 -380 1 0 {name=x4}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 830 -370 1 0 {name=x5}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 1000 -370 1 0 {name=x6}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 70 90 3 0 {name=x7}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 250 90 3 0 {name=x8}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 760 80 3 0 {name=x9}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 1010 80 3 0 {name=x10}

@@ -5,37 +5,20 @@ V {}
 S {}
 F {}
 E {}
-N -160 -190 -140 -190 {lab=vclk}
-N -160 -190 -160 -90 {lab=vclk}
-N -160 -90 -140 -90 {lab=vclk}
-N -100 -160 -100 -120 {lab=#net1}
-N -100 -270 -100 -220 {lab=vdd}
 N 50 -300 50 -280 {lab=vdd}
 N -100 -300 50 -300 {lab=vdd}
-N -100 -300 -100 -270 {lab=vdd}
-N -200 -150 -160 -150 {lab=vclk}
 N -100 -330 -100 -300 {lab=vdd}
 N 50 -30 50 20 {lab=vss}
 N -10 -280 20 -280 {lab=vin}
 N -10 -280 -10 -30 {lab=vin}
 N -10 -30 20 -30 {lab=vin}
 N -30 -40 -10 -40 {lab=vin}
-N -100 -60 -100 0 {lab=vss}
-N -100 -0 50 -0 {lab=vss}
-N -100 -140 50 -140 {lab=#net1}
-N 50 -240 50 -140 {lab=#net1}
-N -160 -130 50 -130 {lab=vclk}
+N 50 -240 50 -140 {lab=xxx}
 N 50 -130 50 -70 {lab=vclk}
 N 80 -280 130 -280 {lab=vout}
 N 130 -280 130 -30 {lab=vout}
 N 80 -30 130 -30 {lab=vout}
 N 130 -160 250 -160 {lab=vout}
-N -100 -90 -90 -90 {lab=vss}
-N -90 -90 -90 -60 {lab=vss}
-N -100 -60 -90 -60 {lab=vss}
-N -100 -220 -90 -220 {lab=vdd}
-N -90 -220 -90 -190 {lab=vdd}
-N -100 -190 -90 -190 {lab=vdd}
 C {symbols/nfet_03v3.sym} 50 -50 1 0 {name=M1
 L=0.28u
 W=20u
@@ -64,6 +47,7 @@ sa=0 sb=0 sd=0
 model=pfet_03v3
 spiceprefix=X
 }
+<<<<<<< HEAD
 C {symbols/pfet_03v3.sym} -120 -190 0 0 {name=M3
 L=0.28u
 W=20u
@@ -93,7 +77,11 @@ model=nfet_03v3
 spiceprefix=X
 }
 C {ipin.sym} -200 -150 0 0 {name=p1 lab=vclk}
+=======
+C {ipin.sym} 50 -130 0 0 {name=p1 lab=vclk}
+>>>>>>> 7ba9b511804556f61899f1c11d3397c830b19079
 C {ipin.sym} -30 -40 0 0 {name=p3 lab=vin}
 C {iopin.sym} -100 -330 3 0 {name=p2 lab=vdd}
 C {iopin.sym} 50 20 1 0 {name=p4 lab=vss}
 C {opin.sym} 250 -160 0 0 {name=p5 lab=vout}
+C {ipin.sym} 50 -140 0 0 {name=p6 lab=vclk_n}
