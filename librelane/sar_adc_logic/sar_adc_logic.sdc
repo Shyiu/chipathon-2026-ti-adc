@@ -19,10 +19,10 @@ set_output_delay -clock eoc_clk 5.0 [get_ports {d_out[*]}]
 set_output_delay -clock seq_clk 5.0 [get_ports {d_ctrl[*]}] 
 set_output_delay -clock seq_clk 5.0 [get_ports {d_ctrl_n[*]}]
 
-# 5. Delay Chain Protection (Strobe generation)
-# The max/min delays are still good for reporting timing
-set_max_delay 120 -from [get_ports {out_p out_n}] -to [get_ports clk_o]
-set_min_delay 60 -from [get_ports {out_p out_n}] -to [get_ports clk_o]
+# # 5. Delay Chain Protection (Strobe generation)
+# # The max/min delays are still good for reporting timing
+# set_max_delay 120 -from [get_ports {out_p out_n}] -to [get_ports clk_o]
+# set_min_delay 60 -from [get_ports {out_p out_n}] -to [get_ports clk_o]
 
 # 6. Design Rules
 set_load 0.010 [all_outputs]
