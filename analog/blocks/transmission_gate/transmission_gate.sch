@@ -47,39 +47,7 @@ sa=0 sb=0 sd=0
 model=pfet_03v3
 spiceprefix=X
 }
-<<<<<<< HEAD
-C {symbols/pfet_03v3.sym} -120 -190 0 0 {name=M3
-L=0.28u
-W=20u
-nf=20
-m=1
-ad="'int((nf+1)/2) * W/nf * 0.18u'"
-pd="'2*int((nf+1)/2) * (W/nf + 0.18u)'"
-as="'int((nf+2)/2) * W/nf * 0.18u'"
-ps="'2*int((nf+2)/2) * (W/nf + 0.18u)'"
-nrd="'0.18u / W'" nrs="'0.18u / W'"
-sa=0 sb=0 sd=0
-model=pfet_03v3
-spiceprefix=X
-}
-C {symbols/nfet_03v3.sym} -120 -90 0 0 {name=M4
-L=0.28u
-W=10u
-nf=10
-m=1
-ad="'int((nf+1)/2) * W/nf * 0.18u'"
-pd="'2*int((nf+1)/2) * (W/nf + 0.18u)'"
-as="'int((nf+2)/2) * W/nf * 0.18u'"
-ps="'2*int((nf+2)/2) * (W/nf + 0.18u)'"
-nrd="'0.18u / W'" nrs="'0.18u / W'"
-sa=0 sb=0 sd=0
-model=nfet_03v3
-spiceprefix=X
-}
-C {ipin.sym} -200 -150 0 0 {name=p1 lab=vclk}
-=======
 C {ipin.sym} 50 -130 0 0 {name=p1 lab=vclk}
->>>>>>> 7ba9b511804556f61899f1c11d3397c830b19079
 C {ipin.sym} -30 -40 0 0 {name=p3 lab=vin}
 C {iopin.sym} -100 -330 3 0 {name=p2 lab=vdd}
 C {iopin.sym} 50 20 1 0 {name=p4 lab=vss}
