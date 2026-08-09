@@ -50,3 +50,8 @@ DEFAULT_CORNER: nom_tt_025C_3v30
 RSZ_DONT_TOUCH_RX: ".*delay_buf.*|.*comp_trigger_driver.*"
 
 FP_PIN_ORDER_CFG: dir::pin_order.cfg
+
+# Fix Grid Snapping (DBU) by using KLayout for GDS instead of Magic
+MAGIC_GENERATE_GDS: false
+RUN_KLAYOUT: true
+RUN_KLAYOUT_DRC: true
