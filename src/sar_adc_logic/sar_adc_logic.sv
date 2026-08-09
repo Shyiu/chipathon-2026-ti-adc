@@ -102,13 +102,25 @@ module sar_adc_logic #(
     end
 
     // d_out perfectly latches the moment mask[0] becomes 1
+    // It captures sar_reg BEFORE d_ctrl is zeroed out by EOC
     always_ff @(posedge eoc or negedge rst_n) begin
         if (!rst_n) d_out <= '0;
-        else             d_out <= sar_reg;
+        else        d_out <= sar_reg;
     end
 
-    assign d_ctrl   = sar_reg;
-    assign d_ctrl_n = ~sar_reg;
+    // ------------------------------------------------------------
+    // DAC Control Masking (NEW)
+    // ------------------------------------------------------------
+    logic force_dac_zero;
+    
+    // Force DAC control words to 0 during reset, tracking (phi_bottom = 1), 
+    // and after conversion finishes (eoc = 1).
+    assign force_dac_zero = ~rst_n | phi_bottom | eoc;
+
+    // When phi_bottom falls (entering convert), force_dac_zero goes low.
+    // d_ctrl instantly assumes the value of sar_reg (which sits at 1000_0000).
+    assign d_ctrl   = force_dac_zero ? '0 : sar_reg;
+    assign d_ctrl_n = ~d_ctrl;
 
     // ------------------------------------------------------------
     // Async clk_o ring
@@ -122,7 +134,8 @@ module sar_adc_logic #(
 
     logic comp_trigger_raw;
     // NOTE: Keep valid_clk here (not seq_clk) to avoid adding unwanted 
-    // delay to the strobe generator ring oscillator
+    // delay to the strobe generator ring oscillator.
+    // The oscillator only begins when phi_bottom falls to 0.
     gf180mcu_fd_sc_mcu7t5v0__nor3_4 comp_trigger_nor (
         .A1(valid_clk),
         .A2(eoc),
