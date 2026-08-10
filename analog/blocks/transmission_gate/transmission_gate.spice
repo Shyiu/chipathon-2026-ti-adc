@@ -1,17 +1,6 @@
-** sch_path: /foss/designs/ti-blocks/transmission_gate/transmission_gate.sch
-**.subckt transmission_gate vdd vout vclk vin vss
-*.ipin vclk
-*.ipin vin
-*.iopin vdd
-*.iopin vss
-*.opin vout
-XM1 vout vclk vin vss nfet_03v3 L=0.28u W=20u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
-XM2 vout net1 vin vdd pfet_03v3 L=0.28u W=40u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
-XM3 net1 vclk vdd vdd pfet_03v3 L=0.28u W=20u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
-XM4 net1 vclk vss vss nfet_03v3 L=0.28u W=10u nf=1 ad='int((nf+1)/2) * W/nf * 0.18u' as='int((nf+2)/2) * W/nf * 0.18u' pd='2*int((nf+1)/2) * (W/nf + 0.18u)'
-+ ps='2*int((nf+2)/2) * (W/nf + 0.18u)' nrd='0.18u / W' nrs='0.18u / W' sa=0 sb=0 sd=0 m=1
-**.ends
-.end
+** sch_path: /foss/designs/chipathon-2026-ti-adc/analog/blocks/transmission_gate/transmission_gate.sch
+.subckt transmission_gate vdd vout vclk_n vclk vin vss
+*.PININFO vclk:I vin:I vdd:B vss:B vout:O vclk_n:I
+M1 vout vclk vin vss nfet_03v3 L=0.28u W=20u nf=20
+M2 vout vclk_n vin vdd pfet_03v3 L=0.28u W=40u nf=40
+.ends
