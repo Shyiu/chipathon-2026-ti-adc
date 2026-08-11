@@ -1,0 +1,10 @@
+** sch_path: /foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/transistors3.sch
+.subckt transistors3 VDD Dx Dx_b VREF phi_s phi_s_b Vin sw_node GND
+*.PININFO Vin:I VREF:I sw_node:O GND:I Dx:I Dx_b:I phi_s:I VDD:I phi_s_b:I
+M4 sw_node Dx_b VREF VDD pfet_03v3 L=0.28u W=1u nf=1
+M6 sw_node Dx_b GND GND nfet_03v3 L=0.28u W=0.5u nf=1
+M7 GND Dx sw_node VDD pfet_03v3 L=0.28u W=1u nf=1
+M2 sw_node phi_s Vin VDD pfet_03v3 L=0.28u W=1u nf=1
+M1 VREF Dx sw_node GND nfet_03v3 L=0.28u W=0.5u nf=1
+M8 Vin phi_s_b sw_node GND nfet_03v3 L=0.28u W=0.5u nf=1
+.ends
