@@ -8,10 +8,10 @@ E {}
 N 880 -1180 880 -1150 {lab=VDD}
 N 700 -1100 730 -1100 {lab=phi_bottom}
 N 700 -1080 730 -1080 {lab=VIN}
-N -90 -590 -90 -570 {lab=0}
+N -90 -590 -90 -570 {lab=VSS}
 N 100 -720 150 -720 {lab=#net1}
-N 880 -1050 880 -1020 {lab=0}
-N 350 -330 350 -310 {lab=0}
+N 880 -1050 880 -1020 {lab=VSS}
+N 350 -330 350 -310 {lab=VSS}
 N 620 -640 1000 -640 {lab=#net2}
 N 620 -620 1000 -620 {lab=#net3}
 N 580 -860 580 -650 {lab=#net3}
@@ -60,7 +60,7 @@ N 1090 -970 1200 -970 {lab=#net14}
 N 900 -820 1070 -930 {lab=#net15}
 N 1070 -930 1200 -930 {lab=#net15}
 N 1160 -910 1200 -910 {lab=VDD}
-N 1120 -890 1200 -890 {lab=0}
+N 1120 -890 1200 -890 {lab=VSS}
 N 900 -800 1060 -870 {lab=#net16}
 N 1060 -870 1200 -870 {lab=#net16}
 N 900 -780 1060 -850 {lab=#net17}
@@ -71,7 +71,7 @@ N 1060 -810 1200 -810 {lab=#net18}
 N 1160 -790 1200 -790 {lab=phi_top_n}
 N 900 -740 1060 -750 {lab=#net19}
 N 1060 -750 1200 -750 {lab=#net19}
-N 1160 -730 1200 -730 {lab=0}
+N 1160 -730 1200 -730 {lab=VSS}
 N 1130 -710 1200 -710 {lab=VDD}
 N 1000 -640 1130 -690 {lab=#net2}
 N 1130 -690 1200 -690 {lab=#net2}
@@ -150,6 +150,18 @@ N -700 -620 -700 -580 {lab=DOUT2}
 N -680 -620 -680 -580 {lab=DOUT1}
 N -660 -620 -660 -580 {lab=DOUT0}
 N -650 -970 -650 -910 {lab=VDDig}
+N -250 -750 -250 -710 {lab=VX}
+N -250 -710 -210 -710 {lab=VX}
+N -250 -660 -210 -660 {lab=VCM}
+N -210 -690 -210 -660 {lab=VCM}
+N -130 -590 -90 -590 {lab=VSS}
+N -130 -640 -130 -590 {lab=VSS}
+N -10 -680 40 -680 {lab=#net10}
+N -10 -720 40 -720 {lab=#net1}
+N -130 -810 -90 -810 {lab=VDD}
+N -130 -810 -130 -760 {lab=VDD}
+N -160 -830 -130 -830 {lab=CLK_O}
+N -160 -830 -160 -770 {lab=CLK_O}
 C {lab_wire.sym} 880 -1180 0 0 {name=p1 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} 1130 -710 0 0 {name=p2 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} -90 -810 1 0 {name=p9 sig_type=std_logic lab=VDD}
@@ -182,17 +194,11 @@ value="
 .lib /foss/pdks/gf180mcuD/libs.tech/ngspice/sm141064.ngspice cap_mim
 .lib "/foss/pdks/gf180mcuD/libs.tech/ngspice/sm141064.ngspice" mimcap_typical
 "}
-C {gnd.sym} -90 -570 0 0 {name=l5 lab=0}
-C {gnd.sym} 350 -310 0 0 {name=l7 lab=0}
-C {gnd.sym} 1120 -890 1 0 {name=l10 lab=0}
-C {gnd.sym} 880 -1020 0 0 {name=l11 lab=0}
 C {lab_wire.sym} 1500 -1100 0 0 {name=p11 sig_type=std_logic lab=VX
 value=".include /foss/designs/chipathon-2026-ti-adc/analog/digital/SAR_ADC_LOGIC/sar_adc_logic.spice"}
 C {lab_wire.sym} 40 -830 0 0 {name=p38 sig_type=std_logic lab=CLK_O}
 C {lab_wire.sym} 1160 -1030 0 0 {name=p42 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} 1160 -910 0 0 {name=p43 sig_type=std_logic lab=VDD}
-C {gnd.sym} 1200 -610 1 0 {name=l12 lab=0}
-C {gnd.sym} 1160 -730 1 0 {name=l13 lab=0}
 C {lab_pin.sym} -300 -660 0 0 {name=p44 sig_type=std_logic lab=VCM}
 C {lab_pin.sym} 1200 -530 0 0 {name=p45 sig_type=std_logic lab=VCM}
 C {lab_wire.sym} 210 -810 0 0 {name=p46 sig_type=std_logic lab=phi_top}
@@ -206,7 +212,6 @@ C {lab_wire.sym} 1160 -790 0 0 {name=p8 sig_type=std_logic lab=phi_top_n}
 C {lab_wire.sym} 700 -1120 0 0 {name=p17 sig_type=std_logic lab=phi_bottom_n}
 C {chipathon-2026-ti-adc/analog/blocks/transmission_gate/transmission_gate.sym} 880 -1100 0 0 {name=x2}
 C {chipathon-2026-ti-adc/analog/digital/SAR_ADC_LOGIC/sar_logic.sym} 340 -730 0 0 {name=X4}
-C {chipathon-2026-ti-adc/analog/blocks/IDcomparator/IDcomparator.sym} -310 -700 0 0 {name=X1 model=IDcomparator}
 C {iopin.sym} -510 -970 3 0 {name=p5 lab=VSS}
 C {iopin.sym} -570 -970 3 0 {name=p52 lab=VDD}
 C {lab_pin.sym} -570 -910 0 0 {name=p53 sig_type=std_logic lab=VDD}
@@ -240,3 +245,10 @@ C {opin.sym} -660 -620 3 0 {name=p74 lab=DOUT0}
 C {iopin.sym} -650 -970 3 0 {name=p3 lab=VDDig}
 C {lab_pin.sym} -650 -910 0 0 {name=p13 sig_type=std_logic lab=VDDig}
 C {chipathon-2026-ti-adc/analog/blocks/cdac/caps2.sym} 1350 -750 0 0 {name=x3}
+C {chipathon-2026-ti-adc/analog/blocks/Double_Tail_Comparator/realcomp.sym} -130 -700 0 0 {name=x1}
+C {lab_pin.sym} -90 -570 0 0 {name=p15 sig_type=std_logic lab=VSS}
+C {lab_pin.sym} 350 -310 0 0 {name=p18 sig_type=std_logic lab=VSS}
+C {lab_pin.sym} 880 -1020 0 0 {name=p31 sig_type=std_logic lab=VSS}
+C {lab_pin.sym} 1120 -890 0 0 {name=p32 sig_type=std_logic lab=VSS}
+C {lab_pin.sym} 1160 -730 0 0 {name=p33 sig_type=std_logic lab=VSS}
+C {lab_pin.sym} 1200 -610 0 0 {name=p34 sig_type=std_logic lab=VSS}
