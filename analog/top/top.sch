@@ -149,7 +149,7 @@ N -720 -620 -720 -580 {lab=DOUT3}
 N -700 -620 -700 -580 {lab=DOUT2}
 N -680 -620 -680 -580 {lab=DOUT1}
 N -660 -620 -660 -580 {lab=DOUT0}
-N -650 -970 -650 -910 {lab=VDD}
+N -650 -970 -650 -910 {lab=VDDig}
 C {lab_wire.sym} 880 -1180 0 0 {name=p1 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} 1130 -710 0 0 {name=p2 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} -90 -810 1 0 {name=p9 sig_type=std_logic lab=VDD}
@@ -205,7 +205,6 @@ C {lab_wire.sym} 1200 -770 0 0 {name=p51 sig_type=std_logic lab=phi_top}
 C {lab_wire.sym} 1160 -790 0 0 {name=p8 sig_type=std_logic lab=phi_top_n}
 C {lab_wire.sym} 700 -1120 0 0 {name=p17 sig_type=std_logic lab=phi_bottom_n}
 C {chipathon-2026-ti-adc/analog/blocks/transmission_gate/transmission_gate.sym} 880 -1100 0 0 {name=x2}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/caps2.sym} 1350 -750 0 0 {name=x3}
 C {chipathon-2026-ti-adc/analog/digital/SAR_ADC_LOGIC/sar_logic.sym} 340 -730 0 0 {name=X4}
 C {chipathon-2026-ti-adc/analog/blocks/IDcomparator/IDcomparator.sym} -310 -700 0 0 {name=X1 model=IDcomparator}
 C {iopin.sym} -510 -970 3 0 {name=p5 lab=VSS}
@@ -240,3 +239,4 @@ C {opin.sym} -680 -620 3 0 {name=p73 lab=DOUT1}
 C {opin.sym} -660 -620 3 0 {name=p74 lab=DOUT0}
 C {iopin.sym} -650 -970 3 0 {name=p3 lab=VDDig}
 C {lab_pin.sym} -650 -910 0 0 {name=p13 sig_type=std_logic lab=VDDig}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/caps2.sym} 1350 -750 0 0 {name=x3}
