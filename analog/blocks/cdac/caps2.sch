@@ -478,13 +478,13 @@ C {lab_wire.sym} 770 270 3 0 {name=p66 sig_type=std_logic lab=~phi_b}
 C {lab_wire.sym} 790 250 3 0 {name=p69 sig_type=std_logic lab=phi_b}
 C {lab_wire.sym} 1020 270 3 0 {name=p77 sig_type=std_logic lab=~phi_b}
 C {lab_wire.sym} 1040 250 3 0 {name=p134 sig_type=std_logic lab=phi_b}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} -180 -380 1 0 {name=x1}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 60 -380 1 0 {name=x2}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 330 -380 1 0 {name=x3}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 580 -380 1 0 {name=x4}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 830 -370 1 0 {name=x5}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 1000 -370 1 0 {name=x6}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 70 90 3 0 {name=x7}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 250 90 3 0 {name=x8}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 760 80 3 0 {name=x9}
-C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym} 1010 80 3 0 {name=x10}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors3.sym} -180 -380 1 0 {name=x1}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors3.sym} 60 -380 1 0 {name=x2}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors3.sym} 330 -380 1 0 {name=x3}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors3.sym} 580 -380 1 0 {name=x4}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors3.sym} 830 -370 1 0 {name=x5}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors3.sym} 1000 -370 1 0 {name=x6}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors3.sym} 1010 80 3 0 {name=x7}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors3.sym} 760 80 3 0 {name=x8}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors3.sym} 250 90 3 0 {name=x9}
+C {chipathon-2026-ti-adc/analog/blocks/cdac/transistors3.sym} 70 90 3 0 {name=x10}

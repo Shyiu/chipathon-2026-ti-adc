@@ -19,30 +19,28 @@ M4 VCM ~phi_t Vx VDD pfet_03v3 L=0.28u W=2u nf=1
 M1 Vx phi_t VCM GND nfet_03v3 L=0.28u W=1u nf=1
 M2 VCM ~phi_t Vx_lsb VDD pfet_03v3 L=0.28u W=2u nf=1
 M3 Vx_lsb phi_t VCM GND nfet_03v3 L=0.28u W=1u nf=1
-x1 VDD VREF Dx<0> Dx_b<0> ~phi_b phi_b Vin net2 GND transistors2
-x2 VDD VREF Dx<2> Dx_b<2> ~phi_b phi_b Vin net3 GND transistors2
-x3 VDD VREF Dx<4> Dx_b<4> ~phi_b phi_b Vin net5 GND transistors2
-x4 VDD VREF Dx<5> Dx_b<5> ~phi_b phi_b Vin net6 GND transistors2
-x5 VDD VREF Dx<7> Dx_b<7> ~phi_b phi_b Vin net8 GND transistors2
-x6 VDD VREF Dx<9> Dx_b<9> ~phi_b phi_b Vin net10 GND transistors2
-x7 VDD VREF Dx<1> Dx_b<1> ~phi_b phi_b Vin net1 GND transistors2
-x8 VDD VREF Dx<3> Dx_b<3> ~phi_b phi_b Vin net4 GND transistors2
-x9 VDD VREF Dx<6> Dx_b<6> ~phi_b phi_b Vin net7 GND transistors2
-x10 VDD VREF Dx<8> Dx_b<8> ~phi_b phi_b Vin net9 GND transistors2
+x1 VDD Dx<0> Dx_b<0> VREF ~phi_b phi_b Vin net2 GND transistors3
+x2 VDD Dx<2> Dx_b<2> VREF ~phi_b phi_b Vin net3 GND transistors3
+x3 VDD Dx<4> Dx_b<4> VREF ~phi_b phi_b Vin net5 GND transistors3
+x4 VDD Dx<5> Dx_b<5> VREF ~phi_b phi_b Vin net6 GND transistors3
+x5 VDD Dx<7> Dx_b<7> VREF ~phi_b phi_b Vin net8 GND transistors3
+x6 VDD Dx<9> Dx_b<9> VREF ~phi_b phi_b Vin net10 GND transistors3
+x7 VDD Dx<8> Dx_b<8> VREF ~phi_b phi_b Vin net9 GND transistors3
+x8 VDD Dx<6> Dx_b<6> VREF ~phi_b phi_b Vin net7 GND transistors3
+x9 VDD Dx<3> Dx_b<3> VREF ~phi_b phi_b Vin net4 GND transistors3
+x10 VDD Dx<1> Dx_b<1> VREF ~phi_b phi_b Vin net1 GND transistors3
 .ends
 
-* expanding   symbol:  chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym # of pins=9
-** sym_path: /foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sym
-** sch_path: /foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/transistors2.sch
-.subckt transistors2 VDD VREF Dx Dx_b phi_s phi_s_b Vin sw_node GND
+* expanding   symbol:  chipathon-2026-ti-adc/analog/blocks/cdac/transistors3.sym # of pins=9
+** sym_path: /foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/transistors3.sym
+** sch_path: /foss/designs/chipathon-2026-ti-adc/analog/blocks/cdac/transistors3.sch
+.subckt transistors3 VDD Dx Dx_b VREF phi_s phi_s_b Vin sw_node GND
 *.PININFO Vin:I VREF:I sw_node:O GND:I Dx:I Dx_b:I phi_s:I VDD:I phi_s_b:I
-M4 sw_node Dx_b net1 VDD pfet_03v3 L=0.28u W=1u nf=1
-M6 sw_node Dx_b net2 GND nfet_03v3 L=0.28u W=0.5u nf=1
-M7 net2 Dx sw_node VDD pfet_03v3 L=0.28u W=1u nf=1
+M4 sw_node Dx_b VREF VDD pfet_03v3 L=0.28u W=1u nf=1
+M6 sw_node Dx_b GND GND nfet_03v3 L=0.28u W=0.5u nf=1
+M7 GND Dx sw_node VDD pfet_03v3 L=0.28u W=1u nf=1
 M2 sw_node phi_s Vin VDD pfet_03v3 L=0.28u W=1u nf=1
-M1 net1 Dx sw_node GND nfet_03v3 L=0.28u W=0.5u nf=1
-M3 net1 phi_s_b VREF VDD pfet_03v3 L=0.28u W=1u nf=1
-M5 net2 phi_s GND GND nfet_03v3 L=0.28u W=0.5u nf=1
+M1 VREF Dx sw_node GND nfet_03v3 L=0.28u W=0.5u nf=1
 M8 Vin phi_s_b sw_node GND nfet_03v3 L=0.28u W=0.5u nf=1
 .ends
 

@@ -1,0 +1,121 @@
+* Extracted by KLayout with GF180MCU LVS runset on : 13/08/2026 06:20
+
+* cell caps2
+* pin Dx<0>
+* pin Dx<1>
+* pin Dx<2>
+* pin Dx<3>
+* pin Dx<4>
+* pin Dx<5>
+* pin Dx<6>
+* pin Dx<7>
+* pin Dx<8>
+* pin Dx<9>
+* pin Dx_b<0>
+* pin Dx_b<1>
+* pin Dx_b<2>
+* pin Dx_b<3>
+* pin Dx_b<4>
+* pin Dx_b<5>
+* pin Dx_b<6>
+* pin Dx_b<7>
+* pin Dx_b<8>
+* pin Dx_b<9>
+* pin GND
+* pin VCM
+* pin VDD
+* pin VREF
+* pin Vin
+* pin Vx
+* pin Vx_lsb
+* pin phi_b
+* pin phi_t
+* pin ~phi_b
+* pin ~phi_t
+.SUBCKT caps2 Dx<0> Dx<1> Dx<2> Dx<3> Dx<4> Dx<5> Dx<6> Dx<7> Dx<8> Dx<9>
++ Dx_b<0> Dx_b<1> Dx_b<2> Dx_b<3> Dx_b<4> Dx_b<5> Dx_b<6> Dx_b<7> Dx_b<8>
++ Dx_b<9> GND VCM VDD VREF Vin Vx Vx_lsb phi_b phi_t \\x7ephi_b \\x7ephi_t
+* cell instance $41 r0 *1 212.01,0
+X$41 \\x7ephi_b Vin phi_b Dx_b<8> Dx<8> VREF \$24 VDD GND transistors3
+* cell instance $43 r0 *1 77.4,-0.1
+X$43 \\x7ephi_b Vin phi_b Dx_b<3> Dx<3> VREF \$37 VDD GND transistors3
+* cell instance $45 r0 *1 103.73,-0.16
+X$45 \\x7ephi_b Vin phi_b Dx_b<4> Dx<4> VREF \$40 VDD GND transistors3
+* cell instance $47 r0 *1 241.97,-0.26
+X$47 \\x7ephi_b Vin phi_b Dx_b<9> Dx<9> VREF \$43 VDD GND transistors3
+* cell instance $49 r0 *1 51.6,-0.21
+X$49 \\x7ephi_b Vin phi_b Dx_b<2> Dx<2> VREF \$52 VDD GND transistors3
+* cell instance $51 r0 *1 183.14,-0.13
+X$51 \\x7ephi_b Vin phi_b Dx_b<7> Dx<7> VREF \$55 VDD GND transistors3
+* cell instance $53 r0 *1 25.76,-0.25
+X$53 \\x7ephi_b Vin phi_b Dx_b<1> Dx<1> VREF \$123 VDD GND transistors3
+* cell instance $55 r0 *1 157.18,0
+X$55 \\x7ephi_b Vin phi_b Dx_b<6> Dx<6> VREF \$124 VDD GND transistors3
+* cell instance $58 r0 *1 0,0
+X$58 \\x7ephi_b Vin phi_b Dx_b<0> Dx<0> VREF \$126 VDD GND transistors3
+* cell instance $59 r0 *1 130.05,0
+X$59 \\x7ephi_b Vin phi_b Dx_b<5> Dx<5> VREF \$127 VDD GND transistors3
+* device instance $1 r0 *1 159.2,-41.95 cap_mim_2f0fF
+C$1 \$24 Vx 2e-13 cap_mim_2f0fF A=100P P=80U
+* device instance $2 r0 *1 180.07,-41.35 cap_mim_2f0fF
+C$2 \$43 Vx 4e-13 cap_mim_2f0fF A=200P P=160U
+* device instance $4 r0 *1 7.17,-37.27 cap_mim_2f0fF
+C$4 \$52 Vx_lsb 1e-13 cap_mim_2f0fF A=50P P=40U
+* device instance $7 r0 *1 136.08,-30.05 cap_mim_2f0fF
+C$7 \$124 Vx 5e-14 cap_mim_2f0fF A=25P P=20U
+* device instance $8 r0 *1 136.39,-38.71 cap_mim_2f0fF
+C$8 \$55 Vx 1e-13 cap_mim_2f0fF A=50P P=40U
+* device instance $16 r0 *1 127.68,-29.28 cap_mim_2f0fF
+C$16 \$127 Vx 5e-14 cap_mim_2f0fF A=25P P=20U
+* device instance $18 r0 *1 7.16,-29.44 cap_mim_2f0fF
+C$18 \$123 Vx_lsb 5e-14 cap_mim_2f0fF A=25P P=20U
+* device instance $19 r0 *1 76.05,-31.21 cap_mim_2f0fF
+C$19 \$40 Vx_lsb 4e-13 cap_mim_2f0fF A=200P P=160U
+* device instance $23 r0 *1 26.41,-33.94 cap_mim_2f0fF
+C$23 \$37 Vx_lsb 2e-13 cap_mim_2f0fF A=100P P=80U
+* device instance $27 r0 *1 -2.99,-29.28 cap_mim_2f0fF
+C$27 \$126 Vx_lsb 5e-14 cap_mim_2f0fF A=25P P=20U
+* device instance $33 r0 *1 115.59,-29.2 cap_mim_2f0fF
+C$33 Vx Vx_lsb 5.32512e-14 cap_mim_2f0fF A=26.6256P P=20.64U
+* device instance $34 r90 *1 220.58,-18.67 pfet_03v3
+M$34 Vx_lsb \\x7ephi_t VCM VDD pfet_03v3 L=0.28U W=2U AS=1.3P AD=1.3P PS=5.3U
++ PD=5.3U
+* device instance $35 r90 *1 220.58,-9.11 pfet_03v3
+M$35 Vx \\x7ephi_t VCM VDD pfet_03v3 L=0.28U W=2U AS=1.3P AD=1.3P PS=5.3U
++ PD=5.3U
+* device instance $36 r90 *1 229.15,-18.65 nfet_03v3
+M$36 VCM phi_t Vx_lsb GND nfet_03v3 L=0.28U W=1U AS=0.61P AD=0.61P PS=3.22U
++ PD=3.22U
+* device instance $37 r90 *1 229.15,-8.12 nfet_03v3
+M$37 VCM phi_t Vx GND nfet_03v3 L=0.28U W=1U AS=0.61P AD=0.61P PS=3.22U PD=3.22U
+.ENDS caps2
+
+* cell transistors3
+* pin phi_s
+* pin Vin
+* pin phi_s_b
+* pin Dx_b
+* pin Dx
+* pin VREF
+* pin sw_node
+* pin VDD
+* pin GND
+.SUBCKT transistors3 phi_s Vin phi_s_b Dx_b Dx VREF sw_node VDD GND
+* device instance $1 r0 *1 6.03,3.62 pfet_03v3
+M$1 Vin phi_s sw_node VDD pfet_03v3 L=0.28U W=1U AS=0.65P AD=0.65P PS=3.3U
++ PD=3.3U
+* device instance $2 r0 *1 1.57,3.6 pfet_03v3
+M$2 sw_node Dx GND VDD pfet_03v3 L=0.28U W=1U AS=0.65P AD=0.65P PS=3.3U PD=3.3U
+* device instance $3 r0 *1 -2.89,3.53 pfet_03v3
+M$3 VREF Dx_b sw_node VDD pfet_03v3 L=0.28U W=1U AS=0.65P AD=0.65P PS=3.3U
++ PD=3.3U
+* device instance $4 r0 *1 1.42,-1.55 nfet_03v3
+M$4 GND Dx_b sw_node GND nfet_03v3 L=0.28U W=0.5U AS=0.305P AD=0.305P PS=2.22U
++ PD=2.22U
+* device instance $5 r0 *1 6,-1.55 nfet_03v3
+M$5 sw_node phi_s_b Vin GND nfet_03v3 L=0.28U W=0.5U AS=0.305P AD=0.305P
++ PS=2.22U PD=2.22U
+* device instance $6 r0 *1 -3.09,-1.6 nfet_03v3
+M$6 sw_node Dx VREF GND nfet_03v3 L=0.28U W=0.5U AS=0.305P AD=0.305P PS=2.22U
++ PD=2.22U
+.ENDS transistors3
