@@ -48,14 +48,13 @@ N 560 -520 1000 -520 {lab=CTRL6}
 N 520 -740 520 -530 {lab=CTRL7}
 N 520 -530 570 -500 {lab=CTRL7}
 N 570 -500 1000 -500 {lab=CTRL7}
-N -100 -1260 1500 -1260 {lab=VX}
 N -850 -1000 -850 -960 {lab=VIN}
 N -850 -900 -850 -860 {lab=0}
 N -750 -670 -750 -630 {lab=0}
 N -750 -770 -750 -730 {lab=VRef}
 N 100 -680 150 -680 {lab=OUTN}
 N 490 -740 520 -740 {lab=CTRL7}
-N -140 -1260 -100 -1260 {lab=VX}
+N -140 -1260 -100 -1260 {lab=#net1}
 N -300 -660 -250 -660 {lab=VCM}
 N -890 -530 -890 -490 {lab=VCM}
 N -890 -430 -890 -390 {lab=0}
@@ -63,27 +62,27 @@ N -50 -830 210 -830 {lab=CLK_O}
 N 190 -670 210 -670 {lab=OUTP}
 N 1030 -1100 1030 -950 {lab=VSAMPLE}
 N 1030 -950 1200 -950 {lab=VSAMPLE}
-N 900 -880 1090 -1010 {lab=#net1}
-N 1090 -1010 1200 -1010 {lab=#net1}
+N 900 -880 1090 -1010 {lab=#net2}
+N 1090 -1010 1200 -1010 {lab=#net2}
 N 1160 -1030 1200 -1030 {lab=VDD}
-N 900 -860 1090 -990 {lab=#net2}
-N 1090 -990 1200 -990 {lab=#net2}
-N 900 -840 1090 -970 {lab=#net3}
-N 1090 -970 1200 -970 {lab=#net3}
-N 900 -820 1070 -930 {lab=#net4}
-N 1070 -930 1200 -930 {lab=#net4}
+N 900 -860 1090 -990 {lab=#net3}
+N 1090 -990 1200 -990 {lab=#net3}
+N 900 -840 1090 -970 {lab=#net4}
+N 1090 -970 1200 -970 {lab=#net4}
+N 900 -820 1070 -930 {lab=#net5}
+N 1070 -930 1200 -930 {lab=#net5}
 N 1160 -910 1200 -910 {lab=VDD}
 N 1120 -890 1200 -890 {lab=0}
-N 900 -800 1060 -870 {lab=#net5}
-N 1060 -870 1200 -870 {lab=#net5}
-N 900 -780 1060 -850 {lab=#net6}
-N 1060 -850 1200 -850 {lab=#net6}
+N 900 -800 1060 -870 {lab=#net6}
+N 1060 -870 1200 -870 {lab=#net6}
+N 900 -780 1060 -850 {lab=#net7}
+N 1060 -850 1200 -850 {lab=#net7}
 N 1160 -830 1200 -830 {lab=VRef}
-N 900 -760 1060 -810 {lab=#net7}
-N 1060 -810 1200 -810 {lab=#net7}
+N 900 -760 1060 -810 {lab=#net8}
+N 1060 -810 1200 -810 {lab=#net8}
 N 1160 -790 1200 -790 {lab=phi_top_n}
-N 900 -740 1060 -750 {lab=#net8}
-N 1060 -750 1200 -750 {lab=#net8}
+N 900 -740 1060 -750 {lab=#net9}
+N 1060 -750 1200 -750 {lab=#net9}
 N 1160 -730 1200 -730 {lab=0}
 N 1130 -710 1200 -710 {lab=VDD}
 N 1000 -640 1130 -690 {lab=CTRL0}
@@ -105,52 +104,63 @@ N 1100 -470 1200 -470 {lab=CTRL7}
 N 150 -910 150 -850 {lab=CLK}
 N 150 -850 210 -850 {lab=CLK}
 N 1500 -1260 1500 -1030 {lab=VX}
-N 490 -720 640 -720 {lab=#net1}
-N 640 -880 640 -720 {lab=#net1}
-N 640 -880 900 -880 {lab=#net1}
-N 490 -700 650 -700 {lab=#net2}
-N 650 -860 650 -700 {lab=#net2}
-N 650 -860 900 -860 {lab=#net2}
-N 490 -680 660 -680 {lab=#net3}
-N 660 -840 660 -680 {lab=#net3}
-N 660 -840 900 -840 {lab=#net3}
-N 490 -660 670 -660 {lab=#net4}
-N 670 -820 670 -660 {lab=#net4}
-N 670 -820 900 -820 {lab=#net4}
+N 490 -720 640 -720 {lab=#net2}
+N 640 -880 640 -720 {lab=#net2}
+N 640 -880 900 -880 {lab=#net2}
+N 490 -700 650 -700 {lab=#net3}
+N 650 -860 650 -700 {lab=#net3}
+N 650 -860 900 -860 {lab=#net3}
+N 490 -680 660 -680 {lab=#net4}
+N 660 -840 660 -680 {lab=#net4}
+N 660 -840 900 -840 {lab=#net4}
+N 490 -660 670 -660 {lab=#net5}
+N 670 -820 670 -660 {lab=#net5}
+N 670 -820 900 -820 {lab=#net5}
 N 590 -880 590 -670 {lab=CTRL0}
 N 590 -670 620 -640 {lab=CTRL0}
-N 490 -640 610 -640 {lab=#net5}
-N 610 -640 630 -650 {lab=#net5}
-N 630 -650 690 -650 {lab=#net5}
-N 690 -800 690 -650 {lab=#net5}
-N 690 -800 900 -800 {lab=#net5}
-N 490 -620 600 -620 {lab=#net6}
-N 600 -620 630 -630 {lab=#net6}
-N 630 -630 710 -630 {lab=#net6}
-N 710 -780 710 -630 {lab=#net6}
-N 710 -780 900 -780 {lab=#net6}
-N 490 -600 590 -600 {lab=#net7}
-N 590 -600 620 -610 {lab=#net7}
-N 620 -610 730 -610 {lab=#net7}
-N 730 -760 730 -610 {lab=#net7}
-N 730 -760 900 -760 {lab=#net7}
-N 490 -580 510 -590 {lab=#net8}
-N 510 -590 750 -590 {lab=#net8}
-N 750 -740 750 -590 {lab=#net8}
-N 750 -740 900 -740 {lab=#net8}
+N 490 -640 610 -640 {lab=#net6}
+N 610 -640 630 -650 {lab=#net6}
+N 630 -650 690 -650 {lab=#net6}
+N 690 -800 690 -650 {lab=#net6}
+N 690 -800 900 -800 {lab=#net6}
+N 490 -620 600 -620 {lab=#net7}
+N 600 -620 630 -630 {lab=#net7}
+N 630 -630 710 -630 {lab=#net7}
+N 710 -780 710 -630 {lab=#net7}
+N 710 -780 900 -780 {lab=#net7}
+N 490 -600 590 -600 {lab=#net8}
+N 590 -600 620 -610 {lab=#net8}
+N 620 -610 730 -610 {lab=#net8}
+N 730 -760 730 -610 {lab=#net8}
+N 730 -760 900 -760 {lab=#net8}
+N 490 -580 510 -590 {lab=#net9}
+N 510 -590 750 -590 {lab=#net9}
+N 750 -740 750 -590 {lab=#net9}
+N 750 -740 900 -740 {lab=#net9}
 N 150 -680 210 -690 {lab=OUTN}
 N 150 -720 190 -670 {lab=OUTP}
 N 700 -1120 730 -1120 {lab=phi_bottom_n}
 N -130 -830 -50 -830 {lab=CLK_O}
 N 40 -720 100 -720 {lab=OUTP}
 N 40 -680 100 -680 {lab=OUTN}
-N -260 -1260 -140 -1260 {lab=VX}
-N -260 -1260 -260 -750 {lab=VX}
-N -260 -750 -250 -750 {lab=VX}
+N -260 -1260 -140 -1260 {lab=#net1}
+N -260 -1260 -260 -750 {lab=#net1}
+N -260 -750 -250 -750 {lab=#net1}
+N 870 -1240 1500 -1260 {lab=VX}
+N -100 -1260 570 -1260 {lab=#net1}
+N 720 -1210 720 -1190 {lab=VDD}
+N 720 -1330 720 -1310 {lab=0}
+N -130 -640 -90 -590 {lab=0}
+N -250 -660 -210 -690 {lab=VCM}
+N -250 -750 -210 -710 {lab=#net1}
+N -160 -770 -130 -830 {lab=CLK_O}
+N -130 -760 -90 -810 {lab=VDD}
+N -10 -720 40 -720 {lab=OUTP}
+N -10 -680 40 -680 {lab=OUTN}
 C {lab_wire.sym} 880 -1180 0 0 {name=p1 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} 1130 -710 0 0 {name=p2 sig_type=std_logic lab=VDD}
 C {lab_wire.sym} -90 -810 1 0 {name=p9 sig_type=std_logic lab=VDD}
-C {code_shown.sym} 10 -1390 0 0 {name=s2 only_toplevel=false 
+C {code_shown.sym} -50 -1460 0 0 {name=s2 only_toplevel=false 
 value="
 .include /foss/designs/chipathon-2026-ti-adc/analog/digital/SAR_ADC_LOGIC/sar_adc_logic.spice
 .include /foss/designs/chipathon-2026-ti-adc/analog/blocks/IDcomparator/IDcomparator.spice
@@ -201,7 +211,7 @@ value="
 "}
 C {code_shown.sym} -1360 -1240 0 0 {name=s3 only_toplevel=true 
 value="
-.tran 50n 450n uic
+.tran 10n 450n uic
 .ic v(VX)=1.65 v(VX_LSB)=1.65
 
 .control
@@ -262,4 +272,7 @@ C {lab_wire.sym} 700 -1120 0 0 {name=p17 sig_type=std_logic lab=phi_bottom_n}
 C {chipathon-2026-ti-adc/analog/blocks/transmission_gate/transmission_gate.sym} 880 -1100 0 0 {name=x2}
 C {chipathon-2026-ti-adc/analog/blocks/cdac/caps2.sym} 1350 -750 0 0 {name=x3}
 C {chipathon-2026-ti-adc/analog/digital/SAR_ADC_LOGIC/sar_logic.sym} 340 -730 0 0 {name=X4}
-C {chipathon-2026-ti-adc/analog/blocks/IDcomparator/IDcomparator.sym} -310 -700 0 0 {name=X1 model=IDcomparator}
+C {chipathon-2026-ti-adc/analog/top/buffer.sym} 720 -1260 2 0 {name=x5}
+C {lab_wire.sym} 720 -1190 0 0 {name=p5 sig_type=std_logic lab=VDD}
+C {gnd.sym} 720 -1330 2 0 {name=l1 lab=0}
+C {chipathon-2026-ti-adc/analog/blocks/Double_Tail_Comparator/realcomp.sym} -130 -700 0 0 {name=x1}
