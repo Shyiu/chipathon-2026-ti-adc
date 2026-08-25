@@ -17,4 +17,3 @@ project:
   discord: "Shreyas"                   # Optional: Discord username (for support / communication)
   description: "Time Interleaved ADC"  # Short one-line description
   lvs_config: "lvs_config.json"
-
